@@ -16,5 +16,9 @@
   -->
 
 <resources>
-    <string name="app_name">Checklist App</string>
+  <string name="app_name">Checklist App</string>
+  <string name="google_status_fmt">%s</string>
+  <string name="firebase_status_fmt">%s</string>
+  <string name="signed_out">Signed out</string>
+  <string name="log_out">Log out</string>
 </resources>

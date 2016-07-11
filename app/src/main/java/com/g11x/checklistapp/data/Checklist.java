@@ -15,16 +15,23 @@
  *
  */
 
-package com.g11x.checklistapp;
+package com.g11x.checklistapp.data;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class Checklist {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-    }
+  private final List<ChecklistItem> items;
+
+  private Checklist(List<ChecklistItem> items) {
+    this.items = items;
+  }
+
+  public static Checklist of(List<ChecklistItem> items) {
+    return new Checklist(items);
+  }
+
+  public List<ChecklistItem> getItems() {
+    return items;
+  }
 }
