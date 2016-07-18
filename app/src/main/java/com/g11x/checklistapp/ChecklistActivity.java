@@ -66,6 +66,9 @@ public class ChecklistActivity extends AppCompatActivity {
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
+      case R.id.about:
+        startActivity(new Intent(this, AboutActivity.class));
+        break;
     }
     return super.onOptionsItemSelected(item);
   }

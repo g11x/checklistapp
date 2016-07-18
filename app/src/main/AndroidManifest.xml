@@ -33,6 +33,7 @@
     </activity>
     <activity android:name=".ChecklistItemActivity">
     </activity>
+    <activity android:name=".AboutActivity"/>
   </application>
 
 </manifest>
