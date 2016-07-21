@@ -21,7 +21,7 @@ android {
   compileSdkVersion 24
   buildToolsVersion "24.0.0"
   defaultConfig {
-    applicationId "com.g11x.checklistapp"
+    applicationId "com.g11x.checklistapp.rst"
     minSdkVersion 15
     targetSdkVersion 24
     versionCode 1

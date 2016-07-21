@@ -16,7 +16,7 @@
   -->
 
 <resources>
-  <string name="app_name">Welcome to the Neighborhood</string>
+  <string name="app_name">RST Checklist</string>
   <string name="google_status_fmt">%s</string>
   <string name="firebase_status_fmt">%s</string>
   <string name="signed_out">Signed out</string>
