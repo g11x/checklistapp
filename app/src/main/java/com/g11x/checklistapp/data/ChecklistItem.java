@@ -69,7 +69,6 @@ public class ChecklistItem {
     return location;
   }
 
-  @SuppressWarnings("unused")
   public String getDescription() {
     return description;
   }
