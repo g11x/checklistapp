@@ -30,7 +30,7 @@ public class ChecklistManager {
 
   public static Checklist get(Context context) {
     if (checklist== null) {
-      SharedPreferences preferences = context.getSharedPreferences("checklist", 0);
+      SharedPreferences preferences = context.getSharedPreferences("checklist", Context.MODE_PRIVATE);
       String items = preferences.getString("doneness", null);
 
       if (items == null) {
@@ -54,7 +54,7 @@ public class ChecklistManager {
     for (ChecklistItem item : checklist.getItems()) {
       doneness.append(String.valueOf(item.isDone())).append(",");
     }
-    SharedPreferences settings = context.getSharedPreferences("checklist", 0);
+    SharedPreferences settings = context.getSharedPreferences("checklist", Context.MODE_PRIVATE);
     SharedPreferences.Editor editor = settings.edit();
     editor.putString("doneness", doneness.toString());
     editor.apply();
