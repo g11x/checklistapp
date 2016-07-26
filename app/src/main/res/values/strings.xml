@@ -17,11 +17,13 @@
 
 <resources>
   <string name="app_name">RST Checklist</string>
-  <string name="google_status_fmt">%s</string>
-  <string name="firebase_status_fmt">%s</string>
-  <string name="signed_out">Signed out</string>
-  <string name="log_out">Log out</string>
   <string name="about_text">This app contains code that is \u00A9 Google</string>
   <string name="about">About</string>
   <string name="apache_license_link"><a href="https://raw.githubusercontent.com/g11x/checklistapp/master/LICENSE">Licensed under Apache 2.0</a></string>
+  <string name="get_social_security_card">Get social security card</string>
+  <string name="description_text">Description text.</string>
+  <string name="get_directions">Get directions</string>
+  <string name="togglebutton">ToggleButton</string>
+  <string name="mark_as_not_done">Mark as not done</string>
+  <string name="mark_as_done">Mark as done</string>
 </resources>

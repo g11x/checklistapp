@@ -25,7 +25,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,10 +34,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.g11x.checklistapp.data.Checklist;
-import com.g11x.checklistapp.data.ChecklistItem;
 import com.g11x.checklistapp.data.ChecklistManager;
-
-import java.util.ArrayList;
 
 public class ChecklistActivity extends AppCompatActivity {
 
@@ -81,7 +77,7 @@ public class ChecklistActivity extends AppCompatActivity {
   }
 
   private class ChecklistAdapter extends RecyclerView.Adapter<ViewHolder> {
-    Checklist dataset;
+    final Checklist dataset;
 
     ChecklistAdapter(Checklist checklist) {
       this.dataset = checklist;

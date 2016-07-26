@@ -54,18 +54,22 @@ public class ChecklistItem {
     return new ChecklistItem(name, description, isDone, location, directions, email, phone);
   }
 
+  @SuppressWarnings("unused")
   public String getEmail() {
     return email;
   }
 
+  @SuppressWarnings("unused")
   public String getPhone() {
     return phone;
   }
 
+  @SuppressWarnings("unused")
   public String getLocation() {
     return location;
   }
 
+  @SuppressWarnings("unused")
   public String getDescription() {
     return description;
   }

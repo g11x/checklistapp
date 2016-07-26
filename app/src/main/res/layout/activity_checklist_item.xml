@@ -28,7 +28,7 @@
   <TextView
       android:layout_height="wrap_content"
       android:id="@+id/name"
-      android:text="Get social security card"
+      android:text="@string/get_social_security_card"
       android:textAppearance="@android:style/TextAppearance.Material.Headline"
       android:textAlignment="center"
       android:layout_width="wrap_content"
@@ -40,12 +40,13 @@
       app:layout_constraintTop_toTopOf="@+id/checklist_item"
       android:layout_marginTop="20dp"
       android:paddingLeft="20dp"
-      android:paddingRight="20dp"/>
+      android:paddingRight="20dp"
+      tools:targetApi="lollipop"/>
 
   <TextView
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:text="In the United States, a Social Security number is a number assigned to U.S. Citizens, permanent residents, and temporary (working) residents. The primary purpose is to track individuals for taxes and identification. A Social Security lists your name and Social Security number, and is often necessary for obtaining other items, such as a state identification card. People don't usually carry their Social Security cards with them everywhere, since they are not usually necessary on a day-to-day basis."
+      android:text="@string/description_text"
       tools:layout_constraintRight_creator="1"
       app:layout_constraintRight_toRightOf="@+id/checklist_item"
       tools:layout_constraintLeft_creator="1"
@@ -60,7 +61,7 @@
       android:layout_marginEnd="20dp"/>
 
   <Button
-      android:text="Get directions"
+      android:text="@string/get_directions"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:id="@+id/directions"
@@ -71,11 +72,11 @@
 
   <ToggleButton
       android:id="@+id/doneness"
-      android:text="ToggleButton"
+      android:text="@string/togglebutton"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:textOn="Mark as not done"
-      android:textOff="Mark as done"
+      android:textOn="@string/mark_as_not_done"
+      android:textOff="@string/mark_as_done"
       android:layout_marginStart="16dp"
       android:layout_marginEnd="16dp"
       app:layout_constraintRight_toRightOf="@+id/checklist_item"
