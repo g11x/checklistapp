@@ -30,9 +30,6 @@ public class AboutActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_about);
 
-    EditText copyText = (EditText) findViewById(R.id.all_code_copy_google);
-    copyText.setKeyListener(null);
-
     TextView licenseText = (TextView) findViewById(R.id.apache_license_link);
     licenseText.setMovementMethod(LinkMovementMethod.getInstance());
   }
