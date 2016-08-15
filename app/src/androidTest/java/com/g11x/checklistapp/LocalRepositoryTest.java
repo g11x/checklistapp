@@ -7,11 +7,13 @@ import android.test.ProviderTestCase2;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-/** Tests for the app's ContentProvider.*/
+/**
+ * Tests for the app's ContentProvider.
+ */
 @RunWith(AndroidJUnit4.class)
 public class LocalRepositoryTest extends ProviderTestCase2<LocalRepository> {
     public LocalRepositoryTest() {
-        super(LocalRepository.class, Constants.LOCAL_REPOSITORY_AUTHORITY);
+        super(LocalRepository.class, InstrumentationRegistry.getInstrumentation().getTargetContext().getString(R.string.content_provider_authority));
     }
 
     @Override
@@ -21,5 +23,6 @@ public class LocalRepositoryTest extends ProviderTestCase2<LocalRepository> {
     }
 
     @Test
-    public void shouldFetchData() {}
+    public void shouldFetchData() {
+    }
 }

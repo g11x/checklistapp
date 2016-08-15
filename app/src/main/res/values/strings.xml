@@ -26,5 +26,4 @@
   <string name="togglebutton">ToggleButton</string>
   <string name="mark_as_not_done">Mark as not done</string>
   <string name="mark_as_done">Mark as done</string>
-  <string name="content_provider_authority">com.google.g11x.checklistapp.provider</string>
 </resources>

@@ -33,6 +33,10 @@ android {
     release {
       minifyEnabled false
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+      resValue("string", "content_provider_authority", "com.g11x.checklistapp.provider")
+    }
+    debug {
+      resValue("string", "content_provider_authority", "com.g11x.checklistapp.provider")
     }
   }
 }
