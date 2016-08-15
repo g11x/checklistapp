@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "536100510282",
+    "firebase_url": "https://checklistappdev.firebaseio.com",
+    "project_id": "checklistappdev",
+    "storage_bucket": "checklistappdev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:536100510282:android:262ecc79e734b009",
+        "android_client_info": {
+          "package_name": "com.g11x.checklistapp.rst"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "536100510282-lh8irebo40v34qrr43abes9relrvj4h1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.g11x.checklistapp.rst",
+            "certificate_hash": "732BBFCDFA20B48F026F15FD3D53E236327A4C0E"
+          }
+        },
+        {
+          "client_id": "536100510282-0r0fih42l0fk5n3cetld5ou3bjoqkdpe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.g11x.checklistapp.rst",
+            "certificate_hash": "6553DCD621565747A10FFCF95CD56524028ED8DD"
+          }
+        },
+        {
+          "client_id": "536100510282-eoq9iannn8v4as4b33khdopnb8paj2qp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAef3kQjP1LEGj1_0zm75OH2RUs1_6O3k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "536100510282-eoq9iannn8v4as4b33khdopnb8paj2qp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

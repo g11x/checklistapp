@@ -44,9 +44,13 @@ dependencies {
     exclude group: 'com.android.support', module: 'support-annotations'
   })
 
-  compile 'com.android.support:appcompat-v7:24.1.0'
-  compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha2'
-  compile 'com.android.support:recyclerview-v7:24.1.0'
 
+  compile 'com.android.support:appcompat-v7:24.1.1'
+  compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha4'
+  compile 'com.android.support:recyclerview-v7:24.1.1'
+  compile 'com.android.support:design:24.1.1'
+  compile 'com.google.firebase:firebase-messaging:9.4.0'
   testCompile 'junit:junit:4.12'
 }
+
+apply plugin: 'com.google.gms.google-services'
