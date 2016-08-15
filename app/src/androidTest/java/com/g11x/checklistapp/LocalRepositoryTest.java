@@ -11,7 +11,7 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public class LocalRepositoryTest extends ProviderTestCase2<LocalRepository> {
     public LocalRepositoryTest() {
-        super(LocalRepository.class, "Some string it needs that I don't understand yet... TDD baby.");
+        super(LocalRepository.class, "com.g11x.checklistapp.provider");
     }
 
     @Override
