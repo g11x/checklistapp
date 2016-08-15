@@ -38,7 +38,7 @@ import static org.hamcrest.core.AllOf.allOf;
 @RunWith(AndroidJUnit4.class)
 public class AboutActivityTest {
   @Rule
-  public ActivityTestRule<AboutActivity> mActivity = new ActivityTestRule<>(AboutActivity.class);
+  public ActivityTestRule<AboutActivity> activity = new ActivityTestRule<>(AboutActivity.class);
 
   @Test
   public void activityRenders_containsNoteAboutApache2License() {
