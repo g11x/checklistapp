@@ -16,8 +16,19 @@
   ~
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-  <item
-      android:id="@+id/about"
-      android:title="@string/about" />
-</menu>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:orientation="vertical">
+
+  <TextView
+      android:id="@+id/dummy_text"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:textSize="30dp"
+      android:gravity="center"
+      android:padding="20dp"/>
+</LinearLayout>
