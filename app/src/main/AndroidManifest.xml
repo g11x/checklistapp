@@ -33,7 +33,7 @@
     </activity>
     <activity android:name=".AboutActivity"/>
 
-    <activity android:name=".NavigationActivity" android:theme="@style/AppTheme">
+    <activity android:name=".NavigationActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>

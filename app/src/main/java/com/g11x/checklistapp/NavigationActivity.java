@@ -18,7 +18,6 @@
 package com.g11x.checklistapp;
 
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -26,16 +25,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
+
 
 public class NavigationActivity extends AppCompatActivity {
   private DrawerLayout drawerLayout;
@@ -44,6 +41,7 @@ public class NavigationActivity extends AppCompatActivity {
 
   private CharSequence title;
   private String[] menuItemTitles;
+  private Class<? extends Fragment>[] menuItemClasses;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +50,12 @@ public class NavigationActivity extends AppCompatActivity {
 
     title = getTitle();
     menuItemTitles = getResources().getStringArray(R.array.menu_items_array);
+    menuItemClasses = new Class[]{
+        ChecklistFragment.class,
+        ImportantInformationFragment.class,
+        LanguagesFragment.class,
+        AboutFragment.class
+    };
     drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
     drawerList = (ListView) findViewById(R.id.left_drawer);
 
@@ -66,7 +70,6 @@ public class NavigationActivity extends AppCompatActivity {
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     getSupportActionBar().setHomeButtonEnabled(true);
     getSupportActionBar().setIcon(R.color.transparent);
-    //drawerLayout.setScrimColor(Color.TRANSPARENT);
 
     // ActionBarDrawerToggle ties together the the proper interactions
     // between the sliding drawer and the action bar app icon
@@ -78,7 +81,6 @@ public class NavigationActivity extends AppCompatActivity {
       }
 
       public void onDrawerOpened(View drawerView) {
-        //getSupportActionBar().setTitle(mDrawerTitle);
         invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
       }
     };
@@ -112,18 +114,22 @@ public class NavigationActivity extends AppCompatActivity {
 
   private void selectItem(int index) {
     // update the main content by replacing fragments
-    Fragment fragment = new PlanetFragment();
-    Bundle args = new Bundle();
-    args.putInt(PlanetFragment.ARG_MENU_ITEM_INDEX, index);
-    fragment.setArguments(args);
+    Class<? extends Fragment> type = menuItemClasses[index];
 
-    FragmentManager fragmentManager = getSupportFragmentManager();
-    fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+    try {
 
-    // update selected item and title, then close the drawer
-    drawerList.setItemChecked(index, true);
-    setTitle(menuItemTitles[index]);
-    drawerLayout.closeDrawer(drawerList);
+      Fragment fragment = type.getConstructor().newInstance();
+      FragmentManager fragmentManager = getSupportFragmentManager();
+      fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+
+      // update selected item and title, then close the drawer
+      drawerList.setItemChecked(index, true);
+      setTitle(menuItemTitles[index]);
+      drawerLayout.closeDrawer(drawerList);
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   @Override
@@ -169,28 +175,6 @@ public class NavigationActivity extends AppCompatActivity {
       drawerLayout.closeDrawer(drawerList);
     } else {
       super.onBackPressed();
-    }
-  }
-
-  /**
-   * Fragment that appears in the "content_frame", shows a planet
-   */
-  public static class PlanetFragment extends Fragment {
-    public static final String ARG_MENU_ITEM_INDEX = "menu_item_index";
-
-    public PlanetFragment() {
-      // Empty constructor required for fragment subclasses
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-      View rootView = inflater.inflate(R.layout.fragment_dummy, container, false);
-      int i = getArguments().getInt(ARG_MENU_ITEM_INDEX);
-      String text = getResources().getStringArray(R.array.menu_items_array)[i];
-
-      ((TextView) rootView.findViewById(R.id.dummy_text)).setText(text);
-      return rootView;
     }
   }
 }
