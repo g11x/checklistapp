@@ -36,6 +36,7 @@
     <activity android:name=".ChecklistItemActivity">
     </activity>
     <activity android:name=".AboutActivity"/>
+    <activity android:name=".ImportantInformationActivity"/>
     <provider
         android:authorities="@string/content_provider_authority"
         android:name=".LocalRepository"
