@@ -1,6 +1,7 @@
 package com.g11x.checklistapp;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -30,7 +31,6 @@ public class LocalRepository extends ContentProvider {
         // Creates the data repository. This is called when the provider attempts to open the
         // repository and SQLite reports that it doesn't exist.
         public void onCreate(SQLiteDatabase db) {
-
             // Creates the main table
             db.execSQL(SQL_CREATE_MAIN);
         }
@@ -72,12 +72,10 @@ public class LocalRepository extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues contentValues) {
-        // Insert code here to determine which table to open, handle error-checking, and so forth
-        // ...
-
         // Gets a writeable database. This will trigger its creation if it doesn't already exist.
         db = openHelper.getWritableDatabase();
-        return null;
+        long id = db.insert("important_info", null, contentValues);
+        return ContentUris.withAppendedId(uri, id);
     }
 
     @Override

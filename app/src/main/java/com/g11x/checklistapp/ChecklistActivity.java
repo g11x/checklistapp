@@ -18,45 +18,107 @@
 package com.g11x.checklistapp;
 
 import android.content.Intent;
-import android.graphics.Typeface;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableString;
-import android.text.style.StyleSpan;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.g11x.checklistapp.data.Checklist;
-import com.g11x.checklistapp.data.ChecklistManager;
+import com.g11x.checklistapp.data.ChecklistItem;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChecklistActivity extends AppCompatActivity {
 
-  private ChecklistAdapter adapter;
+  private FirebaseRecyclerAdapter<ChecklistItem, ChecklistItemHolder> checklistAdapter;
+  private DatabaseReference databaseRef;
+  private final List<ChecklistItem> checklistItems = new ArrayList<>();
+
+  private void addChildListeners(DatabaseReference reference) {
+    ChildEventListener childEventListener = new ChildEventListener() {
+      @Override
+      public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+        // Parse all current children and store locally, for now.
+        ChecklistItem item = dataSnapshot.getValue(ChecklistItem.class);
+        int originalSize = checklistItems.size();
+        checklistItems.add(item);
+      }
+
+      @Override
+      public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+        // Do nothing, for now.  Should change list of items.
+      }
+
+      @Override
+      public void onChildRemoved(DataSnapshot dataSnapshot) {
+        // Do nothing, for now.  Should change list of items.
+      }
+
+      @Override
+      public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+        // Do nothing, for now.  Should re-order list of items.
+      }
+
+      @Override
+      public void onCancelled(DatabaseError databaseError) {
+        Log.e("Firebase", "Could not read data from remote database.");
+        View view = findViewById(R.id.recyclerview_checklist);
+        Snackbar.make(view, "Failed database read", Snackbar.LENGTH_SHORT).show();
+      }
+    };
+    reference.addChildEventListener(childEventListener);
+  }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_checklist);
 
+    databaseRef = FirebaseDatabase.getInstance().getReference()
+        .child("checklists")
+        .child("basic");
+    addChildListeners(databaseRef);
+    Checklist basicChecklist = Checklist.of(checklistItems);
+
     RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview_checklist);
     recyclerView.setHasFixedSize(true);
     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
     recyclerView.setLayoutManager(linearLayoutManager);
-    adapter = new ChecklistAdapter(ChecklistManager.get(getApplicationContext()));
-    recyclerView.setAdapter(adapter);
+    checklistAdapter = new FirebaseRecyclerAdapter<ChecklistItem, ChecklistItemHolder>(
+        ChecklistItem.class, R.layout.view_checklist_item, ChecklistItemHolder.class,
+        databaseRef) {
+      @Override
+      protected void populateViewHolder(
+          ChecklistItemHolder itemHolder, ChecklistItem model, int position) {
+        itemHolder.setText(model.getName());
+      }
+    };
+    recyclerView.setAdapter(checklistAdapter);
   }
 
   @Override
   protected void onStart() {
     super.onStart();
-    adapter.notifyDataSetChanged();
+  }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    checklistAdapter.cleanup();
   }
 
   @Override
@@ -76,49 +138,17 @@ public class ChecklistActivity extends AppCompatActivity {
     return super.onCreateOptionsMenu(menu);
   }
 
-  private class ChecklistAdapter extends RecyclerView.Adapter<ViewHolder> {
-    final Checklist dataset;
+  public static class ChecklistItemHolder extends RecyclerView.ViewHolder {
+    View view;
 
-    ChecklistAdapter(Checklist checklist) {
-      this.dataset = checklist;
+    public ChecklistItemHolder(View itemView) {
+      super(itemView);
+      view = itemView;
     }
 
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-      View view = LayoutInflater.from(parent.getContext())
-          .inflate(R.layout.view_checklist_item, parent, false);
-      return new ViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
-      SpannableString spannableString = new SpannableString(dataset.getItems().get(position).getName());
-      int typeface = dataset.getItems().get(position).isDone()? Typeface.NORMAL : Typeface.BOLD;
-      spannableString.setSpan(new StyleSpan(typeface), 0, dataset.getItems().get(position).getName().length(), 0);
-      holder.textView.setText(spannableString);
-      holder.textView.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-          int position = holder.getAdapterPosition();
-          Intent intent = new Intent(ChecklistActivity.this, ChecklistItemActivity.class);
-          intent.putExtra("index", position);
-          startActivity(intent);
-        }
-      });
-    }
-
-    @Override
-    public int getItemCount() {
-      return dataset.getItems().size();
-    }
-  }
-
-  private class ViewHolder extends RecyclerView.ViewHolder {
-    final TextView textView;
-
-    ViewHolder(View view) {
-      super(view);
-      this.textView = (TextView) view.findViewById(R.id.info_text);
+    public void setText(String title) {
+      TextView textView = (TextView) view.findViewById(R.id.info_text);
+      textView.setText(title);
     }
   }
 }
