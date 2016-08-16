@@ -10,11 +10,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 
+import com.g11x.checklistapp.data.Database;
+
 /** Application data repository. */
 public class LocalRepository extends ContentProvider {
-    // Defines the database name
-    private static final String DB_NAME = "g11x_checklistapp";
-
     // A string that defines the SQL statement for creating a table
     private static final String SQL_CREATE_MAIN =
         "CREATE TABLE important_info "
@@ -25,7 +24,7 @@ public class LocalRepository extends ContentProvider {
         // Instantiates an open helper for the provider's SQLite data repository. Do not do database
         // creation and upgrade here.
         MainDatabaseHelper(Context context) {
-            super(context, DB_NAME, null, 1);
+            super(context, Database.NAME, null, 1);
         }
 
         // Creates the data repository. This is called when the provider attempts to open the
@@ -74,7 +73,7 @@ public class LocalRepository extends ContentProvider {
     public Uri insert(Uri uri, ContentValues contentValues) {
         // Gets a writeable database. This will trigger its creation if it doesn't already exist.
         db = openHelper.getWritableDatabase();
-        long id = db.insert("important_info", null, contentValues);
+        long id = db.insert(Database.ImportantInformation.INFO_COLUMN, null, contentValues);
         return ContentUris.withAppendedId(uri, id);
     }
 
