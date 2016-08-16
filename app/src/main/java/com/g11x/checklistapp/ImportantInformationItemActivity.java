@@ -26,6 +26,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.g11x.checklistapp.data.Database;
+
 public class ImportantInformationItemActivity extends AppCompatActivity {
 
   @Override
@@ -50,9 +52,9 @@ public class ImportantInformationItemActivity extends AppCompatActivity {
     intent.putExtra("title", titleText);
 
     ContentValues newValues = new ContentValues();
-    newValues.put("INFO", titleText);
-    Uri mNewUri = getContentResolver().insert(
-        Uri.parse("content://" + getString(R.string.content_provider_authority) + "/g11x_checklistapp/important_info"),
+    newValues.put(Database.ImportantInformation.INFO_COLUMN, titleText);
+    Uri titleUri = getContentResolver().insert(
+        Database.ImportantInformation.CONTENT_URI,
         newValues
     );
 
