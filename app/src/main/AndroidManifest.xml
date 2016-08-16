@@ -42,10 +42,9 @@
 
     <activity android:name=".ImportantInformationActivity"/>
     <activity android:name=".ImportantInformationItemActivity"/>
-
     <provider
-        android:name=".LocalRepository"
         android:authorities="@string/content_provider_authority"
-        android:exported="false"/>
+        android:name=".LocalRepository"
+        android:exported="false" />
   </application>
 </manifest>
