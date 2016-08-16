@@ -50,9 +50,9 @@ public class ImportantInformationItemActivity extends AppCompatActivity {
     intent.putExtra("title", titleText);
 
     ContentValues newValues = new ContentValues();
-    newValues.put("text", titleText);
+    newValues.put("INFO", titleText);
     Uri mNewUri = getContentResolver().insert(
-        Uri.fromParts("content", getString(R.string.content_provider_authority) + "/important_infos", nulldf),
+        Uri.parse("content://" + getString(R.string.content_provider_authority) + "/g11x_checklistapp/important_info"),
         newValues
     );
 

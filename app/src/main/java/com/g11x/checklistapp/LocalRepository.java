@@ -74,7 +74,7 @@ public class LocalRepository extends ContentProvider {
     public Uri insert(Uri uri, ContentValues contentValues) {
         // Gets a writeable database. This will trigger its creation if it doesn't already exist.
         db = openHelper.getWritableDatabase();
-        long id = db.insert(DB_NAME, null, contentValues);
+        long id = db.insert("important_info", null, contentValues);
         return ContentUris.withAppendedId(uri, id);
     }
 
