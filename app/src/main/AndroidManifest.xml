@@ -36,10 +36,11 @@
     <activity android:name=".ChecklistItemActivity">
     </activity>
     <activity android:name=".AboutActivity"/>
+    <activity android:name=".ImportantInformationActivity"/>
+    <activity android:name=".ImportantInformationItemActivity"/>
     <provider
         android:authorities="@string/content_provider_authority"
         android:name=".LocalRepository"
         android:exported="false" />
   </application>
-
 </manifest>
