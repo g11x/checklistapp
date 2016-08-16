@@ -19,6 +19,7 @@ package com.g11x.checklistapp;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -82,7 +83,8 @@ public class ChecklistActivity extends AppCompatActivity {
       @Override
       public void onCancelled(DatabaseError databaseError) {
         Log.e("Firebase", "Could not read data from remote database.");
-        Toast.makeText(getApplicationContext(), "Failed database read", Toast.LENGTH_SHORT);
+        View view = findViewById(R.id.recyclerview_checklist);
+        Snackbar.make(view, "Failed database read", Snackbar.LENGTH_SHORT).show();
       }
     };
     reference.addChildEventListener(childEventListener);

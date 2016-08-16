@@ -23,14 +23,14 @@ import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
 public class ChecklistItem {
-  public String name;
-  public String location;
-  public String description;
+  private String name;
+  private String location;
+  private String description;
   private Uri directions;
-  public String directions_url;
+  private String directions_url;
   private boolean isDone;
-  public String email;
-  public String phone;
+  private String email;
+  private String phone;
 
   public ChecklistItem() {
     // Default constructor required for calls to DataSnapshot.getValue(ChecklistItem.class)
@@ -42,6 +42,7 @@ public class ChecklistItem {
     this.isDone = isDone;
     this.location = location;
     this.directions = directions;
+    this.directions_url = directions.toString();
     this.email = email;
     this.phone = phone;
   }
