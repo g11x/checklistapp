@@ -25,6 +25,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,31 +33,92 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.g11x.checklistapp.data.Checklist;
-import com.g11x.checklistapp.data.ChecklistManager;
+import com.g11x.checklistapp.data.ChecklistItem;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChecklistActivity extends AppCompatActivity {
 
-  private ChecklistAdapter adapter;
+  private ChecklistAdapter checklistAdapter;
+  private DatabaseReference checklistRef;
+  private final List<ChecklistItem> checklistItems = new ArrayList<>();
+  private ChildEventListener childEventListener;
+
+  private void addChildListeners(DatabaseReference reference) {
+    childEventListener = new ChildEventListener() {
+      @Override
+      public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+        // Parse all current children and store locally, for now.
+        ChecklistItem item = dataSnapshot.getValue(ChecklistItem.class);
+        int originalSize = checklistItems.size();
+        checklistItems.add(item);
+        checklistAdapter.notifyDataSetChanged();
+      }
+
+      @Override
+      public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+        // Do nothing, for now.  Should change list of items.
+      }
+
+      @Override
+      public void onChildRemoved(DataSnapshot dataSnapshot) {
+        // Do nothing, for now.  Should change list of items.
+      }
+
+      @Override
+      public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+        // Do nothing, for now.  Should re-order list of items.
+      }
+
+      @Override
+      public void onCancelled(DatabaseError databaseError) {
+        Log.e("Firebase", "Could not read data from remote database.");
+        Toast.makeText(getApplicationContext(), "Failed database read", Toast.LENGTH_SHORT);
+      }
+    };
+    reference.addChildEventListener(childEventListener);
+  }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_checklist);
 
+    checklistRef = FirebaseDatabase.getInstance().getReference()
+        .child("checklists")
+        .child("basic");
+    addChildListeners(checklistRef);
+    Checklist basicChecklist = Checklist.of(checklistItems);
+
     RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview_checklist);
     recyclerView.setHasFixedSize(true);
     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
     recyclerView.setLayoutManager(linearLayoutManager);
-    adapter = new ChecklistAdapter(ChecklistManager.get(getApplicationContext()));
-    recyclerView.setAdapter(adapter);
+    checklistAdapter = new ChecklistAdapter(basicChecklist);
+    recyclerView.setAdapter(checklistAdapter);
   }
 
   @Override
   protected void onStart() {
     super.onStart();
-    adapter.notifyDataSetChanged();
+    checklistAdapter.notifyDataSetChanged();
+  }
+
+  @Override
+  protected void onStop() {
+    super.onStop();
+    if (checklistRef != null && childEventListener != null) {
+      checklistRef.removeEventListener(childEventListener);
+    }
   }
 
   @Override
