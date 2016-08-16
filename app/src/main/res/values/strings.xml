@@ -29,4 +29,10 @@
   <string name="title">Title</string>
   <string name="create">Create</string>
   <string name="created_important_information_item">Created %s</string>
+  <string-array name="menu_items_array">
+    <item>Checklist</item>
+    <item>Private</item>
+    <item>Language</item>
+    <item>About</item>
+  </string-array>
 </resources>
