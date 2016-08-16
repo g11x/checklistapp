@@ -7,5 +7,5 @@ announcements, reminders, etc.
 
 ## This is not an official Google project
 
-I work for Google, so the code is all &copy; Google Inc., but this is not an
-official Google project.
+The original authors work for Google, so the code is all &copy; Google Inc.,
+but this is *not* an official Google project.

@@ -38,6 +38,12 @@
         android:name=".NotificationListActivity"
         android:label="@string/title_activity_notification_list"
         android:theme="@style/AppTheme.NoActionBar"></activity>
+    <activity android:name=".ImportantInformationActivity"/>
+    <activity android:name=".ImportantInformationItemActivity"/>
+    <provider
+        android:authorities="@string/content_provider_authority"
+        android:name=".LocalRepository"
+        android:exported="false" />
   </application>
-
 </manifest>
+

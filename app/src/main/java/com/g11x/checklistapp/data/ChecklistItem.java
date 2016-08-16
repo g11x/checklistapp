@@ -19,14 +19,22 @@ package com.g11x.checklistapp.data;
 
 import android.net.Uri;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
+@IgnoreExtraProperties
 public class ChecklistItem {
-  private final String name;
-  private final String location;
-  private final String description;
-  private final Uri directions;
+  private String name;
+  private String location;
+  private String description;
+  private Uri directions;
+  private String directions_url;
   private boolean isDone;
-  private final String email;
-  private final String phone;
+  private String email;
+  private String phone;
+
+  public ChecklistItem() {
+    // Default constructor required for calls to DataSnapshot.getValue(ChecklistItem.class)
+  }
 
   private ChecklistItem(String name, String description, boolean isDone, String location, Uri directions, String email, String phone) {
     this.name = name;
@@ -34,6 +42,7 @@ public class ChecklistItem {
     this.isDone = isDone;
     this.location = location;
     this.directions = directions;
+    this.directions_url = directions.toString();
     this.email = email;
     this.phone = phone;
   }
