@@ -17,9 +17,11 @@
 
 package com.g11x.checklistapp;
 
+import android.content.ContentValues;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -46,6 +48,14 @@ public class ImportantInformationItemActivity extends AppCompatActivity {
     ImportantInformationActivity.getData().add(titleText);
     Intent intent = new Intent(this, ImportantInformationActivity.class);
     intent.putExtra("title", titleText);
+
+    ContentValues newValues = new ContentValues();
+    newValues.put("text", titleText);
+    Uri mNewUri = getContentResolver().insert(
+        Uri.fromParts("content", getString(R.string.content_provider_authority) + "/important_infos", nulldf),
+        newValues
+    );
+
     startActivity(intent);
   }
 }
