@@ -121,16 +121,6 @@ public class ChecklistActivity extends AppCompatActivity {
     checklistAdapter.cleanup();
   }
 
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId()) {
-      case R.id.about:
-        startActivity(new Intent(this, AboutActivity.class));
-        break;
-    }
-    return super.onOptionsItemSelected(item);
-  }
-
   public static class ChecklistItemHolder extends RecyclerView.ViewHolder {
     View view;
 
