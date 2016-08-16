@@ -17,12 +17,16 @@
 
 package com.g11x.checklistapp;
 
+import android.content.ContentValues;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.g11x.checklistapp.data.Database;
 
 public class ImportantInformationItemActivity extends AppCompatActivity {
 
@@ -46,6 +50,14 @@ public class ImportantInformationItemActivity extends AppCompatActivity {
     ImportantInformationActivity.getData().add(titleText);
     Intent intent = new Intent(this, ImportantInformationActivity.class);
     intent.putExtra("title", titleText);
+
+    ContentValues newValues = new ContentValues();
+    newValues.put(Database.ImportantInformation.INFO_COLUMN, titleText);
+    Uri titleUri = getContentResolver().insert(
+        Database.ImportantInformation.CONTENT_URI,
+        newValues
+    );
+
     startActivity(intent);
   }
 }
