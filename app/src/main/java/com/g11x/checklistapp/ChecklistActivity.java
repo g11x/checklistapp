@@ -59,13 +59,6 @@ public class ChecklistActivity extends AppCompatActivity {
     adapter.notifyDataSetChanged();
   }
 
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    MenuInflater menuInflater = getMenuInflater();
-    menuInflater.inflate(R.menu.main, menu);
-    return super.onCreateOptionsMenu(menu);
-  }
-
   private class ChecklistAdapter extends RecyclerView.Adapter<ViewHolder> {
     final Checklist dataset;
 

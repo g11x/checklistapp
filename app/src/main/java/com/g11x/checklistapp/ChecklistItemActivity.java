@@ -81,11 +81,4 @@ public class ChecklistItemActivity extends AppCompatActivity {
   private void onClickGetDirections() {
     startActivity(new Intent(Intent.ACTION_VIEW, checklistItem.getDirections()));
   }
-
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    MenuInflater menuInflater = getMenuInflater();
-    menuInflater.inflate(R.menu.main, menu);
-    return super.onCreateOptionsMenu(menu);
-  }
 }

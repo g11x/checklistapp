@@ -97,13 +97,6 @@ public class NavigationActivity extends AppCompatActivity {
     super.onDestroy();
   }
 
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    MenuInflater inflater = getMenuInflater();
-    inflater.inflate(R.menu.main, menu);
-    return super.onCreateOptionsMenu(menu);
-  }
-
   /* The click listner for ListView in the navigation drawer */
   private class DrawerItemClickListener implements ListView.OnItemClickListener {
     @Override
