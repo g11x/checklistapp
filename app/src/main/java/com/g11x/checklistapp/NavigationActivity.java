@@ -17,53 +17,72 @@
 
 package com.g11x.checklistapp;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 
-public class NavigationActivity extends AppCompatActivity {
+
+public abstract class NavigationActivity extends AppCompatActivity {
+
   private DrawerLayout drawerLayout;
   private ListView drawerList;
   private ActionBarDrawerToggle drawerToggle;
 
   private CharSequence title;
-  private String[] menuItemTitles;
-  private Class<? extends Fragment>[] menuItemClasses;
+
+  protected static final int NAVDRAWER_ITEM_CHECKLIST = 0;
+  protected static final int NAVDRAWER_ITEM_IMPORTANT_INFO = 1;
+  protected static final int NAVDRAWER_ITEM_LANGUAGE = 2;
+  protected static final int NAVDRAWER_ITEM_ABOUT = 3;
+
+  private static final int[] NAVDRAWER_TITLE_RES_IDS = new int[]{
+      R.string.navdrawer_item_checklist,
+      R.string.navdrawer_item_important_info,
+      R.string.navdrawer_item_language,
+      R.string.navdrawer_item_about
+  };
+
+  abstract protected int getNavDrawerItemIndex();
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_navigation);
+  }
+
+  @Override
+  public void setContentView(@LayoutRes int layoutResID) {
+    super.setContentView(layoutResID);
+    setUpDrawer();
+  }
+
+  final protected void setUpDrawer() {
 
     title = getTitle();
-    menuItemTitles = getResources().getStringArray(R.array.menu_items_array);
-    menuItemClasses = new Class[]{
-        ChecklistFragment.class,
-        ImportantInformationFragment.class,
-        LanguagesFragment.class,
-        AboutFragment.class
-    };
     drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
     drawerList = (ListView) findViewById(R.id.left_drawer);
+
+    ArrayList<String> navDrawerTitles = new ArrayList();
+    for (int i = 0; i < NAVDRAWER_TITLE_RES_IDS.length; i++) {
+      navDrawerTitles.add(getResources().getString(NAVDRAWER_TITLE_RES_IDS[i]));
+    }
 
     // set a custom shadow that overlays the main content when the drawer opens
     drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
     // set up the drawer's list view with items and click listener
-    drawerList.setAdapter(new ArrayAdapter<String>(this,
-        R.layout.drawer_list_item, menuItemTitles));
+    drawerList.setAdapter(new ArrayAdapter<String>(
+        this, R.layout.drawer_list_item, navDrawerTitles));
     drawerList.setOnItemClickListener(new DrawerItemClickListener());
 
     // enable ActionBar app icon to behave as action to toggle nav drawer
@@ -86,9 +105,7 @@ public class NavigationActivity extends AppCompatActivity {
     };
     drawerLayout.addDrawerListener(drawerToggle);
 
-    if (savedInstanceState == null) {
-      selectItem(0);
-    }
+    selectItem(getNavDrawerItemIndex());
   }
 
   @Override
@@ -105,25 +122,32 @@ public class NavigationActivity extends AppCompatActivity {
     }
   }
 
-  private void selectItem(int index) {
-    // update the main content by replacing fragments
-    Class<? extends Fragment> type = menuItemClasses[index];
+  protected void selectItem(int index) {
 
-    try {
+    if (getNavDrawerItemIndex() != index) {
 
-      Fragment fragment = type.getConstructor().newInstance();
-      FragmentManager fragmentManager = getSupportFragmentManager();
-      fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-
-      // update selected item and title, then close the drawer
-      drawerList.setItemChecked(index, true);
-      setTitle(menuItemTitles[index]);
-      drawerLayout.closeDrawer(drawerList);
-
-    } catch (Exception e) {
-      e.printStackTrace();
+      switch (index) {
+        case NAVDRAWER_ITEM_CHECKLIST:
+          startActivity(new Intent(this, ChecklistActivity.class));
+          break;
+        case NAVDRAWER_ITEM_IMPORTANT_INFO:
+          startActivity(new Intent(this, ImportantInformationActivity.class));
+          break;
+        case NAVDRAWER_ITEM_LANGUAGE:
+          startActivity(new Intent(this, LanguageActivity.class));
+          break;
+        case NAVDRAWER_ITEM_ABOUT:
+          startActivity(new Intent(this, AboutActivity.class));
+          break;
+      }
     }
+
+    // update selected item and title, then close the drawer
+    drawerList.setItemChecked(index, true);
+    setTitle(getResources().getString(NAVDRAWER_TITLE_RES_IDS[index]));
+    drawerLayout.closeDrawer(drawerList);
   }
+
 
   @Override
   public void setTitle(CharSequence title) {
@@ -156,7 +180,6 @@ public class NavigationActivity extends AppCompatActivity {
     if (drawerToggle.onOptionsItemSelected(item)) {
       return true;
     }
-
     return super.onOptionsItemSelected(item);
   }
 

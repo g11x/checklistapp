@@ -19,7 +19,6 @@ package com.g11x.checklistapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -31,10 +30,16 @@ import com.g11x.checklistapp.data.ChecklistItem;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class ChecklistActivity extends AppCompatActivity {
+public class ChecklistActivity extends NavigationActivity {
 
   private FirebaseRecyclerAdapter<ChecklistItem, ChecklistItemHolder> checklistAdapter;
   private DatabaseReference databaseRef;
+
+  @Override
+  protected int getNavDrawerItemIndex() {
+    return NavigationActivity.NAVDRAWER_ITEM_CHECKLIST;
+  }
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
