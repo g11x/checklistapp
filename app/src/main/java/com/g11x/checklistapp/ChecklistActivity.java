@@ -67,7 +67,6 @@ public class ChecklistActivity extends NavigationActivity {
           public void onClick(View view) {
             Intent intent = new Intent(ChecklistActivity.this, ChecklistItemActivity.class);
             intent.putExtra("index", position);
-            Log.w("zhi", "clicked on: " + getRef(position).toString());
             intent.putExtra("databaseRefUrl", getRef(position).toString());
             startActivity(intent);
           }

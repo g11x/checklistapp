@@ -57,7 +57,7 @@ public class ChecklistItemActivity extends AppCompatActivity {
 
       @Override
       public void onCancelled(DatabaseError databaseError) {
-        Log.e("zhi", "Unable to fetch database item.");
+        Log.e("", "Unable to fetch database item.");
       }
     });
   }
