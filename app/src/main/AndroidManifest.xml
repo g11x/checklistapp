@@ -32,8 +32,7 @@
     <activity android:name=".AboutActivity"/>
     <activity
         android:name=".NotificationListActivity"
-        android:label="@string/title_activity_notification_list"
-        android:theme="@style/AppTheme.NoActionBar"></activity>
+        android:label="@string/title_activity_notification_list"></activity>
     <activity android:name=".NavigationActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
