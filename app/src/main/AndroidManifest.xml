@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright © 2016 Google Inc.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,13 +31,18 @@
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
+    <activity android:name=".ChecklistItemActivity"></activity>
+    <activity android:name=".AboutActivity"/>
+    <activity
+        android:name=".NotificationListActivity"
+        android:label="@string/title_activity_notification_list">
+    </activity>
     <activity android:name=".ChecklistItemActivity">
     </activity>
     <activity android:name=".LanguageActivity">
     </activity>
     <activity android:name=".AboutActivity">
     </activity>
-
     <activity android:name=".ImportantInformationActivity"/>
     <activity android:name=".ImportantInformationItemActivity"/>
     <provider
@@ -47,3 +51,4 @@
         android:exported="false" />
   </application>
 </manifest>
+
