@@ -32,12 +32,17 @@
     <activity android:name=".AboutActivity"/>
     <activity
         android:name=".NotificationListActivity"
-        android:label="@string/title_activity_notification_list"></activity>
-    <activity android:name=".NavigationActivity">
+        android:label="@string/title_activity_notification_list">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
+    </activity>
+    <activity android:name=".NavigationActivity">
+      <!--<intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>-->
     </activity>
     <activity android:name=".ImportantInformationActivity"/>
     <activity android:name=".ImportantInformationItemActivity"/>
