@@ -27,6 +27,8 @@ import android.net.Uri;
 public class Database {
   public static final String NAME = "g11x_checklistapp";
 
+  /** Insert a set of content values into the database and table supplied. Handles all the
+   * mechanics of content routing for you. */
   public static Uri insert(SQLiteDatabase db, Uri uri, ContentValues contentValues) {
     return Database.getTableHandler(db, uri).insert(contentValues);
   }
@@ -39,16 +41,16 @@ public class Database {
     /** Info column name. */
     public static final String INFO_COLUMN = "info";
 
-    /** A string that defines the SQL statement for creating a table. */
+    /** SQL statement for creating this table. */
     public static final String CREATE_TABLE_SQL = createCreateTableSql();
 
     private static final String TABLE_NAME = "important_information";
 
-    private static class ImportantInformationTable implements TableHandler {
+    private static class Handler implements TableHandler {
       private final SQLiteDatabase db;
       private final Uri contentUri;
 
-      ImportantInformationTable(SQLiteDatabase db, Uri contentUri) {
+      ImportantInformationTableHandler(SQLiteDatabase db, Uri contentUri) {
         this.db = db;
         this.contentUri = contentUri;
       }
@@ -70,12 +72,54 @@ public class Database {
     }
   }
 
+  public static class ChecklistItem {
+    /** Important information table content URI. */
+    public static final Uri CONTENT_URI = createContentUri();
+
+    /** Done column name. */
+    public static final String DONE_COLUMN = "done";
+
+    /** Item hash column name. */
+    public static final String ITEM_HASH_COLUMN = "item_hash";
+
+    /** SQL statement for creating this table. */
+    public static final String CREATE_TABLE_SQL = createCreateTableSql();
+
+    private static final String TABLE_NAME = "checklist_item";
+
+    private static class Handler implements TableHandler {
+      private final SQLiteDatabase db;
+      private final Uri contentUri;
+
+      Handler(SQLiteDatabase db, Uri contentUri) {
+        this.db = db;
+        this.contentUri = contentUri;
+      }
+
+      @Override
+      public Uri insert(ContentValues contentValues) {
+        long id = db.insert(Database.ChecklistItem.TABLE_NAME, null, contentValues);
+        return ContentUris.withAppendedId(contentUri, id);
+      }
+    }
+
+    private static Uri createContentUri() {
+      // TODO: Figure out how to use getString(R.string.content_provider_authority) here.
+      return Uri.parse("content://com.g11x.checklistapp.provider/" + Database.NAME + "/" + TABLE_NAME);
+    }
+
+    private static String createCreateTableSql() {
+      return "create table " + TABLE_NAME + " (_ID integer primary key, " + DONE_COLUMN + " boolean, " + ITEM_HASH_COLUMN + " text);";
+    }
+  }
+
   private static final UriMatcher URI_MATCHER = createContentRouter();
 
   private static UriMatcher createContentRouter() {
     UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
 
     matcher.addURI("com.g11x.checklistapp.provider", Database.NAME + "/" + ImportantInformation.TABLE_NAME, 1);
+    matcher.addURI("com.g11x.checklistapp.provider", Database.NAME + "/" + ChecklistItem.TABLE_NAME, 2);
 
     return matcher;
   }
@@ -87,7 +131,9 @@ public class Database {
   private static TableHandler getTableHandler(SQLiteDatabase db, Uri contentUri) {
     switch (URI_MATCHER.match(contentUri)) {
       case 1:
-        return new ImportantInformation.ImportantInformationTable(db, contentUri);
+        return new ImportantInformation.Handler(db, contentUri);
+      case 2:
+        return new ChecklistItem.Handler(db, contentUri);
       default:
         throw new RuntimeException(String.format("No handler registered for %s", contentUri));
     }

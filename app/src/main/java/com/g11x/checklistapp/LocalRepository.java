@@ -69,6 +69,7 @@ public class LocalRepository extends ContentProvider {
     public void onCreate(SQLiteDatabase db) {
       // Creates the main table
       db.execSQL(Database.ImportantInformation.CREATE_TABLE_SQL);
+      db.execSQL(Database.ChecklistItem.CREATE_TABLE_SQL);
     }
 
     @Override
