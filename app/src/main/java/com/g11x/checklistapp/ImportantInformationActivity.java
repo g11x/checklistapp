@@ -20,7 +20,6 @@ package com.g11x.checklistapp;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -35,7 +34,7 @@ import java.util.ArrayList;
 /**
  * Display a list of important information items and provide the ability to create a new one.
  */
-public class ImportantInformationActivity extends AppCompatActivity {
+public class ImportantInformationActivity extends NavigationActivity {
   private static ArrayList<String> data = null;
   private Adapter adapter;
 
@@ -75,6 +74,11 @@ public class ImportantInformationActivity extends AppCompatActivity {
           intent.getExtras().get("title"));
       Snackbar.make(view, message, Snackbar.LENGTH_LONG).show();
     }
+  }
+
+  @Override
+  protected int getNavDrawerItemIndex() {
+    return NavigationActivity.NAVDRAWER_ITEM_IMPORTANT_INFO;
   }
 
   @Override

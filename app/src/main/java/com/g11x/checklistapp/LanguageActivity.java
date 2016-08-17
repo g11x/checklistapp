@@ -18,23 +18,22 @@
 package com.g11x.checklistapp;
 
 import android.os.Bundle;
-import android.text.method.LinkMovementMethod;
-import android.widget.TextView;
 
-public class AboutActivity extends NavigationActivity {
+/**
+ * Created by askutarenko on 8/17/16.
+ */
 
-  @Override
-  protected int getNavDrawerItemIndex() {
-    return NavigationActivity.NAVDRAWER_ITEM_ABOUT;
-  }
+public class LanguageActivity extends NavigationActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
 
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_about);
+    setContentView(R.layout.activity_language);
+  }
 
-    TextView licenseText = (TextView) findViewById(R.id.apache_license_link);
-    licenseText.setMovementMethod(LinkMovementMethod.getInstance());
+  @Override
+  protected int getNavDrawerItemIndex() {
+    return NavigationActivity.NAVDRAWER_ITEM_LANGUAGE;
   }
 }
