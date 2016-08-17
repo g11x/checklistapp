@@ -17,7 +17,11 @@
 
 package com.g11x.checklistapp;
 
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
 import android.content.Intent;
+import android.support.v4.content.Loader;
+import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.os.Bundle;
@@ -29,12 +33,18 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.g11x.checklistapp.data.Database;
+
 import java.util.ArrayList;
 
 /**
  * Display a list of important information items and provide the ability to create a new one.
  */
 public class ImportantInformationActivity extends NavigationActivity {
+  private static final String[] PROJECTION = {
+      Database.ID_COLUMN,
+      Database.ImportantInformation.INFO_COLUMN
+  };
   private static ArrayList<String> data = null;
   private Adapter adapter;
 
@@ -51,12 +61,10 @@ public class ImportantInformationActivity extends NavigationActivity {
       data.add("three");
     }
 
-    RecyclerView recyclerView = (RecyclerView) findViewById(R.id.important_information_recycler_view);
+    final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.important_information_recycler_view);
     recyclerView.setHasFixedSize(true);
     LinearLayoutManager layoutManger = new LinearLayoutManager(this);
     recyclerView.setLayoutManager(layoutManger);
-    adapter = new Adapter(data);
-    recyclerView.setAdapter(adapter);
 
     FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
     floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -74,6 +82,32 @@ public class ImportantInformationActivity extends NavigationActivity {
           intent.getExtras().get("title"));
       Snackbar.make(view, message, Snackbar.LENGTH_LONG).show();
     }
+
+    getSupportLoaderManager().initLoader(0, null, new LoaderManager.LoaderCallbacks<Cursor>() {
+      @Override
+      public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        return new CursorLoader(ImportantInformationActivity.this,
+            Database.ImportantInformation.CONTENT_URI,
+            PROJECTION, null, null, null);
+      }
+
+      @Override
+      public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        if (adapter == null) {
+          if (cursor != null) {
+            adapter = new Adapter(cursor);
+            recyclerView.setAdapter(adapter);
+          }
+        } else {
+          adapter.swapCursor(cursor);
+        }
+      }
+
+      @Override
+      public void onLoaderReset(Loader<Cursor> loader) {
+        adapter.swapCursor(null);
+      }
+    });
   }
 
   @Override
@@ -84,16 +118,16 @@ public class ImportantInformationActivity extends NavigationActivity {
   @Override
   protected void onStart() {
     super.onStart();
-    adapter.notifyDataSetChanged();
+    if (adapter != null) {
+      adapter.notifyDataSetChanged();
+    }
   }
 
   private void onFloatingActionButtonClick() {
     startActivity(new Intent(this, ImportantInformationItemActivity.class));
   }
 
-  private static class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
-    private final ArrayList<String> data;
-
+  private static class Adapter extends RecyclerViewCursorAdapter<Adapter.ViewHolder> {
     static class ViewHolder extends RecyclerView.ViewHolder {
       private final TextView textView;
 
@@ -103,8 +137,8 @@ public class ImportantInformationActivity extends NavigationActivity {
       }
     }
 
-    Adapter(ArrayList<String> data) {
-      this.data = data;
+    Adapter(Cursor cursor) {
+      super(cursor);
     }
 
     @Override
@@ -115,17 +149,8 @@ public class ImportantInformationActivity extends NavigationActivity {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-      holder.textView.setText(data.get(position));
+    public void onBindViewHolder(ViewHolder holder, Cursor cursor) {
+      holder.textView.setText(cursor.getString(1));
     }
-
-    @Override
-    public int getItemCount() {
-      return data.size();
-    }
-  }
-
-  static ArrayList<String> getData() {
-    return data;
   }
 }
