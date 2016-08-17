@@ -17,6 +17,9 @@
 
 package com.g11x.checklistapp.data;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
 /**
@@ -24,6 +27,14 @@ import android.net.Uri;
  */
 public class Database {
   public static final String NAME = "g11x_checklistapp";
+
+  public static TableHandler getTableHandler(SQLiteDatabase db, Uri contentUri) {
+    return new ImportantInformation.ImportantInformationTable(db, contentUri);
+  }
+
+  public interface TableHandler {
+    Uri insert(ContentValues contentValues);
+  }
 
   public static class ImportantInformation {
     // Important information table content URI.
@@ -37,6 +48,16 @@ public class Database {
 
     static {
       CONTENT_URI = Uri.parse("content://com.g11x.checklistapp/" + Database.NAME + "/" + TABLE_NAME);
+    }
+
+    private static class ImportantInformationTable implements TableHandler {
+      public ImportantInformationTable(SQLiteDatabase db, Uri contentUri) {}
+      
+      @Override
+      public Uri insert(ContentValues contentValues) {
+        long id = db.insert(Database.ImportantInformation.INFO_COLUMN, null, contentValues);
+        return ContentUris.withAppendedId(uri, id);
+      }
     }
   }
 }
