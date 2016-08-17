@@ -31,10 +31,6 @@ public class Database {
     return Database.getTableHandler(db, uri).insert(contentValues);
   }
 
-  public interface TableHandler {
-    Uri insert(ContentValues contentValues);
-  }
-
   /** Information representing the ImportantInformation content..*/
   public static class ImportantInformation {
     /** Important information table content URI. */
@@ -52,7 +48,7 @@ public class Database {
       private final SQLiteDatabase db;
       private final Uri contentUri;
 
-      public ImportantInformationTable(SQLiteDatabase db, Uri contentUri) {
+      ImportantInformationTable(SQLiteDatabase db, Uri contentUri) {
         this.db = db;
         this.contentUri = contentUri;
       }
@@ -82,6 +78,10 @@ public class Database {
     matcher.addURI("com.g11x.checklistapp.provider", Database.NAME + "/" + ImportantInformation.TABLE_NAME, 1);
 
     return matcher;
+  }
+
+  private interface TableHandler {
+    Uri insert(ContentValues contentValues);
   }
 
   private static TableHandler getTableHandler(SQLiteDatabase db, Uri contentUri) {
