@@ -1,0 +1,37 @@
+<!--
+  ~ Copyright © 2016 Google Inc.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
+<resources>
+  <string name="app_name">RST Checklist</string>
+  <string name="about_text">This app contains code that is \u00A9 Google</string>
+  <string name="about">About</string>
+  <string name="get_social_security_card">Get social security card</string>
+  <string name="description_text">Description text.</string>
+  <string name="get_directions">Get directions</string>
+  <string name="togglebutton">ToggleButton</string>
+  <string name="mark_as_not_done">Mark as not done</string>
+  <string name="mark_as_done">Mark as done</string>
+  <string name="title">Title</string>
+  <string name="create">Create</string>
+  <string name="created_important_information_item">Created %s</string>
+  <string-array name="menu_items_array">
+    <item>Список заданий</item>
+    <item>Персональные данные</item>
+    <item>Выбрать язык</item>
+    <item>О программе</item>
+  </string-array>
+</resources>
