@@ -27,13 +27,8 @@ import android.net.Uri;
 public class Database {
   public static final String NAME = "g11x_checklistapp";
 
-  public static TableHandler getTableHandler(SQLiteDatabase db, Uri contentUri) {
-    switch (URI_MATCHER.match(contentUri)) {
-      case 1:
-        return new ImportantInformation.ImportantInformationTable(db, contentUri);
-      default:
-        throw new RuntimeException(String.format("No handler registered for %s", contentUri));
-    }
+  public static Uri insert(SQLiteDatabase db, Uri uri, ContentValues contentValues) {
+    return Database.getTableHandler(db, uri).insert(contentValues);
   }
 
   public interface TableHandler {
@@ -83,7 +78,18 @@ public class Database {
 
   private static UriMatcher createContentRouter() {
     UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
+
     matcher.addURI("com.g11x.checklistapp.provider", Database.NAME + "/" + ImportantInformation.TABLE_NAME, 1);
+
     return matcher;
+  }
+
+  private static TableHandler getTableHandler(SQLiteDatabase db, Uri contentUri) {
+    switch (URI_MATCHER.match(contentUri)) {
+      case 1:
+        return new ImportantInformation.ImportantInformationTable(db, contentUri);
+      default:
+        throw new RuntimeException(String.format("No handler registered for %s", contentUri));
+    }
   }
 }

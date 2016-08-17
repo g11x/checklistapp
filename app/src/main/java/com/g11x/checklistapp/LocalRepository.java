@@ -43,8 +43,7 @@ public class LocalRepository extends ContentProvider {
   @Nullable
   @Override
   public Uri insert(Uri uri, ContentValues contentValues) {
-    Database.TableHandler handler = Database.getTableHandler(openHelper.getWritableDatabase(), uri);
-    return handler.insert(contentValues);
+    return Database.insert(openHelper.getWritableDatabase(), uri, contentValues);
   }
 
   @Override
