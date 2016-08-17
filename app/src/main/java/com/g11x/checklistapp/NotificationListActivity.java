@@ -12,10 +12,15 @@ import android.widget.TextView;
 
 import com.g11x.checklistapp.data.Notification;
 
-public class NotificationListActivity extends AppCompatActivity {
+public class NotificationListActivity extends NavigationActivity {
   private RecyclerView mRecyclerView;
   private RecyclerView.Adapter mAdapter;
   private RecyclerView.LayoutManager mLayoutManager;
+
+  @Override
+  protected int getNavDrawerItemIndex() {
+    return NAVDRAWER_ITEM_NOTIFICATIONS;
+  }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
