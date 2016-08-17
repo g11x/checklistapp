@@ -103,8 +103,16 @@ public class ChecklistActivity extends AppCompatActivity {
         databaseRef) {
       @Override
       protected void populateViewHolder(
-          ChecklistItemHolder itemHolder, ChecklistItem model, int position) {
+          final ChecklistItemHolder itemHolder, ChecklistItem model, int position) {
         itemHolder.setText(model.getName());
+        itemHolder.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+            Intent intent = new Intent(ChecklistActivity.this, ChecklistItemActivity.class);
+            intent.putExtra("index", itemHolder.getAdapterPosition());
+            startActivity(intent);
+          }
+        });
       }
     };
     recyclerView.setAdapter(checklistAdapter);
@@ -121,23 +129,6 @@ public class ChecklistActivity extends AppCompatActivity {
     checklistAdapter.cleanup();
   }
 
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId()) {
-      case R.id.about:
-        startActivity(new Intent(this, AboutActivity.class));
-        break;
-    }
-    return super.onOptionsItemSelected(item);
-  }
-
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    MenuInflater menuInflater = getMenuInflater();
-    menuInflater.inflate(R.menu.main, menu);
-    return super.onCreateOptionsMenu(menu);
-  }
-
   public static class ChecklistItemHolder extends RecyclerView.ViewHolder {
     View view;
 
@@ -149,6 +140,11 @@ public class ChecklistActivity extends AppCompatActivity {
     public void setText(String title) {
       TextView textView = (TextView) view.findViewById(R.id.info_text);
       textView.setText(title);
+    }
+
+    public void setOnClickListener(View.OnClickListener listener) {
+      TextView textView = (TextView) view.findViewById(R.id.info_text);
+      textView.setOnClickListener(listener);
     }
   }
 }

@@ -29,15 +29,10 @@
   <string name="title">Title</string>
   <string name="create">Create</string>
   <string name="created_important_information_item">Created %s</string>
-  <string name="title_activity_notification_list">Notifications</string>
-  <string name="large_text">
-      "This is a long string to indicate scrolling.\n\n\n\n.\n\n\n\n\n\n.\n\n\n\n\n\n\n\n\n.\n\n\n\n\n\n\n\n\n\n.\n\n\n\n\n\n\n.\n\n\n\n\n\n\n\n."
-  </string>
-  <string name="action_settings">Settings</string>
   <string-array name="menu_items_array">
-    <item>Checklist</item>
-    <item>Private</item>
-    <item>Language</item>
-    <item>About</item>
+    <item>Список завдань</item>
+    <item>Персональні дані</item>
+    <item>Змінити мову</item>
+    <item>Про програму</item>
   </string-array>
 </resources>
