@@ -19,14 +19,10 @@ package com.g11x.checklistapp;
 
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -42,11 +38,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChecklistActivity extends AppCompatActivity {
+public class ChecklistActivity extends NavigationActivity {
 
   private FirebaseRecyclerAdapter<ChecklistItem, ChecklistItemHolder> checklistAdapter;
   private DatabaseReference databaseRef;
   private final List<ChecklistItem> checklistItems = new ArrayList<>();
+
+  @Override
+  protected int getNavDrawerItemIndex() {
+    return NavigationActivity.NAVDRAWER_ITEM_CHECKLIST;
+  }
 
   private void addChildListeners(DatabaseReference reference) {
     ChildEventListener childEventListener = new ChildEventListener() {

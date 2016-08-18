@@ -28,10 +28,8 @@
   <string name="title">Title</string>
   <string name="create">Create</string>
   <string name="created_important_information_item">Created %s</string>
-  <string-array name="menu_items_array">
-    <item>Список заданий</item>
-    <item>Персональные данные</item>
-    <item>Выбрать язык</item>
-    <item>О программе</item>
-  </string-array>
+  <string name="navdrawer_item_checklist">Список заданий</string>
+  <string name="navdrawer_item_important_info">Персональные данные</string>
+  <string name="navdrawer_item_language">Выбрать язык</string>
+  <string name="navdrawer_item_about">О программе</string>
 </resources>
