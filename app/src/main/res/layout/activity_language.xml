@@ -18,12 +18,12 @@
 
 <android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/drawer_layout"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
   <android.support.v7.widget.RecyclerView
-      android:id="@+id/language_recycler_view"
+      android:id="@+id/main_content"
       android:layout_width="match_parent"
       android:layout_height="match_parent"/>
 
