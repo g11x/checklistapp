@@ -20,12 +20,19 @@ package com.g11x.checklistapp.data;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
 /** Important domain concepts for manipulating the ImportantInformation model. */
 public class Database {
   public static final String NAME = "g11x_checklistapp";
+  public static final String ID_COLUMN = "_ID";
+
+  public static Cursor query(SQLiteDatabase db, Uri uri, String[] projection, String selection,
+                             String[] selectionArgs, String sortOrder) {
+    return Database.getTableHandler(db, uri).query(projection, selection, selectionArgs, sortOrder);
+  }
 
   public static Uri insert(SQLiteDatabase db, Uri uri, ContentValues contentValues) {
     return Database.getTableHandler(db, uri).insert(contentValues);
@@ -58,6 +65,13 @@ public class Database {
         long id = db.insert(Database.ImportantInformation.TABLE_NAME, null, contentValues);
         return ContentUris.withAppendedId(contentUri, id);
       }
+
+      @Override
+      public Cursor query(String[] projection, String selection, String[] selectionArgs,
+                          String sortOrder) {
+        return db.query(Database.ImportantInformation.TABLE_NAME, projection, selection,
+            selectionArgs, null, null, sortOrder);
+      }
     }
 
     private static Uri createContentUri() {
@@ -66,7 +80,8 @@ public class Database {
     }
 
     private static String createCreateTableSql() {
-      return "create table " + TABLE_NAME + " (_ID integer primary key, " + INFO_COLUMN + " text);";
+      return "create table " + TABLE_NAME + " (" + ID_COLUMN + " integer primary key, " +
+          INFO_COLUMN + " text);";
     }
   }
 
@@ -82,6 +97,8 @@ public class Database {
 
   private interface TableHandler {
     Uri insert(ContentValues contentValues);
+
+    Cursor query(String[] projection, String selection, String[] selectionArgs, String sortOrder);
   }
 
   private static TableHandler getTableHandler(SQLiteDatabase db, Uri contentUri) {
