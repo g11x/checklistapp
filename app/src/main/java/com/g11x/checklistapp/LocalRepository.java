@@ -70,6 +70,7 @@ public class LocalRepository extends ContentProvider {
       // Creates the main table
       db.execSQL(Database.ImportantInformation.CREATE_TABLE_SQL);
       db.execSQL(Database.ChecklistItem.CREATE_TABLE_SQL);
+      db.execSQL(Database.Notification.CREATE_TABLE_SQL);
     }
 
     @Override
