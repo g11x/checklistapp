@@ -73,7 +73,7 @@ public abstract class NavigationActivity extends AppCompatActivity {
   final protected void setUpDrawer() {
 
     title = getTitle();
-    drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+    drawerLayout = (DrawerLayout) findViewById(R.id.main_layout);
     drawerList = (ListView) findViewById(R.id.left_drawer);
 
     ArrayList<String> navDrawerTitles = new ArrayList<>();
