@@ -38,4 +38,5 @@
       "This is a long string to indicate scrolling.\n\n\n\n.\n\n\n\n\n\n.\n\n\n\n\n\n\n\n\n.\n\n\n\n\n\n\n\n\n\n.\n\n\n\n\n\n\n.\n\n\n\n\n\n\n\n."
   </string>
   <string name="action_settings">Settings</string>
+  <string name="content_not_yet_loaded">Content not yet loaded</string>
 </resources>
