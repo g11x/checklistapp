@@ -31,6 +31,7 @@
   <string name="created_important_information_item">Created %s</string>
   <string name="navdrawer_item_checklist">Checklist</string>
   <string name="navdrawer_item_important_info">Private</string>
+  <string name="navdrawer_item_notifications">Notifications</string>
   <string name="navdrawer_item_language">Language</string>
   <string name="navdrawer_item_about">About</string>
   <string name="title_activity_notification_list">Notifications</string>
