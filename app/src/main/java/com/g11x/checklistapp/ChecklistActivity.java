@@ -18,7 +18,6 @@
 package com.g11x.checklistapp;
 
 import android.content.Intent;
-import android.support.design.widget.Snackbar;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,62 +26,20 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.g11x.checklistapp.data.Checklist;
 import com.g11x.checklistapp.data.ChecklistItem;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ChecklistActivity extends NavigationActivity {
 
   private FirebaseRecyclerAdapter<ChecklistItem, ChecklistItemHolder> checklistAdapter;
   private DatabaseReference databaseRef;
-  private final List<ChecklistItem> checklistItems = new ArrayList<>();
 
   @Override
   protected int getNavDrawerItemIndex() {
     return NavigationActivity.NAVDRAWER_ITEM_CHECKLIST;
   }
 
-  private void addChildListeners(DatabaseReference reference) {
-    ChildEventListener childEventListener = new ChildEventListener() {
-      @Override
-      public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-        // Parse all current children and store locally, for now.
-        ChecklistItem item = dataSnapshot.getValue(ChecklistItem.class);
-        int originalSize = checklistItems.size();
-        checklistItems.add(item);
-      }
-
-      @Override
-      public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-        // Do nothing, for now.  Should change list of items.
-      }
-
-      @Override
-      public void onChildRemoved(DataSnapshot dataSnapshot) {
-        // Do nothing, for now.  Should change list of items.
-      }
-
-      @Override
-      public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-        // Do nothing, for now.  Should re-order list of items.
-      }
-
-      @Override
-      public void onCancelled(DatabaseError databaseError) {
-        Log.e("Firebase", "Could not read data from remote database.");
-        View view = findViewById(R.id.recyclerview_checklist);
-        Snackbar.make(view, "Failed database read", Snackbar.LENGTH_SHORT).show();
-      }
-    };
-    reference.addChildEventListener(childEventListener);
-  }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -92,8 +49,6 @@ public class ChecklistActivity extends NavigationActivity {
     databaseRef = FirebaseDatabase.getInstance().getReference()
         .child("checklists")
         .child("basic");
-    addChildListeners(databaseRef);
-    Checklist basicChecklist = Checklist.of(checklistItems);
 
     RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview_checklist);
     recyclerView.setHasFixedSize(true);
@@ -102,15 +57,17 @@ public class ChecklistActivity extends NavigationActivity {
     checklistAdapter = new FirebaseRecyclerAdapter<ChecklistItem, ChecklistItemHolder>(
         ChecklistItem.class, R.layout.view_checklist_item, ChecklistItemHolder.class,
         databaseRef) {
+
       @Override
       protected void populateViewHolder(
-          final ChecklistItemHolder itemHolder, ChecklistItem model, int position) {
+          final ChecklistItemHolder itemHolder, ChecklistItem model, final int position) {
         itemHolder.setText(model.getName());
         itemHolder.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View view) {
             Intent intent = new Intent(ChecklistActivity.this, ChecklistItemActivity.class);
-            intent.putExtra("index", itemHolder.getAdapterPosition());
+            intent.putExtra("index", position);
+            intent.putExtra("databaseRefUrl", getRef(position).toString());
             startActivity(intent);
           }
         });
