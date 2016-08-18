@@ -17,10 +17,13 @@
 
 package com.g11x.checklistapp;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -106,7 +109,10 @@ public abstract class NavigationActivity extends AppCompatActivity {
     };
     drawerLayout.addDrawerListener(drawerToggle);
 
-    selectItem(getNavDrawerItemIndex());
+    // update selected item and title, then close the drawer
+    drawerList.setItemChecked(getNavDrawerItemIndex(), true);
+    setTitle(getResources().getString(NAVDRAWER_TITLE_RES_IDS[getNavDrawerItemIndex()]));
+    drawerLayout.closeDrawer(drawerList);
   }
 
   @Override
@@ -129,26 +135,36 @@ public abstract class NavigationActivity extends AppCompatActivity {
 
       switch (index) {
         case NAVDRAWER_ITEM_CHECKLIST:
-          startActivity(new Intent(this, ChecklistActivity.class));
+          createBackStack(new Intent(this, ChecklistActivity.class));
           break;
         case NAVDRAWER_ITEM_IMPORTANT_INFO:
-          startActivity(new Intent(this, ImportantInformationActivity.class));
+          createBackStack(new Intent(this, ImportantInformationActivity.class));
           break;
         case NAVDRAWER_ITEM_LANGUAGE:
-          startActivity(new Intent(this, LanguageActivity.class));
+          createBackStack(new Intent(this, LanguageActivity.class));
           break;
         case NAVDRAWER_ITEM_ABOUT:
-          startActivity(new Intent(this, AboutActivity.class));
+          createBackStack(new Intent(this, AboutActivity.class));
           break;
       }
+
+      // switch back to current selected item
+      drawerList.setItemChecked(getNavDrawerItemIndex(), true);
     }
 
-    // update selected item and title, then close the drawer
-    drawerList.setItemChecked(index, true);
-    setTitle(getResources().getString(NAVDRAWER_TITLE_RES_IDS[index]));
     drawerLayout.closeDrawer(drawerList);
   }
 
+  private void createBackStack(Intent intent) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+      TaskStackBuilder builder = TaskStackBuilder.create(this);
+      builder.addNextIntentWithParentStack(intent);
+      builder.startActivities();
+    } else {
+      startActivity(intent);
+      finish();
+    }
+  }
 
   @Override
   public void setTitle(CharSequence title) {
