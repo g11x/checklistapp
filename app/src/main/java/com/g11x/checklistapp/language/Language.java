@@ -15,20 +15,22 @@
  *
  */
 
-package com.g11x.checklistapp;
+package com.g11x.checklistapp.language;
 
 import android.support.annotation.NonNull;
 
 /**
- * Created by paulrashidi on 8/18/16.
+ * Custom content languages supported by the system.
  */
 public enum Language {
+  Russian("ru", "RussianTBU"),
   English("en", "English"),
-  Russion("ru", "RussianTBU"),
-  Ukranian("uk", "UkranianTBU");
+  Ukrainian("uk", "UkrainianTBU");
 
+  @NonNull
   private String code;
 
+  @NonNull
   private String nativeDescription;
 
   Language(@NonNull String langCode, @NonNull String nativeDesc) {
@@ -36,10 +38,12 @@ public enum Language {
     nativeDescription = nativeDesc;
   }
 
+  @NonNull
   public String getCode() {
     return code;
   }
 
+  @NonNull
   public String getNativeDescription() {
     return nativeDescription;
   }

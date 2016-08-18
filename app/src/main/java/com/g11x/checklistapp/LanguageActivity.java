@@ -26,6 +26,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.g11x.checklistapp.language.Language;
+
 /**
  * Displays a language selection screen to allow the user to override the system defaults.
  */

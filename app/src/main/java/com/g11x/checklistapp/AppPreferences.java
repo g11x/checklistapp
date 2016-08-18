@@ -24,6 +24,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import com.g11x.checklistapp.language.Language;
+import com.g11x.checklistapp.language.PreferredLanguageSupport;
+
 /**
  * Simplified class to access the app's {@link android.content.SharedPreferences}.
  */
@@ -46,19 +49,34 @@ public class AppPreferences {
   /**
    * Saves the user's language preference which overrides the system default.
    *
-   * @param context            component context used to retrieve shared preferences
-   * @param languageIdentifier the language identifier or null to unset
+   * @param context  component context used to retrieve shared preferences
+   * @param language the language identifier or null to unset
    */
   public static void setLanguageOverride(@NonNull Context context,
-                                         @Nullable String languageIdentifier) {
+                                         @Nullable Language language) {
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
     SharedPreferences.Editor editor = sp.edit();
-    if (languageIdentifier == null) {
+    if (language == null) {
       editor.remove(PREF_PREFERRED_LANGUAGE);
     } else {
-      editor.putString(PREF_PREFERRED_LANGUAGE, languageIdentifier);
+      editor.putString(PREF_PREFERRED_LANGUAGE, language.name());
     }
     editor.apply();
+  }
+
+  /**
+   * Returns the language override or null when not set.
+   *
+   * @param context component context used to retrieve shared preferences
+   */
+  @Nullable
+  public static Language getLanguageOverride(@NonNull Context context) {
+    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+    String value = sp.getString(PREF_PREFERRED_LANGUAGE, null);
+    if (value == null) {
+      return null;
+    }
+    return Language.valueOf(value);
   }
 
   /**

@@ -17,7 +17,6 @@
 
 package com.g11x.checklistapp;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
@@ -34,7 +33,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.g11x.checklistapp.data.Notification;
+import com.g11x.checklistapp.language.PreferredLanguageSupport;
 
 import java.util.ArrayList;
 
@@ -66,7 +65,10 @@ public abstract class NavigationActivity extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    PreferredLanguageSupport.applyPreferredLanguage(this);
   }
+
+
 
   @Override
   public void setContentView(@LayoutRes int layoutResID) {
