@@ -26,6 +26,7 @@ import android.net.Uri;
 /** Important domain concepts for manipulating the ImportantInformation model. */
 public class Database {
   public static final String NAME = "g11x_checklistapp";
+  public static final String COM_G11X_CHECKLISTAPP_PROVIDER = "com.g11x.checklistapp.provider";
 
   /** Insert a set of content values into the database and table supplied. Handles all the
    * mechanics of content routing for you. */
@@ -64,7 +65,7 @@ public class Database {
 
     private static Uri createContentUri() {
       // TODO: Figure out how to use getString(R.string.content_provider_authority) here.
-      return Uri.parse("content://com.g11x.checklistapp.provider/" + Database.NAME + "/" + TABLE_NAME);
+      return Uri.parse("content://" + COM_G11X_CHECKLISTAPP_PROVIDER + "/" + Database.NAME + "/" + TABLE_NAME);
     }
 
     private static String createCreateTableSql() {
@@ -105,7 +106,7 @@ public class Database {
 
     private static Uri createContentUri() {
       // TODO: Figure out how to use getString(R.string.content_provider_authority) here.
-      return Uri.parse("content://com.g11x.checklistapp.provider/" + Database.NAME + "/" + TABLE_NAME);
+      return Uri.parse("content://" + COM_G11X_CHECKLISTAPP_PROVIDER + "/" + Database.NAME + "/" + TABLE_NAME);
     }
 
     private static String createCreateTableSql() {
@@ -144,7 +145,7 @@ public class Database {
 
     private static Uri createContentUri() {
       // TODO: Figure out how to use getString(R.string.content_provider_authority) here.
-      return Uri.parse("content://com.g11x.checklistapp.provider/" + Database.NAME + "/" + TABLE_NAME);
+      return Uri.parse("content://" + COM_G11X_CHECKLISTAPP_PROVIDER + "/" + Database.NAME + "/" + TABLE_NAME);
     }
 
     private static String createCreateTableSql() {
@@ -157,9 +158,9 @@ public class Database {
   private static UriMatcher createContentRouter() {
     UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
 
-    matcher.addURI("com.g11x.checklistapp.provider", Database.NAME + "/" + ImportantInformation.TABLE_NAME, 1);
-    matcher.addURI("com.g11x.checklistapp.provider", Database.NAME + "/" + ChecklistItem.TABLE_NAME, 2);
-    matcher.addURI("com.g11x.checklistapp.provider", Database.NAME + "/" + Notification.TABLE_NAME, 2);
+    matcher.addURI(COM_G11X_CHECKLISTAPP_PROVIDER, Database.NAME + "/" + ImportantInformation.TABLE_NAME, 1);
+    matcher.addURI(COM_G11X_CHECKLISTAPP_PROVIDER, Database.NAME + "/" + ChecklistItem.TABLE_NAME, 2);
+    matcher.addURI(COM_G11X_CHECKLISTAPP_PROVIDER, Database.NAME + "/" + Notification.TABLE_NAME, 3);
 
     return matcher;
   }
