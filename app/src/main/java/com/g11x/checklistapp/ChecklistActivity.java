@@ -128,7 +128,6 @@ public class ChecklistActivity extends NavigationActivity {
   protected void onDestroy() {
     super.onDestroy();
     checklistAdapter.cleanup();
-    Log.i("aa", "destroyed");
   }
 
   public static class ChecklistItemHolder extends RecyclerView.ViewHolder {
