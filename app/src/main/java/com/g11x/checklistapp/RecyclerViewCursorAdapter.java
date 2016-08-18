@@ -44,7 +44,7 @@ abstract class RecyclerViewCursorAdapter<VH extends RecyclerView.ViewHolder>
 
   RecyclerViewCursorAdapter(Cursor cursor) {
     setCursor(cursor);
-		setHasStableIds(true);
+    setHasStableIds(true);
   }
 
   @Override
