@@ -73,7 +73,7 @@ public abstract class NavigationActivity extends AppCompatActivity {
     drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
     drawerList = (ListView) findViewById(R.id.left_drawer);
 
-    ArrayList<String> navDrawerTitles = new ArrayList();
+    ArrayList<String> navDrawerTitles = new ArrayList<>();
     for (int i = 0; i < NAVDRAWER_TITLE_RES_IDS.length; i++) {
       navDrawerTitles.add(getResources().getString(NAVDRAWER_TITLE_RES_IDS[i]));
     }
@@ -86,14 +86,15 @@ public abstract class NavigationActivity extends AppCompatActivity {
     drawerList.setOnItemClickListener(new DrawerItemClickListener());
 
     // enable ActionBar app icon to behave as action to toggle nav drawer
-    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    getSupportActionBar().setHomeButtonEnabled(true);
-    getSupportActionBar().setIcon(R.color.transparent);
+    if (getSupportActionBar() != null) {
+      getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+      getSupportActionBar().setHomeButtonEnabled(true);
+      getSupportActionBar().setIcon(R.color.transparent);
+    }
 
     // ActionBarDrawerToggle ties together the the proper interactions
     // between the sliding drawer and the action bar app icon
     drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, 0, 0) {
-
       public void onDrawerClosed(View view) {
         getSupportActionBar().setTitle(title);
         invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
