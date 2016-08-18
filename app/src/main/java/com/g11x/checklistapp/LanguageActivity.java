@@ -47,11 +47,7 @@ public class LanguageActivity extends NavigationActivity {
   }
 
   static class LanguageSelectionAdapter extends RecyclerView.Adapter<LanguageSelectionAdapter.ViewHolder> {
-    private String[] dataSet;
-
-    LanguageSelectionAdapter() {
-      dataSet = new String[] { "Device default (English)", "English", "Espanol", "Russian" };
-    }
+    private Language[] dataSet = Language.values();
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -62,7 +58,7 @@ public class LanguageActivity extends NavigationActivity {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-      holder.textView.setText(dataSet[position]);
+      holder.textView.setText(dataSet[position].getNativeDescription());
     }
 
     @Override
