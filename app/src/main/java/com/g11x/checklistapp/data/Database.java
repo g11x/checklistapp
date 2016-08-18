@@ -186,7 +186,7 @@ public class Database {
   private static UriMatcher createContentRouter() {
     UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
 
-    matcher.addURI(COM_G11X_CHECKLISTAPP_PROVIDER, Database.NAME + "/" + ImportantInformation.TABLE_NAME, IMPORTANT_INFORMATION_TABLE_URI_MATCHER_INDEX;
+    matcher.addURI(COM_G11X_CHECKLISTAPP_PROVIDER, Database.NAME + "/" + ImportantInformation.TABLE_NAME, IMPORTANT_INFORMATION_TABLE_URI_MATCHER_INDEX);
     matcher.addURI(COM_G11X_CHECKLISTAPP_PROVIDER, Database.NAME + "/" + ChecklistItem.TABLE_NAME, CHECKLIST_ITEM_TABLE_URI_MATCHER_INDEX);
     matcher.addURI(COM_G11X_CHECKLISTAPP_PROVIDER, Database.NAME + "/" + Notification.TABLE_NAME, NOTIFICATION_TABLE_URI_MATCHER_INDEX);
 
