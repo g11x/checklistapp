@@ -26,10 +26,6 @@
       android:theme="@style/AppTheme"
       tools:ignore="AllowBackup,GoogleAppIndexingWarning">
     <activity android:name=".ChecklistActivity">
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
-        <category android:name="android.intent.category.LAUNCHER"/>
-      </intent-filter>
     </activity>
     <activity
         android:name=".ChecklistItemActivity"
@@ -48,7 +44,12 @@
     </activity>
     <activity
         android:name=".ImportantInformationActivity"
-        android:parentActivityName=".ChecklistActivity"/>
+        android:parentActivityName=".ChecklistActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity>"
     <activity
         android:name=".ImportantInformationItemActivity"
         android:parentActivityName=".ImportantInformationActivity"/>
