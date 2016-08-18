@@ -47,7 +47,6 @@ public class ImportantInformationItemActivity extends AppCompatActivity {
   private void onClickCreate() {
     TextView title = (TextView) findViewById(R.id.title);
     String titleText = title.getText().toString();
-    ImportantInformationActivity.getData().add(titleText);
     Intent intent = new Intent(this, ImportantInformationActivity.class);
     intent.putExtra("title", titleText);
 
