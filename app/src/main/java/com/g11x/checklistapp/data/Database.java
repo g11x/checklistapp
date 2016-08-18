@@ -199,11 +199,11 @@ public class Database {
 
   private static TableHandler getTableHandler(SQLiteDatabase db, Uri contentUri) {
     switch (URI_MATCHER.match(contentUri)) {
-      case 1:
+      case IMPORTANT_INFORMATION_TABLE_URI_MATCHER_INDEX:
         return new ImportantInformation.ImportantInformationTableHandler(db, contentUri);
-      case 2:
+      case CHECKLIST_ITEM_TABLE_URI_MATCHER_INDEX:
         return new ChecklistItem.ChecklistItemTableHandler(db, contentUri);
-      case 3:
+      case NOTIFICATION_TABLE_URI_MATCHER_INDEX:
         return new Notification.NotificationTableHandler(db, contentUri);
       default:
         throw new RuntimeException(String.format("No handler registered for %s", contentUri));
