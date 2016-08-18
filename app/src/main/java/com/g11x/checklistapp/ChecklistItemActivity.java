@@ -39,6 +39,7 @@ public class ChecklistItemActivity extends AppCompatActivity {
   private ChecklistItem checklistItem;
   private ToggleButton isDone;
   private DatabaseReference databaseRef;
+  private String databaseRefString;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +49,7 @@ public class ChecklistItemActivity extends AppCompatActivity {
     databaseRef = FirebaseDatabase.getInstance().getReferenceFromUrl(
         this.getIntent().getStringExtra("databaseRefUrl"));
 
-    databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+    databaseRef.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
         checklistItem = dataSnapshot.getValue(ChecklistItem.class);
@@ -60,6 +61,7 @@ public class ChecklistItemActivity extends AppCompatActivity {
         Log.e("", "Unable to fetch database item.");
       }
     });
+
   }
 
   private void createUI() {
