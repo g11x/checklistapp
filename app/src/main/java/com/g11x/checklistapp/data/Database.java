@@ -163,6 +163,7 @@ public class Database {
     public static final String TITLE_COLUMN = "title";
     public static final String MESSAGE_COLUMN = "message";
     public static final String READ_COLUMN = "item_hash";
+    public static final String SENT_TIME = "sent_time";
 
     /**
      * SQL statement for creating this table.
@@ -198,7 +199,7 @@ public class Database {
     }
 
     private static String createCreateTableSql() {
-      return "create table " + TABLE_NAME + " (_ID integer primary key, " + TITLE_COLUMN + " text, " + MESSAGE_COLUMN + " text, " + READ_COLUMN + " boolean);";
+      return "create table " + TABLE_NAME + " (_ID integer primary key, " + TITLE_COLUMN + " text, " + MESSAGE_COLUMN + " text, " + READ_COLUMN + " boolean, " + SENT_TIME + " integer);";
     }
   }
 
