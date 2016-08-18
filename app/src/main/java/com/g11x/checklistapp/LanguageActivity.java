@@ -20,14 +20,12 @@ package com.g11x.checklistapp;
 import android.os.Bundle;
 
 /**
- * Created by askutarenko on 8/17/16.
+ * Displays a language selection screen to allow the user to override the system defaults.
  */
-
 public class LanguageActivity extends NavigationActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_language);
   }

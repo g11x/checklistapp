@@ -20,6 +20,7 @@ package com.g11x.checklistapp.data;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
@@ -29,6 +30,12 @@ import android.net.Uri;
 public class Database {
   public static final String NAME = "g11x_checklistapp";
   public static final String COM_G11X_CHECKLISTAPP_PROVIDER = "com.g11x.checklistapp.provider";
+  public static final String ID_COLUMN = "_ID";
+
+  public static Cursor query(SQLiteDatabase db, Uri uri, String[] projection, String selection,
+                             String[] selectionArgs, String sortOrder) {
+    return Database.getTableHandler(db, uri).query(projection, selection, selectionArgs, sortOrder);
+  }
 
   /**
    * Insert a set of content values into the database and table supplied. Handles all the
@@ -73,6 +80,13 @@ public class Database {
         long id = db.insert(Database.ImportantInformation.TABLE_NAME, null, contentValues);
         return ContentUris.withAppendedId(contentUri, id);
       }
+
+      @Override
+      public Cursor query(String[] projection, String selection, String[] selectionArgs,
+                          String sortOrder) {
+        return db.query(Database.ImportantInformation.TABLE_NAME, projection, selection,
+            selectionArgs, null, null, sortOrder);
+      }
     }
 
     private static Uri createContentUri() {
@@ -81,7 +95,8 @@ public class Database {
     }
 
     private static String createCreateTableSql() {
-      return "create table " + TABLE_NAME + " (_ID integer primary key, " + INFO_COLUMN + " text);";
+      return "create table " + TABLE_NAME + " (" + ID_COLUMN + " integer primary key, " +
+          INFO_COLUMN + " text);";
     }
   }
 
@@ -121,6 +136,11 @@ public class Database {
       public Uri insert(ContentValues contentValues) {
         long id = db.insert(Database.ChecklistItem.TABLE_NAME, null, contentValues);
         return ContentUris.withAppendedId(contentUri, id);
+      }
+
+      @Override
+      public Cursor query(String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+        return null;
       }
     }
 
@@ -165,6 +185,11 @@ public class Database {
         long id = db.insert(Database.ChecklistItem.TABLE_NAME, null, contentValues);
         return ContentUris.withAppendedId(contentUri, id);
       }
+
+      @Override
+      public Cursor query(String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+        return null;
+      }
     }
 
     private static Uri createContentUri() {
@@ -186,7 +211,7 @@ public class Database {
   private static UriMatcher createContentRouter() {
     UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
 
-    matcher.addURI(COM_G11X_CHECKLISTAPP_PROVIDER, Database.NAME + "/" + ImportantInformation.TABLE_NAME, IMPORTANT_INFORMATION_TABLE_URI_MATCHER_INDEX;
+    matcher.addURI(COM_G11X_CHECKLISTAPP_PROVIDER, Database.NAME + "/" + ImportantInformation.TABLE_NAME, IMPORTANT_INFORMATION_TABLE_URI_MATCHER_INDEX);
     matcher.addURI(COM_G11X_CHECKLISTAPP_PROVIDER, Database.NAME + "/" + ChecklistItem.TABLE_NAME, CHECKLIST_ITEM_TABLE_URI_MATCHER_INDEX);
     matcher.addURI(COM_G11X_CHECKLISTAPP_PROVIDER, Database.NAME + "/" + Notification.TABLE_NAME, NOTIFICATION_TABLE_URI_MATCHER_INDEX);
 
@@ -195,6 +220,8 @@ public class Database {
 
   private interface TableHandler {
     Uri insert(ContentValues contentValues);
+
+    Cursor query(String[] projection, String selection, String[] selectionArgs, String sortOrder);
   }
 
   private static TableHandler getTableHandler(SQLiteDatabase db, Uri contentUri) {
