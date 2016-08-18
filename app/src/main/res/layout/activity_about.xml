@@ -18,7 +18,7 @@
 
 <android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/drawer_layout"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -26,7 +26,7 @@
       xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
-      android:id="@+id/activity_about"
+      android:id="@+id/main_content"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       tools:context="com.g11x.checklistapp.AboutActivity">
@@ -38,10 +38,10 @@
         android:textStyle="bold"
         android:textSize="24sp"
         android:id="@+id/textView"
-        app:layout_constraintLeft_toLeftOf="@+id/activity_about"
-        app:layout_constraintTop_toTopOf="@+id/activity_about"
-        app:layout_constraintRight_toRightOf="@+id/activity_about"
-        app:layout_constraintBottom_toBottomOf="@+id/activity_about"/>
+        app:layout_constraintLeft_toLeftOf="@+id/main_content"
+        app:layout_constraintTop_toTopOf="@+id/main_content"
+        app:layout_constraintRight_toRightOf="@+id/main_content"
+        app:layout_constraintBottom_toBottomOf="@+id/main_content"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -51,20 +51,20 @@
         android:text="@string/about_text"
         android:background="@android:color/transparent"
         android:gravity="center"
-        app:layout_constraintLeft_toLeftOf="@+id/activity_about"
+        app:layout_constraintLeft_toLeftOf="@+id/main_content"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         android:layout_marginTop="16dp"
-        app:layout_constraintRight_toRightOf="@+id/activity_about"/>
+        app:layout_constraintRight_toRightOf="@+id/main_content"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/apache_license_link"
         android:text="@string/apache_license_link"
-        app:layout_constraintLeft_toLeftOf="@+id/activity_about"
+        app:layout_constraintLeft_toLeftOf="@+id/main_content"
         app:layout_constraintTop_toBottomOf="@+id/all_code_copy_google"
         android:layout_marginTop="16dp"
-        app:layout_constraintRight_toRightOf="@+id/activity_about"/>
+        app:layout_constraintRight_toRightOf="@+id/main_content"/>
 
 
   </android.support.constraint.ConstraintLayout>
