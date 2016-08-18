@@ -1,7 +1,6 @@
 package com.g11x.checklistapp;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -13,9 +12,6 @@ import android.widget.TextView;
 import com.g11x.checklistapp.data.Notification;
 
 public class NotificationListActivity extends NavigationActivity {
-  private RecyclerView mRecyclerView;
-  private RecyclerView.Adapter mAdapter;
-  private RecyclerView.LayoutManager mLayoutManager;
 
   @Override
   protected int getNavDrawerItemIndex() {
@@ -26,14 +22,14 @@ public class NotificationListActivity extends NavigationActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_notification_list);
-    mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+    RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
     // use this setting to improve performance if you know that changes
     // in content do not change the layout size of the RecyclerView
     mRecyclerView.setHasFixedSize(true);
 
     // use a linear layout manager
-    mLayoutManager = new LinearLayoutManager(this);
+    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
     mRecyclerView.setLayoutManager(mLayoutManager);
 
     ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
@@ -56,20 +52,20 @@ public class NotificationListActivity extends NavigationActivity {
         new Notification("message C", "I can't count :("),
         new Notification("I like fish, fishy fishy fish.", null)
     };
-    mAdapter = new NotificationAdapter(dataset);
+    RecyclerView.Adapter mAdapter = new NotificationAdapter(dataset);
     mRecyclerView.setAdapter(mAdapter);
   }
 
   public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.ViewHolder> {
-    private Notification[] mDataset;
+    private final Notification[] mDataset;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
     public class ViewHolder extends RecyclerView.ViewHolder {
       // each data item is just a string in this case
-      public TextView mTitle;
-      public TextView mBody;
+      public final TextView mTitle;
+      public final TextView mBody;
 
       public ViewHolder(View v) {
         super(v);
@@ -89,8 +85,7 @@ public class NotificationListActivity extends NavigationActivity {
       // create a new view
       View v = LayoutInflater.from(parent.getContext())
           .inflate(R.layout.view_notification_item, parent, false);
-      ViewHolder vh = new ViewHolder(v);
-      return vh;
+      return new ViewHolder(v);
     }
 
     // Replace the contents of a view (invoked by the layout manager)
