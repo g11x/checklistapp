@@ -32,17 +32,21 @@ public class Database {
   public static final String COM_G11X_CHECKLISTAPP_PROVIDER = "com.g11x.checklistapp.provider";
   public static final String ID_COLUMN = "_ID";
 
-  public static Cursor query(SQLiteDatabase db, Uri uri, String[] projection, String selection,
-                             String[] selectionArgs, String sortOrder) {
-    return Database.getTableHandler(db, uri).query(projection, selection, selectionArgs, sortOrder);
-  }
-
   /**
    * Insert a set of content values into the database and table supplied. Handles all the
    * mechanics of content routing for you.
    */
   public static Uri insert(SQLiteDatabase db, Uri uri, ContentValues contentValues) {
     return Database.getTableHandler(db, uri).insert(contentValues);
+  }
+
+  public static Cursor query(SQLiteDatabase db, Uri uri, String[] projection, String selection,
+                             String[] selectionArgs, String sortOrder) {
+    return Database.getTableHandler(db, uri).query(projection, selection, selectionArgs, sortOrder);
+  }
+
+  public static int update(SQLiteDatabase db, Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
+    return Database.getTableHandler(db, uri).update(contentValues, selection, selectionArgs);
   }
 
   /**
@@ -86,6 +90,11 @@ public class Database {
                           String sortOrder) {
         return db.query(Database.ImportantInformation.TABLE_NAME, projection, selection,
             selectionArgs, null, null, sortOrder);
+      }
+
+      @Override
+      public int update(ContentValues contentValues, String selection, String[] selectionArgs) {
+        return db.update(Database.ImportantInformation.TABLE_NAME, contentValues, selection, selectionArgs);
       }
     }
 
@@ -142,6 +151,11 @@ public class Database {
       public Cursor query(String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         return null;
       }
+
+      @Override
+      public int update(ContentValues contentValues, String selection, String[] selectionArgs) {
+        return db.update(Database.ChecklistItem.TABLE_NAME, contentValues, selection, selectionArgs);
+      }
     }
 
     private static Uri createContentUri() {
@@ -190,6 +204,11 @@ public class Database {
       public Cursor query(String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         return null;
       }
+
+      @Override
+      public int update(ContentValues contentValues, String selection, String[] selectionArgs) {
+        return db.update(Database.Notification.TABLE_NAME, contentValues, selection, selectionArgs);
+      }
     }
 
     private static Uri createContentUri() {
@@ -222,6 +241,8 @@ public class Database {
     Uri insert(ContentValues contentValues);
 
     Cursor query(String[] projection, String selection, String[] selectionArgs, String sortOrder);
+
+    int update(ContentValues contentValues, String selection, String[] selectionArgs);
   }
 
   private static TableHandler getTableHandler(SQLiteDatabase db, Uri contentUri) {
