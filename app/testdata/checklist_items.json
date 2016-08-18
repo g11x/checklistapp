@@ -7,7 +7,15 @@
         "location": "US Social Security Administration, 1029 Camino La Costa, Austin, TX 78752",
         "directions_url": "https://www.google.com/maps/place/US+Social+Security+Administration/@30.3243715,-97.7028468,17z/data=!3m1!4b1!4m5!3m4!1s0x8644ca20295a7e57:0x849908e001c1d623!8m2!3d30.3243715!4d-97.7006581",
         "email": "",
-        "phone": "1-800-772-1213"
+        "phone": "1-800-772-1213",
+        "alt": {
+          "ru": {
+            "name": "Russian name translation"
+          },
+          "pr": {
+            "name": "Portuguese name translation"
+          }
+        }
       },
       "2": {
         "name": "Get state identification card",
