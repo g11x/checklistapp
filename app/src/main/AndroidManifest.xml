@@ -48,8 +48,7 @@
     </activity>
     <activity
         android:name=".ImportantInformationActivity"
-        android:parentActivityName=".ChecklistActivity">
-    </activity>
+        android:parentActivityName=".ChecklistActivity" />
     <activity
         android:name=".ImportantInformationItemActivity"
         android:parentActivityName=".ImportantInformationActivity"/>
