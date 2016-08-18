@@ -17,10 +17,13 @@
 
 package com.g11x.checklistapp;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -30,6 +33,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.g11x.checklistapp.data.Notification;
 
 import java.util.ArrayList;
 
@@ -44,12 +49,14 @@ public abstract class NavigationActivity extends AppCompatActivity {
 
   protected static final int NAVDRAWER_ITEM_CHECKLIST = 0;
   protected static final int NAVDRAWER_ITEM_IMPORTANT_INFO = 1;
-  protected static final int NAVDRAWER_ITEM_LANGUAGE = 2;
-  protected static final int NAVDRAWER_ITEM_ABOUT = 3;
+  protected static final int NAVDRAWER_ITEM_NOTIFICATIONS = 2;
+  protected static final int NAVDRAWER_ITEM_LANGUAGE = 3;
+  protected static final int NAVDRAWER_ITEM_ABOUT = 4;
 
   private static final int[] NAVDRAWER_TITLE_RES_IDS = new int[]{
       R.string.navdrawer_item_checklist,
       R.string.navdrawer_item_important_info,
+      R.string.navdrawer_item_notifications,
       R.string.navdrawer_item_language,
       R.string.navdrawer_item_about
   };
@@ -70,10 +77,10 @@ public abstract class NavigationActivity extends AppCompatActivity {
   final protected void setUpDrawer() {
 
     title = getTitle();
-    drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+    drawerLayout = (DrawerLayout) findViewById(R.id.main_layout);
     drawerList = (ListView) findViewById(R.id.left_drawer);
 
-    ArrayList<String> navDrawerTitles = new ArrayList();
+    ArrayList<String> navDrawerTitles = new ArrayList<>();
     for (int i = 0; i < NAVDRAWER_TITLE_RES_IDS.length; i++) {
       navDrawerTitles.add(getResources().getString(NAVDRAWER_TITLE_RES_IDS[i]));
     }
@@ -86,14 +93,15 @@ public abstract class NavigationActivity extends AppCompatActivity {
     drawerList.setOnItemClickListener(new DrawerItemClickListener());
 
     // enable ActionBar app icon to behave as action to toggle nav drawer
-    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    getSupportActionBar().setHomeButtonEnabled(true);
-    getSupportActionBar().setIcon(R.color.transparent);
+    if (getSupportActionBar() != null) {
+      getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+      getSupportActionBar().setHomeButtonEnabled(true);
+      getSupportActionBar().setIcon(R.color.transparent);
+    }
 
     // ActionBarDrawerToggle ties together the the proper interactions
     // between the sliding drawer and the action bar app icon
     drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, 0, 0) {
-
       public void onDrawerClosed(View view) {
         getSupportActionBar().setTitle(title);
         invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
@@ -105,7 +113,10 @@ public abstract class NavigationActivity extends AppCompatActivity {
     };
     drawerLayout.addDrawerListener(drawerToggle);
 
-    selectItem(getNavDrawerItemIndex());
+    // update selected item and title, then close the drawer
+    drawerList.setItemChecked(getNavDrawerItemIndex(), true);
+    setTitle(getResources().getString(NAVDRAWER_TITLE_RES_IDS[getNavDrawerItemIndex()]));
+    drawerLayout.closeDrawer(drawerList);
   }
 
   @Override
@@ -128,26 +139,39 @@ public abstract class NavigationActivity extends AppCompatActivity {
 
       switch (index) {
         case NAVDRAWER_ITEM_CHECKLIST:
-          startActivity(new Intent(this, ChecklistActivity.class));
+          createBackStack(new Intent(this, ChecklistActivity.class));
           break;
         case NAVDRAWER_ITEM_IMPORTANT_INFO:
-          startActivity(new Intent(this, ImportantInformationActivity.class));
+          createBackStack(new Intent(this, ImportantInformationActivity.class));
           break;
         case NAVDRAWER_ITEM_LANGUAGE:
-          startActivity(new Intent(this, LanguageActivity.class));
+          createBackStack(new Intent(this, LanguageActivity.class));
           break;
         case NAVDRAWER_ITEM_ABOUT:
-          startActivity(new Intent(this, AboutActivity.class));
+          createBackStack(new Intent(this, AboutActivity.class));
+          break;
+        case NAVDRAWER_ITEM_NOTIFICATIONS:
+          startActivity(new Intent(this, NotificationListActivity.class));
           break;
       }
+
+      // switch back to current selected item
+      drawerList.setItemChecked(getNavDrawerItemIndex(), true);
     }
 
-    // update selected item and title, then close the drawer
-    drawerList.setItemChecked(index, true);
-    setTitle(getResources().getString(NAVDRAWER_TITLE_RES_IDS[index]));
     drawerLayout.closeDrawer(drawerList);
   }
 
+  private void createBackStack(Intent intent) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+      TaskStackBuilder builder = TaskStackBuilder.create(this);
+      builder.addNextIntentWithParentStack(intent);
+      builder.startActivities();
+    } else {
+      startActivity(intent);
+      finish();
+    }
+  }
 
   @Override
   public void setTitle(CharSequence title) {

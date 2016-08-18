@@ -31,26 +31,34 @@
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
-    <activity android:name=".ChecklistItemActivity"></activity>
-    <activity android:name=".AboutActivity"/>
+    <activity
+        android:name=".ChecklistItemActivity"
+        android:parentActivityName=".ChecklistActivity"/>
+    <activity
+        android:name=".AboutActivity"
+        android:parentActivityName=".ChecklistActivity"/>
     <activity
         android:name=".NotificationListActivity"
-        android:label="@string/title_activity_notification_list">
+        android:label="@string/title_activity_notification_list"
+        android:parentActivityName=".ChecklistActivity">
     </activity>
-    <activity android:name=".ChecklistItemActivity">
+    <activity
+        android:name=".LanguageActivity"
+        android:parentActivityName=".ChecklistActivity">
     </activity>
-    <activity android:name=".LanguageActivity">
-    </activity>
-    <activity android:name=".AboutActivity">
-    </activity>
-    <activity android:name=".ImportantInformationActivity"/>
-    <activity android:name=".ImportantInformationItemActivity"/>
+    <activity
+        android:name=".ImportantInformationActivity"
+        android:parentActivityName=".ChecklistActivity"/>
+    <activity
+        android:name=".ImportantInformationItemActivity"
+        android:parentActivityName=".ImportantInformationActivity"/>
     <provider
         android:authorities="@string/content_provider_authority"
         android:name=".LocalRepository"
         android:exported="false" />
     <service
-        android:name=".services.NotificationService">
+        android:name=".services.NotificationService"
+        android:exported="false">
       <intent-filter>
         <action android:name="com.google.firebase.MESSAGING_EVENT"/>
       </intent-filter>

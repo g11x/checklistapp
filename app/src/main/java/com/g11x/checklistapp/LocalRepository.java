@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.g11x.checklistapp.data.Database;
@@ -30,34 +31,36 @@ public class LocalRepository extends ContentProvider {
 
   @Nullable
   @Override
-  public Cursor query(Uri uri, String[] strings, String s, String[] strings1, String s1) {
+  public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs,
+                      String sortOrder) {
+    return Database.query(openHelper.getWritableDatabase(), uri, projection, selection,
+        selectionArgs, sortOrder);
+  }
+
+  @Nullable
+  @Override
+  public String getType(@NonNull Uri uri) {
     return null;
   }
 
   @Nullable
   @Override
-  public String getType(Uri uri) {
-    return null;
-  }
-
-  @Nullable
-  @Override
-  public Uri insert(Uri uri, ContentValues contentValues) {
+  public Uri insert(@NonNull Uri uri, ContentValues contentValues) {
     return Database.insert(openHelper.getWritableDatabase(), uri, contentValues);
   }
 
   @Override
-  public int delete(Uri uri, String s, String[] strings) {
+  public int delete(@NonNull Uri uri, String s, String[] strings) {
     return 0;
   }
 
   @Override
-  public int update(Uri uri, ContentValues contentValues, String s, String[] strings) {
-    return 0;
+  public int update(@NonNull Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
+    return Database.update(openHelper.getWritableDatabase(), uri, contentValues, selection, selectionArgs);
   }
 
   // Helper class that actually creates and manages the provider's underlying data repository.
-  protected static final class MainDatabaseHelper extends SQLiteOpenHelper {
+  static final class MainDatabaseHelper extends SQLiteOpenHelper {
     // Instantiates an open helper for the provider's SQLite data repository. Do not do database
     // creation and upgrade here.
     MainDatabaseHelper(Context context) {
@@ -69,6 +72,8 @@ public class LocalRepository extends ContentProvider {
     public void onCreate(SQLiteDatabase db) {
       // Creates the main table
       db.execSQL(Database.ImportantInformation.CREATE_TABLE_SQL);
+      db.execSQL(Database.ChecklistItem.CREATE_TABLE_SQL);
+      db.execSQL(Database.Notification.CREATE_TABLE_SQL);
     }
 
     @Override
