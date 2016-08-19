@@ -43,6 +43,7 @@ public abstract class NavigationActivity extends AppCompatActivity {
   private DrawerLayout drawerLayout;
   private ListView drawerList;
   private ActionBarDrawerToggle drawerToggle;
+  private AppPreferences.LanguageChangeListener languageChangeListener;
 
   private CharSequence title;
 
@@ -66,9 +67,13 @@ public abstract class NavigationActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     PreferredLanguageSupport.applyPreferredLanguage(this);
+    languageChangeListener = new AppPreferences.LanguageChangeListener(NavigationActivity.this) {
+      @Override
+      public void onChanged(String newValue) {
+        PreferredLanguageSupport.applyPreferredLanguage(NavigationActivity.this);
+      }
+    };
   }
-
-
 
   @Override
   public void setContentView(@LayoutRes int layoutResID) {
@@ -124,6 +129,7 @@ public abstract class NavigationActivity extends AppCompatActivity {
   @Override
   protected void onDestroy() {
     drawerLayout.removeDrawerListener(drawerToggle);
+    languageChangeListener.unregister(this);
     super.onDestroy();
   }
 
