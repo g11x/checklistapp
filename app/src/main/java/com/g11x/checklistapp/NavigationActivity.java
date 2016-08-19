@@ -34,6 +34,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.g11x.checklistapp.data.Notification;
+
 import java.util.ArrayList;
 
 
@@ -47,12 +49,14 @@ public abstract class NavigationActivity extends AppCompatActivity {
 
   protected static final int NAVDRAWER_ITEM_CHECKLIST = 0;
   protected static final int NAVDRAWER_ITEM_IMPORTANT_INFO = 1;
-  protected static final int NAVDRAWER_ITEM_LANGUAGE = 2;
-  protected static final int NAVDRAWER_ITEM_ABOUT = 3;
+  protected static final int NAVDRAWER_ITEM_NOTIFICATIONS = 2;
+  protected static final int NAVDRAWER_ITEM_LANGUAGE = 3;
+  protected static final int NAVDRAWER_ITEM_ABOUT = 4;
 
   private static final int[] NAVDRAWER_TITLE_RES_IDS = new int[]{
       R.string.navdrawer_item_checklist,
       R.string.navdrawer_item_important_info,
+      R.string.navdrawer_item_notifications,
       R.string.navdrawer_item_language,
       R.string.navdrawer_item_about
   };
@@ -145,6 +149,9 @@ public abstract class NavigationActivity extends AppCompatActivity {
           break;
         case NAVDRAWER_ITEM_ABOUT:
           createBackStack(new Intent(this, AboutActivity.class));
+          break;
+        case NAVDRAWER_ITEM_NOTIFICATIONS:
+          startActivity(new Intent(this, NotificationListActivity.class));
           break;
       }
 
