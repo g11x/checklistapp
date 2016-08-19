@@ -39,7 +39,6 @@ public class ChecklistItemActivity extends AppCompatActivity {
   private ChecklistItem checklistItem;
   private ToggleButton isDone;
   private DatabaseReference databaseRef;
-  private String databaseRefString;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
