@@ -30,7 +30,7 @@ import android.widget.TextView;
 import com.g11x.checklistapp.language.Language;
 
 /**
- * Displays a language selection screen to allow the user to override the system defaults.
+ * Displays a language selection screen to allow the user to override the system default language.
  */
 public class LanguageActivity extends NavigationActivity {
   private static final String LOG_TAG = "LanguageActivity";

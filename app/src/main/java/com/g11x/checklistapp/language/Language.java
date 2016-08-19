@@ -20,7 +20,7 @@ package com.g11x.checklistapp.language;
 import android.support.annotation.NonNull;
 
 /**
- * Custom content languages supported by the system.
+ * Custom content languages supported by the app.
  */
 public enum Language {
   Russian("ru", "RussianTBU"),
