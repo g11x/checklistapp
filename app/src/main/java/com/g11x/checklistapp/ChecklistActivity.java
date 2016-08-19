@@ -18,10 +18,16 @@
 package com.g11x.checklistapp;
 
 import android.content.Intent;
+import android.database.ContentObserver;
 import android.database.Cursor;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.os.Handler;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -34,10 +40,13 @@ import com.g11x.checklistapp.language.Language;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class ChecklistActivity extends NavigationActivity {
+public class ChecklistActivity extends NavigationActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
+  private static final int LOADER_ID = 9001;
   private FirebaseRecyclerAdapter<ChecklistItem, ChecklistItemHolder> checklistAdapter;
   private Language language;
+  private final ArrayMap<String, Boolean> isDoneMapping = new ArrayMap<>();
+  private ContentObserver checklistContentObserver = null;
 
   @Override
   protected int getNavDrawerItemIndex() {
@@ -66,7 +75,11 @@ public class ChecklistActivity extends NavigationActivity {
       @Override
       protected void populateViewHolder(
           final ChecklistItemHolder itemHolder, ChecklistItem model, final int position) {
-        itemHolder.markDone(model.isDone(getContentResolver()));
+        boolean isDone = isDoneMapping.get(model.getHash());
+        if (isDoneMapping.get(model.getHash()) == null) {
+          isDone = false;
+        }
+        itemHolder.markDone(isDone);
         itemHolder.setText(model.getName(language));
         itemHolder.setDbRef(getRef(position));
         itemHolder.setOnClickListener(new View.OnClickListener() {
@@ -80,25 +93,13 @@ public class ChecklistActivity extends NavigationActivity {
       }
     };
     recyclerView.setAdapter(checklistAdapter);
+
+    getSupportLoaderManager().initLoader(LOADER_ID, null, this);
   }
 
   @Override
   public void onLanguageChange(Language newLanguage) {
     language = newLanguage;
-  }
-
-  protected void onStart() {
-    super.onStart();
-    // Need to populate done status at onStart as well.
-    Cursor donenessCursor = getContentResolver().query(Database.ChecklistItem.CONTENT_URI,
-        ChecklistItem.PROJECTION, null, null, null);
-    if (donenessCursor.moveToFirst()) {
-      for (int i = 0; i < donenessCursor.getCount(); i++) {
-        String itemHash = donenessCursor.getString(ChecklistItem.ITEM_HASH_COLUMN_INDEX);
-        int done = donenessCursor.getInt(ChecklistItem.DONE_COLUMN_INDEX);
-        donenessCursor.moveToNext();
-      }
-    }
   }
 
   @Override
@@ -117,9 +118,11 @@ public class ChecklistActivity extends NavigationActivity {
     }
 
     public void markDone(boolean done) {
+      TextView textView = (TextView) view.findViewById(R.id.info_text);
       if (done) {
-        TextView textView = (TextView) view.findViewById(R.id.info_text);
         textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+      } else {
+        textView.setPaintFlags(textView.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
       }
     }
 
@@ -137,4 +140,49 @@ public class ChecklistActivity extends NavigationActivity {
       textView.setOnClickListener(listener);
     }
   }
+
+  @Override
+  public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+    if (checklistContentObserver != null) {
+      getContentResolver().unregisterContentObserver(checklistContentObserver);
+    }
+    checklistContentObserver = new ContentObserver(new Handler()) {
+      @Override
+      public void onChange(boolean selfChange) {
+        getSupportLoaderManager().restartLoader(LOADER_ID, null, ChecklistActivity.this);
+        super.onChange(selfChange);
+      }
+
+      @Override
+      public void onChange(boolean selfChange, Uri uri) {
+        getSupportLoaderManager().restartLoader(LOADER_ID, null, ChecklistActivity.this);
+        super.onChange(selfChange, uri);
+      }
+    };
+    getContentResolver().registerContentObserver(Database.ChecklistItem.CONTENT_URI, true,
+        checklistContentObserver);
+
+    return new CursorLoader(ChecklistActivity.this,
+        Database.ChecklistItem.CONTENT_URI,
+        ChecklistItem.PROJECTION,
+        null,
+        null,
+        null);
+  }
+
+  @Override
+  public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+    while (cursor.moveToNext()) {
+      isDoneMapping.put(cursor.getString(ChecklistItem.ITEM_HASH_COLUMN_INDEX),
+          cursor.getInt(ChecklistItem.DONE_COLUMN_INDEX) != 0);
+    }
+    checklistAdapter.notifyDataSetChanged();
+  }
+
+  @Override
+  public void onLoaderReset(Loader<Cursor> loader) {
+    // don't bother telling the adapter that data has changed, just leave it be with the stale
+    // data.
+  }
+
 }
