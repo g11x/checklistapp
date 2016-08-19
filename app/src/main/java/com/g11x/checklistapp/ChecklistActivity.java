@@ -71,11 +71,6 @@ public class ChecklistActivity extends NavigationActivity {
         databaseRef) {
 
       @Override
-      public void onBindViewHolder(ChecklistItemHolder viewHolder, int position) {
-        super.onBindViewHolder(viewHolder, position);
-      }
-
-      @Override
       protected void populateViewHolder(
           final ChecklistItemHolder itemHolder, ChecklistItem model, final int position) {
         itemHolder.markDone(model.isDone(getContentResolver()));
