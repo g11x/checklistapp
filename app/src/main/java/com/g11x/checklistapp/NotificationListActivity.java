@@ -1,14 +1,18 @@
 package com.g11x.checklistapp;
 
 import android.content.ContentValues;
+import android.database.ContentObserver;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +21,11 @@ import android.widget.TextView;
 import com.g11x.checklistapp.data.Database;
 import com.g11x.checklistapp.data.Notification;
 
-public class NotificationListActivity extends NavigationActivity {
+public class NotificationListActivity extends NavigationActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
   private NotificationAdapter adapter;
   private RecyclerView mRecyclerView;
+  private ContentObserver notificationContentObserver;
 
   @Override
   protected int getNavDrawerItemIndex() {
@@ -63,33 +68,10 @@ public class NotificationListActivity extends NavigationActivity {
       }
     });
     helper.attachToRecyclerView(mRecyclerView);
+    adapter = new NotificationAdapter(null);
+    mRecyclerView.setAdapter(adapter);
 
-    getSupportLoaderManager().initLoader(0, null, new LoaderManager.LoaderCallbacks<Cursor>() {
-      @Override
-      public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        Loader<Cursor> cursor = new CursorLoader(NotificationListActivity.this,
-            Database.Notification.CONTENT_URI,
-            Database.Notification.PROJECTION, "NOT " + Database.Notification.READ_COLUMN, null, Database.Notification.SENT_TIME);
-        return cursor;
-      }
-
-      @Override
-      public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        if (adapter == null) {
-          if (cursor != null) {
-            adapter = new NotificationAdapter(cursor);
-            mRecyclerView.setAdapter(adapter);
-          }
-        } else {
-          adapter.swapCursor(cursor);
-        }
-      }
-
-      @Override
-      public void onLoaderReset(Loader<Cursor> loader) {
-        adapter.swapCursor(null);
-      }
-    });
+    getSupportLoaderManager().initLoader(0, null, this);
   }
 
   @Override
@@ -98,6 +80,41 @@ public class NotificationListActivity extends NavigationActivity {
     if (adapter != null) {
       adapter.notifyDataSetChanged();
     }
+  }
+
+  @Override
+  public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+    if (notificationContentObserver != null) {
+      getContentResolver().unregisterContentObserver(notificationContentObserver);
+    }
+    notificationContentObserver = new ContentObserver(new Handler()) {
+      @Override
+      public void onChange(boolean selfChange) {
+        getSupportLoaderManager().restartLoader(0, null, NotificationListActivity.this);
+        super.onChange(selfChange);
+      }
+
+      @Override
+      public void onChange(boolean selfChange, Uri uri) {
+        getSupportLoaderManager().restartLoader(0, null, NotificationListActivity.this);
+        super.onChange(selfChange, uri);
+      }
+    };
+    Loader<Cursor> cursor = new CursorLoader(NotificationListActivity.this,
+        Database.Notification.CONTENT_URI,
+        Database.Notification.PROJECTION, "NOT " + Database.Notification.READ_COLUMN, null, Database.Notification.SENT_TIME);
+    getContentResolver().registerContentObserver(Database.Notification.CONTENT_URI, true, notificationContentObserver);
+    return cursor;
+  }
+
+  @Override
+  public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+    adapter.swapCursor(cursor);
+  }
+
+  @Override
+  public void onLoaderReset(Loader<Cursor> loader) {
+    adapter.swapCursor(null);
   }
 
   private static class NotificationAdapter extends RecyclerViewCursorAdapter<NotificationAdapter.ViewHolder> {
