@@ -26,13 +26,15 @@ import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.g11x.checklistapp.data.ChecklistItem;
+import com.g11x.checklistapp.language.Language;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class ChecklistActivity extends NavigationActivity {
 
   private FirebaseRecyclerAdapter<ChecklistItem, ChecklistItemHolder> checklistAdapter;
-  private DatabaseReference databaseRef;
+  private AppPreferences.LanguageChangeListener languageChangeListener;
+  private Language language;
 
   @Override
   protected int getNavDrawerItemIndex() {
@@ -45,7 +47,16 @@ public class ChecklistActivity extends NavigationActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_checklist);
 
-    databaseRef = FirebaseDatabase.getInstance().getReference()
+    language = AppPreferences.getLanguageOverride(this);
+    languageChangeListener = new AppPreferences.LanguageChangeListener(this) {
+
+      @Override
+      public void onChanged(String newValue) {
+        ChecklistActivity.this.onLanguageChange(newValue);
+      }
+    };
+
+    DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference()
         .child("checklists")
         .child("basic");
 
@@ -60,7 +71,7 @@ public class ChecklistActivity extends NavigationActivity {
       @Override
       protected void populateViewHolder(
           final ChecklistItemHolder itemHolder, ChecklistItem model, final int position) {
-        itemHolder.setText(model.getName());
+        itemHolder.setText(model.getName(language));
         itemHolder.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View view) {
@@ -74,19 +85,19 @@ public class ChecklistActivity extends NavigationActivity {
     recyclerView.setAdapter(checklistAdapter);
   }
 
-  @Override
-  protected void onStart() {
-    super.onStart();
+  private void onLanguageChange(String newValue) {
+    language = Language.valueOf(newValue);
   }
 
   @Override
   protected void onDestroy() {
     super.onDestroy();
     checklistAdapter.cleanup();
+    languageChangeListener.unregister(this);
   }
 
   public static class ChecklistItemHolder extends RecyclerView.ViewHolder {
-    View view;
+    final View view;
 
     public ChecklistItemHolder(View itemView) {
       super(itemView);

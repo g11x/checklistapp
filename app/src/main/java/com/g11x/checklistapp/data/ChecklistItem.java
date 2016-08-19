@@ -18,9 +18,14 @@
 package com.g11x.checklistapp.data;
 
 import android.net.Uri;
+import android.support.annotation.Nullable;
 
+import com.g11x.checklistapp.language.Language;
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.util.Map;
+
+@SuppressWarnings("unused")
 @IgnoreExtraProperties
 public class ChecklistItem {
   private String name;
@@ -30,24 +35,40 @@ public class ChecklistItem {
   private String email;
   private String phone;
   private Uri directions;
+  private Map<String, Map<String, String>> alt;
   private boolean isDone;
 
   public ChecklistItem() {
     // Default constructor required for calls to DataSnapshot.getValue(ChecklistItem.class)
   }
 
-  private ChecklistItem(String name, String description, boolean isDone, String location, String directionsUrl, String email, String phone) {
-    this.name = name;
-    this.description = description;
-    this.isDone = isDone;
-    this.location = location;
-    this.directionsUrl = directionsUrl;
-    this.email = email;
-    this.phone = phone;
-  }
-
+  @SuppressWarnings("WeakerAccess")
   public String getName() {
     return name;
+  }
+
+  public String getName(@Nullable Language language) {
+    if (language == null) {
+      return getName();
+    }
+
+    if (alt == null) {
+      return name;
+    }
+
+    Map<String, String> languageStrings = alt.get(language.getCode());
+
+    if (languageStrings == null) {
+      return name;
+    }
+
+    String string = languageStrings.get("name");
+
+    if (string == null) {
+      return name;
+    } else {
+      return string;
+    }
   }
 
   public boolean isDone() {
@@ -56,10 +77,6 @@ public class ChecklistItem {
 
   public void setDone(boolean done) {
     isDone = done;
-  }
-
-  public static ChecklistItem of(String name, String description, boolean isDone, String location, Uri directions, String email, String phone) {
-    return new ChecklistItem(name, description, isDone, location, directions.toString(), email, phone);
   }
 
   @SuppressWarnings("unused")
@@ -77,8 +94,33 @@ public class ChecklistItem {
     return location;
   }
 
+  @SuppressWarnings("WeakerAccess")
   public String getDescription() {
     return description;
+  }
+
+  public String getDescription(@Nullable Language language) {
+    if (language == null) {
+      return getDescription();
+    }
+
+    if (alt == null) {
+      return description;
+    }
+
+    Map<String, String> languageStrings = alt.get(language.getCode());
+
+    if (languageStrings == null) {
+      return description;
+    }
+
+    String string = languageStrings.get("description");
+
+    if (string == null) {
+      return description;
+    } else {
+      return string;
+    }
   }
 
   @SuppressWarnings("unused")
@@ -91,5 +133,10 @@ public class ChecklistItem {
       directions = Uri.parse(directionsUrl);
     }
     return directions;
+  }
+
+  @SuppressWarnings("unused")
+  public Map<String, Map<String, String>> getAlt() {
+    return alt;
   }
 }
