@@ -21,9 +21,14 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.annotation.Nullable;
 
+import com.g11x.checklistapp.language.Language;
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.util.Map;
+
+@SuppressWarnings("unused")
 @IgnoreExtraProperties
 public class ChecklistItem {
   private String name;
@@ -42,6 +47,8 @@ public class ChecklistItem {
   };
   public static final int ITEM_HASH_COLUMN_INDEX = 1;
   public static final int DONE_COLUMN_INDEX = 2;
+  private Map<String, Map<String, String>> alt;
+  private boolean isDone;
 
   public ChecklistItem() {
     // Default constructor required for calls to DataSnapshot.getValue(ChecklistItem.class)
@@ -58,6 +65,7 @@ public class ChecklistItem {
     this.phone = phone;
   }
 
+  @SuppressWarnings("WeakerAccess")
   public String getName() {
     return name;
   }
@@ -67,8 +75,36 @@ public class ChecklistItem {
         Database.ChecklistItem.CONTENT_URI,
         ChecklistItem.PROJECTION,
         Database.ChecklistItem.ITEM_HASH_COLUMN + " = ?",
-        new String[] { getHash() },
+        new String[]{getHash()},
         null);
+  }
+
+  public String getName(@Nullable Language language) {
+    if (language == null) {
+      return getName();
+    }
+
+    if (alt == null) {
+      return name;
+    }
+
+    Map<String, String> languageStrings = alt.get(language.getCode());
+
+    if (languageStrings == null) {
+      return name;
+    }
+
+    String string = languageStrings.get("name");
+
+    if (string == null) {
+      return name;
+    } else {
+      return string;
+    }
+  }
+
+  public boolean isDone() {
+    return isDone;
   }
 
   public boolean isDone(ContentResolver contentResolver) {
@@ -97,10 +133,6 @@ public class ChecklistItem {
     }
   }
 
-  public static ChecklistItem of(String name, String description, String location, Uri directions, String email, String phone) {
-    return new ChecklistItem(name, description, location, directions.toString(), email, phone);
-  }
-
   @SuppressWarnings("unused")
   public String getEmail() {
     return email;
@@ -116,8 +148,33 @@ public class ChecklistItem {
     return location;
   }
 
+  @SuppressWarnings("WeakerAccess")
   public String getDescription() {
     return description;
+  }
+
+  public String getDescription(@Nullable Language language) {
+    if (language == null) {
+      return getDescription();
+    }
+
+    if (alt == null) {
+      return description;
+    }
+
+    Map<String, String> languageStrings = alt.get(language.getCode());
+
+    if (languageStrings == null) {
+      return description;
+    }
+
+    String string = languageStrings.get("description");
+
+    if (string == null) {
+      return description;
+    } else {
+      return string;
+    }
   }
 
   @SuppressWarnings("unused")
@@ -137,5 +194,10 @@ public class ChecklistItem {
       hash = String.valueOf(name.hashCode());
     }
     return hash;
+  }
+
+  @SuppressWarnings("unused")
+  public Map<String, Map<String, String>> getAlt() {
+    return alt;
   }
 }

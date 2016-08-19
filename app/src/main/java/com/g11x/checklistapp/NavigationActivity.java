@@ -17,7 +17,7 @@
 
 package com.g11x.checklistapp;
 
-import android.app.ActivityOptions;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
@@ -26,6 +26,7 @@ import android.support.annotation.LayoutRes;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -34,7 +35,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.g11x.checklistapp.data.Notification;
+import com.g11x.checklistapp.language.PreferredLanguageSupport;
 
 import java.util.ArrayList;
 
@@ -44,10 +45,11 @@ public abstract class NavigationActivity extends AppCompatActivity {
   private DrawerLayout drawerLayout;
   private ListView drawerList;
   private ActionBarDrawerToggle drawerToggle;
+  private AppPreferences.LanguageChangeListener baseLanguageChangeListener;
 
   private CharSequence title;
 
-  protected static final int NAVDRAWER_ITEM_CHECKLIST = 0;
+  static final int NAVDRAWER_ITEM_CHECKLIST = 0;
   protected static final int NAVDRAWER_ITEM_IMPORTANT_INFO = 1;
   protected static final int NAVDRAWER_ITEM_NOTIFICATIONS = 2;
   protected static final int NAVDRAWER_ITEM_LANGUAGE = 3;
@@ -66,6 +68,15 @@ public abstract class NavigationActivity extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    PreferredLanguageSupport.applyPreferredLanguage(this);
+    final Activity thisActivity = NavigationActivity.this;
+    baseLanguageChangeListener = new AppPreferences.LanguageChangeListener(NavigationActivity.this) {
+      @Override
+      public void onChanged(String newValue) {
+        thisActivity.recreate();
+      }
+    };
   }
 
   @Override
@@ -74,21 +85,21 @@ public abstract class NavigationActivity extends AppCompatActivity {
     setUpDrawer();
   }
 
-  final protected void setUpDrawer() {
+  private void setUpDrawer() {
 
     title = getTitle();
     drawerLayout = (DrawerLayout) findViewById(R.id.main_layout);
     drawerList = (ListView) findViewById(R.id.left_drawer);
 
     ArrayList<String> navDrawerTitles = new ArrayList<>();
-    for (int i = 0; i < NAVDRAWER_TITLE_RES_IDS.length; i++) {
-      navDrawerTitles.add(getResources().getString(NAVDRAWER_TITLE_RES_IDS[i]));
+    for (int NAVDRAWER_TITLE_RES_ID : NAVDRAWER_TITLE_RES_IDS) {
+      navDrawerTitles.add(getResources().getString(NAVDRAWER_TITLE_RES_ID));
     }
 
     // set a custom shadow that overlays the main content when the drawer opens
     drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
     // set up the drawer's list view with items and click listener
-    drawerList.setAdapter(new ArrayAdapter<String>(
+    drawerList.setAdapter(new ArrayAdapter<>(
         this, R.layout.drawer_list_item, navDrawerTitles));
     drawerList.setOnItemClickListener(new DrawerItemClickListener());
 
@@ -122,10 +133,11 @@ public abstract class NavigationActivity extends AppCompatActivity {
   @Override
   protected void onDestroy() {
     drawerLayout.removeDrawerListener(drawerToggle);
+    baseLanguageChangeListener.unregister(this);
     super.onDestroy();
   }
 
-  /* The click listner for ListView in the navigation drawer */
+  /* The click listener for ListView in the navigation drawer */
   private class DrawerItemClickListener implements ListView.OnItemClickListener {
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -133,7 +145,7 @@ public abstract class NavigationActivity extends AppCompatActivity {
     }
   }
 
-  protected void selectItem(int index) {
+  private void selectItem(int index) {
 
     if (getNavDrawerItemIndex() != index) {
 
@@ -176,7 +188,10 @@ public abstract class NavigationActivity extends AppCompatActivity {
   @Override
   public void setTitle(CharSequence title) {
     this.title = title;
-    getSupportActionBar().setTitle(this.title);
+    ActionBar actionBar = getSupportActionBar();
+    if (actionBar != null) {
+      actionBar.setTitle(this.title);
+    }
   }
 
   /**
@@ -193,7 +208,7 @@ public abstract class NavigationActivity extends AppCompatActivity {
   @Override
   public void onConfigurationChanged(Configuration newConfig) {
     super.onConfigurationChanged(newConfig);
-    // Pass any configuration change to the drawer toggls
+    // Pass any configuration change to the drawer toggles
     drawerToggle.onConfigurationChanged(newConfig);
   }
 
@@ -201,10 +216,7 @@ public abstract class NavigationActivity extends AppCompatActivity {
   public boolean onOptionsItemSelected(MenuItem item) {
     // The action bar home/up action should open or close the drawer.
     // ActionBarDrawerToggle will take care of this.
-    if (drawerToggle.onOptionsItemSelected(item)) {
-      return true;
-    }
-    return super.onOptionsItemSelected(item);
+    return drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
   }
 
   @Override

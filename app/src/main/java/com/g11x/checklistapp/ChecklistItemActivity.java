@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.g11x.checklistapp.data.ChecklistItem;
+import com.g11x.checklistapp.language.Language;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,13 +40,25 @@ public class ChecklistItemActivity extends AppCompatActivity {
   private ChecklistItem checklistItem;
   private ToggleButton isDone;
   private DatabaseReference databaseRef;
+  private Language language;
+  private AppPreferences.LanguageChangeListener languageChangeListener;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     setContentView(R.layout.activity_checklist_item);
 
-    databaseRef = FirebaseDatabase.getInstance().getReferenceFromUrl(
+    language = AppPreferences.getLanguageOverride(this);
+    languageChangeListener = new AppPreferences.LanguageChangeListener(this) {
+
+      @Override
+      public void onChanged(String newValue) {
+        ChecklistItemActivity.this.onLanguageChange(newValue);
+      }
+    };
+
+    DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReferenceFromUrl(
         this.getIntent().getStringExtra("databaseRefUrl"));
 
     databaseRef.addValueEventListener(new ValueEventListener() {
@@ -63,12 +76,22 @@ public class ChecklistItemActivity extends AppCompatActivity {
 
   }
 
+  private void onLanguageChange(String newValue) {
+    language = Language.valueOf(newValue);
+  }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    languageChangeListener.unregister(this);
+  }
+
   private void createUI() {
     TextView name = (TextView) findViewById(R.id.name);
-    name.setText(checklistItem.getName());
+    name.setText(checklistItem.getName(language));
 
     TextView description = (TextView) findViewById(R.id.description);
-    description.setText(checklistItem.getDescription());
+    description.setText(checklistItem.getDescription(language));
 
     Button getDirections = (Button) findViewById(R.id.directions);
     getDirections.setOnClickListener(new View.OnClickListener() {
@@ -86,11 +109,6 @@ public class ChecklistItemActivity extends AppCompatActivity {
         ChecklistItemActivity.this.onClickIsDone();
       }
     });
-  }
-
-  @Override
-  protected void onStart() {
-    super.onStart();
   }
 
   private void onClickIsDone() {
