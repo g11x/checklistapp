@@ -27,7 +27,9 @@
 
   <style name="AppCardViewStyle" parent="CardView">
     <item name="cardCornerRadius">0dp</item>
-    <item name="cardUseCompatPadding">true</item>
+    <item name="android:layout_marginLeft">@dimen/grid_padding</item>
+    <item name="android:layout_marginRight">@dimen/grid_padding</item>
+    <item name="android:layout_marginTop">@dimen/grid_padding</item>
     <item name="contentPaddingTop">5dp</item>
     <item name="contentPaddingBottom">5dp</item>
     <item name="android:layout_height">wrap_content</item>
@@ -39,8 +41,29 @@
   </style>
 
   <style name="AppCardViewTitleTextStyle" parent="TextAppearance.AppCompat">
-    <item name="android:padding">15dp</item>
-    <item name="android:textSize">18sp</item>
+    <item name="android:padding">@dimen/title_padding</item>
+    <item name="android:textSize">@dimen/text_size_title</item>
+  </style>
+
+  <style name="AppNotificationTitleTextStyle" parent="TextAppearance.AppCompat">
+    <item name="android:paddingLeft">@dimen/title_padding</item>
+    <item name="android:paddingTop">10dp</item>
+    <item name="android:textSize">@dimen/text_size_title</item>
+  </style>
+
+  <style name="AppNotificationBodyTextStyle" parent="TextAppearance.AppCompat">
+    <item name="android:paddingLeft">@dimen/title_padding</item>
+    <item name="android:paddingTop">5dp</item>
+    <item name="android:paddingBottom">10dp</item>
+    <item name="android:lineSpacingMultiplier">1.4</item>
+    <item name="android:textSize">@dimen/text_size_description</item>
+  </style>
+
+  <style name="AppDescriptionTextStyle" parent="TextAppearance.AppCompat">
+    <item name="android:ellipsize">end</item>
+    <item name="android:textSize">@dimen/text_size_description</item>
+    <item name="android:layout_weight">1</item>
+    <item name="android:lineSpacingMultiplier">1.4</item>
   </style>
 
 </resources>

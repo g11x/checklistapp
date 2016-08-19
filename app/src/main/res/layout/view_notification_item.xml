@@ -24,20 +24,21 @@
   <LinearLayout
       xmlns:android="http://schemas.android.com/apk/res/android"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:orientation="vertical"
-      android:padding="5dp">
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
 
     <TextView
         android:id="@+id/notification_title"
+        style="@style/AppNotificationTitleTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="5dp"
         android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/notification_body"
+        style="@style/AppNotificationBodyTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
   </LinearLayout>
 </android.support.v7.widget.CardView>
