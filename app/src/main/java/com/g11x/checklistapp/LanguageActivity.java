@@ -18,6 +18,7 @@
 package com.g11x.checklistapp;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.CardView;
@@ -42,7 +43,9 @@ public class LanguageActivity extends NavigationActivity {
 
     RecyclerView recyclerView = (RecyclerView) findViewById(R.id.main_content);
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
-    recyclerView.setAdapter(new LanguageSelectionAdapter());
+    Language language = AppPreferences.getLanguageOverride(this);
+    recyclerView.setAdapter(new LanguageSelectionAdapter(language));
+
   }
 
   @Override
@@ -52,6 +55,12 @@ public class LanguageActivity extends NavigationActivity {
 
   static class LanguageSelectionAdapter extends RecyclerView.Adapter<LanguageSelectionAdapter.ViewHolder> {
     private Language[] dataSet = Language.values();
+    @NonNull
+    private final Language language;
+
+    LanguageSelectionAdapter(@NonNull Language lang) {
+      language = lang;
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -64,6 +73,14 @@ public class LanguageActivity extends NavigationActivity {
     public void onBindViewHolder(ViewHolder holder, int position) {
       holder.language = dataSet[position];
       holder.textView.setText(dataSet[position].getNativeDescription());
+      if (language.equals(holder.language)) {
+        holder.cardView.setSelected(true);
+        holder.cardView.setActivated(true);
+        holder.cardView.setCardBackgroundColor(holder.cardView.getResources().getColor(R.color.accent));
+      } else {
+        holder.cardView.setSelected(false);
+        holder.cardView.setActivated(false);
+      }
     }
 
     @Override
@@ -74,8 +91,10 @@ public class LanguageActivity extends NavigationActivity {
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
       private TextView textView;
       private Language language;
+      private CardView cardView;
       ViewHolder(final CardView view) {
         super(view);
+        cardView = view;
         textView = (TextView)view.findViewById(R.id.checkbox);
         view.setOnClickListener(this);
       }
