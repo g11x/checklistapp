@@ -23,8 +23,7 @@
 
   <TextView
       android:id="@+id/info_text"
-      android:padding="14dp"
-      android:textSize="18sp"
+      style="@style/AppCardViewTitleTextStyle"
       android:layout_width="match_parent"
       android:layout_height="wrap_content" />
 

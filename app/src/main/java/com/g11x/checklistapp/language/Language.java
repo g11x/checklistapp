@@ -23,9 +23,9 @@ import android.support.annotation.NonNull;
  * Custom content languages supported by the app.
  */
 public enum Language {
-  Russian("ru", "RussianTBU"),
+  Russian("ru", "Русский"),
   English("en", "English"),
-  Ukrainian("uk", "UkrainianTBU");
+  Ukrainian("uk", "Українська");
 
   @NonNull
   private String code;
