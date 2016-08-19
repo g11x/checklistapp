@@ -35,6 +35,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.g11x.checklistapp.language.Language;
 import com.g11x.checklistapp.language.PreferredLanguageSupport;
 
 import java.util.ArrayList;
@@ -75,8 +76,13 @@ public abstract class NavigationActivity extends AppCompatActivity {
       @Override
       public void onChanged(String newValue) {
         thisActivity.recreate();
+        onLanguageChanged(language);
       }
     };
+  }
+
+  public void onLanguageChanged(Language newLanguage) {
+
   }
 
   @Override

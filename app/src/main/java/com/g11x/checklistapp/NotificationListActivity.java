@@ -64,6 +64,7 @@ public class NotificationListActivity extends NavigationActivity {
     });
     helper.attachToRecyclerView(mRecyclerView);
 
+
     getSupportLoaderManager().initLoader(0, null, new LoaderManager.LoaderCallbacks<Cursor>() {
       @Override
       public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
@@ -84,6 +85,8 @@ public class NotificationListActivity extends NavigationActivity {
           adapter.swapCursor(cursor);
         }
       }
+
+
 
       @Override
       public void onLoaderReset(Loader<Cursor> loader) {
