@@ -25,12 +25,12 @@ import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.g11x.checklistapp.data.Database;
@@ -131,8 +131,8 @@ public class ImportantInformationActivity extends NavigationActivity {
     static class ViewHolder extends RecyclerView.ViewHolder {
       private final TextView textView;
 
-      ViewHolder(LinearLayout layout) {
-        super(layout);
+      ViewHolder(CardView cardView) {
+        super(cardView);
         textView = (TextView) itemView.findViewById(R.id.data);
       }
     }
@@ -143,9 +143,9 @@ public class ImportantInformationActivity extends NavigationActivity {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-      LinearLayout layout = (LinearLayout) LayoutInflater.from(parent.getContext())
+      View layout = LayoutInflater.from(parent.getContext())
           .inflate(R.layout.view_important_information_item, parent, false);
-      return new ViewHolder(layout);
+      return new ViewHolder((CardView)layout);
     }
 
     @Override
