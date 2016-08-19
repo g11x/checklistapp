@@ -38,7 +38,6 @@ public class ChecklistItemActivity extends AppCompatActivity {
 
   private ChecklistItem checklistItem;
   private Language language;
-  private AppPreferences.LanguageChangeListener languageChangeListener;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +46,6 @@ public class ChecklistItemActivity extends AppCompatActivity {
     setContentView(R.layout.activity_checklist_item);
 
     language = AppPreferences.getLanguageOverride(this);
-    languageChangeListener = new AppPreferences.LanguageChangeListener(this) {
-
-      @Override
-      public void onChanged(String newValue) {
-        ChecklistItemActivity.this.onLanguageChange(newValue);
-      }
-    };
 
     DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReferenceFromUrl(
         this.getIntent().getStringExtra("databaseRefUrl"));
@@ -73,14 +65,9 @@ public class ChecklistItemActivity extends AppCompatActivity {
 
   }
 
-  private void onLanguageChange(String newValue) {
-    language = Language.valueOf(newValue);
-  }
-
   @Override
   protected void onDestroy() {
     super.onDestroy();
-    languageChangeListener.unregister(this);
   }
 
   private void createUI() {
