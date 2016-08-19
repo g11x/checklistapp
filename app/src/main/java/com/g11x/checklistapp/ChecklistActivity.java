@@ -80,11 +80,13 @@ public class ChecklistActivity extends NavigationActivity {
           final ChecklistItemHolder itemHolder, ChecklistItem model, final int position) {
         itemHolder.markDone(model.isDone(getContentResolver()));
         itemHolder.setText(model.getName(language));
+        itemHolder.setDbRef(getRef(position));
         itemHolder.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View view) {
             Intent intent = new Intent(ChecklistActivity.this, ChecklistItemActivity.class);
-            intent.putExtra("databaseRefUrl", getRef(position).toString());
+            intent.putExtra("databaseRefUrl", itemHolder.databaseRefUrl);
+            startActivity(intent);
             startActivity(intent);
           }
         });
@@ -121,6 +123,7 @@ public class ChecklistActivity extends NavigationActivity {
 
   public static class ChecklistItemHolder extends RecyclerView.ViewHolder {
     final View view;
+    String databaseRefUrl;
 
     public ChecklistItemHolder(View itemView) {
       super(itemView);
@@ -137,6 +140,10 @@ public class ChecklistActivity extends NavigationActivity {
     public void setText(String title) {
       TextView textView = (TextView) view.findViewById(R.id.info_text);
       textView.setText(title);
+    }
+
+    public void setDbRef(DatabaseReference reference) {
+      databaseRefUrl = reference.toString();
     }
 
     public void setOnClickListener(View.OnClickListener listener) {
