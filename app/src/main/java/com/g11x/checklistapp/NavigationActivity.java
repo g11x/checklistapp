@@ -67,6 +67,7 @@ public abstract class NavigationActivity extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     PreferredLanguageSupport.applyPreferredLanguage(this);
     final Activity thisActivity = NavigationActivity.this;
     languageChangeListener = new AppPreferences.LanguageChangeListener(NavigationActivity.this) {
@@ -135,7 +136,7 @@ public abstract class NavigationActivity extends AppCompatActivity {
     super.onDestroy();
   }
 
-  /* The click listner for ListView in the navigation drawer */
+  /* The click listener for ListView in the navigation drawer */
   private class DrawerItemClickListener implements ListView.OnItemClickListener {
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
