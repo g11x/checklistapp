@@ -17,6 +17,7 @@
 
 package com.g11x.checklistapp;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
@@ -67,10 +68,11 @@ public abstract class NavigationActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     PreferredLanguageSupport.applyPreferredLanguage(this);
+    final Activity thisActivity = NavigationActivity.this;
     languageChangeListener = new AppPreferences.LanguageChangeListener(NavigationActivity.this) {
       @Override
       public void onChanged(String newValue) {
-        PreferredLanguageSupport.applyPreferredLanguage(NavigationActivity.this);
+        thisActivity.recreate();
       }
     };
   }
