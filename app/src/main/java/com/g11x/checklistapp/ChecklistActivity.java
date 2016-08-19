@@ -21,7 +21,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -66,7 +65,6 @@ public class ChecklistActivity extends NavigationActivity {
           @Override
           public void onClick(View view) {
             Intent intent = new Intent(ChecklistActivity.this, ChecklistItemActivity.class);
-            intent.putExtra("index", position);
             intent.putExtra("databaseRefUrl", getRef(position).toString());
             startActivity(intent);
           }

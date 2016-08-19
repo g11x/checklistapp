@@ -39,11 +39,11 @@ public class ChecklistItemActivity extends AppCompatActivity {
   private ChecklistItem checklistItem;
   private ToggleButton isDone;
   private DatabaseReference databaseRef;
-  private String databaseRefString;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     setContentView(R.layout.activity_checklist_item);
 
     databaseRef = FirebaseDatabase.getInstance().getReferenceFromUrl(

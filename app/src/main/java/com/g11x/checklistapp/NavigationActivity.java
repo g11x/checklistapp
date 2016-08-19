@@ -17,7 +17,7 @@
 
 package com.g11x.checklistapp;
 
-import android.app.ActivityOptions;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
@@ -34,7 +34,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.g11x.checklistapp.data.Notification;
+import com.g11x.checklistapp.language.PreferredLanguageSupport;
 
 import java.util.ArrayList;
 
@@ -44,6 +44,7 @@ public abstract class NavigationActivity extends AppCompatActivity {
   private DrawerLayout drawerLayout;
   private ListView drawerList;
   private ActionBarDrawerToggle drawerToggle;
+  private AppPreferences.LanguageChangeListener languageChangeListener;
 
   private CharSequence title;
 
@@ -66,6 +67,15 @@ public abstract class NavigationActivity extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    PreferredLanguageSupport.applyPreferredLanguage(this);
+    final Activity thisActivity = NavigationActivity.this;
+    languageChangeListener = new AppPreferences.LanguageChangeListener(NavigationActivity.this) {
+      @Override
+      public void onChanged(String newValue) {
+        thisActivity.recreate();
+      }
+    };
   }
 
   @Override
@@ -122,10 +132,11 @@ public abstract class NavigationActivity extends AppCompatActivity {
   @Override
   protected void onDestroy() {
     drawerLayout.removeDrawerListener(drawerToggle);
+    languageChangeListener.unregister(this);
     super.onDestroy();
   }
 
-  /* The click listner for ListView in the navigation drawer */
+  /* The click listener for ListView in the navigation drawer */
   private class DrawerItemClickListener implements ListView.OnItemClickListener {
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
