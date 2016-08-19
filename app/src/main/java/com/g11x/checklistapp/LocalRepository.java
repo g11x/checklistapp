@@ -51,7 +51,7 @@ public class LocalRepository extends ContentProvider {
 
   @Override
   public int delete(@NonNull Uri uri, String s, String[] strings) {
-    return 0;
+    throw new UnsupportedOperationException();
   }
 
   @Override
