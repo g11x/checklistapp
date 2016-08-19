@@ -28,12 +28,15 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.g11x.checklistapp.data.Database;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -74,6 +77,8 @@ public class ImportantInformationActivity extends NavigationActivity {
       }
     });
 
+    final TextView emptyListInfo = (TextView) findViewById(R.id.important_information_empty);
+
     Intent intent = getIntent();
 
     if (intent.getExtras() != null && intent.getExtras().get("title") != null) {
@@ -93,6 +98,8 @@ public class ImportantInformationActivity extends NavigationActivity {
 
       @Override
       public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        refreshUi(cursor.getCount());
+
         if (adapter == null) {
           if (cursor != null) {
             adapter = new Adapter(cursor);
@@ -106,6 +113,17 @@ public class ImportantInformationActivity extends NavigationActivity {
       @Override
       public void onLoaderReset(Loader<Cursor> loader) {
         adapter.swapCursor(null);
+      }
+
+      private void refreshUi(int itemCount) {
+        if (itemCount > 0) {
+          recyclerView.setVisibility(View.VISIBLE);
+          emptyListInfo.setVisibility(View.GONE);
+        } else {
+          emptyListInfo.setVisibility(View.VISIBLE);
+          recyclerView.setVisibility(View.GONE);
+        }
+
       }
     });
   }

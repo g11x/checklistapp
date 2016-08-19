@@ -31,10 +31,23 @@
       tools:context="com.g11x.checklistapp.ImportantInformationActivity"
       android:orientation="horizontal">
 
+    <TextView
+        android:id="@+id/important_information_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/important_information_empty"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/activity_important_information"
+        app:layout_constraintLeft_toLeftOf="@+id/activity_important_information"
+        app:layout_constraintRight_toRightOf="@+id/activity_important_information"
+        app:layout_constraintTop_toTopOf="@+id/activity_important_information"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/important_information_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
