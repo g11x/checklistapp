@@ -17,6 +17,7 @@
 
 package com.g11x.checklistapp;
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -27,7 +28,6 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.g11x.checklistapp.data.ChecklistItem;
-import com.g11x.checklistapp.data.ChecklistManager;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -79,7 +79,7 @@ public class ChecklistItemActivity extends AppCompatActivity {
     });
 
     isDone = (ToggleButton) findViewById(R.id.doneness);
-    isDone.setChecked(checklistItem.isDone());
+    isDone.setChecked(checklistItem.isDone(getContentResolver()));
     isDone.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -94,8 +94,8 @@ public class ChecklistItemActivity extends AppCompatActivity {
   }
 
   private void onClickIsDone() {
-    checklistItem.setDone(!checklistItem.isDone());
-    ChecklistManager.save(getApplicationContext(), ChecklistManager.get(getApplicationContext()));
+    ContentResolver contentResolver = getContentResolver();
+    checklistItem.setDone(contentResolver, !checklistItem.isDone(contentResolver));
   }
 
   private void onClickGetDirections() {
