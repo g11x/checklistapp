@@ -16,17 +16,15 @@
   ~
   -->
 
-<LinearLayout
+<android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?android:attr/selectableItemBackground"
-    android:clickable="true">
+    style="@style/AppCardViewStyle"
+    android:id="@+id/card_view">
 
   <TextView
       android:id="@+id/info_text"
-      android:padding="20dp"
+      style="@style/AppCardViewTitleTextStyle"
       android:layout_width="match_parent"
       android:layout_height="wrap_content" />
-</LinearLayout>
+
+</android.support.v7.widget.CardView>

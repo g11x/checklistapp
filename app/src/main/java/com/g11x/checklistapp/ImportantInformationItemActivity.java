@@ -23,8 +23,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.EditText;
 
 import com.g11x.checklistapp.data.Database;
 
@@ -44,8 +45,17 @@ public class ImportantInformationItemActivity extends AppCompatActivity {
     });
   }
 
+  @Override
+  protected void onStart() {
+    super.onStart();
+
+    EditText editText = (EditText)findViewById(R.id.title);
+    editText.requestFocus();
+    getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+  }
+
   private void onClickCreate() {
-    TextView title = (TextView) findViewById(R.id.title);
+    EditText title = (EditText) findViewById(R.id.title);
     String titleText = title.getText().toString();
     Intent intent = new Intent(this, ImportantInformationActivity.class);
     intent.putExtra("title", titleText);

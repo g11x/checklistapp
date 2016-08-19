@@ -26,23 +26,22 @@ public class ChecklistItem {
   private String name;
   private String location;
   private String description;
-  private Uri directions;
-  private String directions_url;
-  private boolean isDone;
+  private String directionsUrl;
   private String email;
   private String phone;
+  private Uri directions;
+  private boolean isDone;
 
   public ChecklistItem() {
     // Default constructor required for calls to DataSnapshot.getValue(ChecklistItem.class)
   }
 
-  private ChecklistItem(String name, String description, boolean isDone, String location, Uri directions, String email, String phone) {
+  private ChecklistItem(String name, String description, boolean isDone, String location, String directionsUrl, String email, String phone) {
     this.name = name;
     this.description = description;
     this.isDone = isDone;
     this.location = location;
-    this.directions = directions;
-    this.directions_url = directions.toString();
+    this.directionsUrl = directionsUrl;
     this.email = email;
     this.phone = phone;
   }
@@ -60,7 +59,7 @@ public class ChecklistItem {
   }
 
   public static ChecklistItem of(String name, String description, boolean isDone, String location, Uri directions, String email, String phone) {
-    return new ChecklistItem(name, description, isDone, location, directions, email, phone);
+    return new ChecklistItem(name, description, isDone, location, directions.toString(), email, phone);
   }
 
   @SuppressWarnings("unused")
@@ -82,7 +81,15 @@ public class ChecklistItem {
     return description;
   }
 
+  @SuppressWarnings("unused")
+  public String getDirectionsUrl() {
+    return directionsUrl;
+  }
+
   public Uri getDirections() {
+    if (directions == null) {
+      directions = Uri.parse(directionsUrl);
+    }
     return directions;
   }
 }

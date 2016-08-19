@@ -55,8 +55,8 @@ public class LocalRepository extends ContentProvider {
   }
 
   @Override
-  public int update(@NonNull Uri uri, ContentValues values, String whereClause, String[] whereArgs) {
-    return Database.update(openHelper.getWritableDatabase(), uri, values, whereClause, whereArgs);
+  public int update(@NonNull Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
+    return Database.update(openHelper.getWritableDatabase(), uri, contentValues, selection, selectionArgs);
   }
 
   // Helper class that actually creates and manages the provider's underlying data repository.

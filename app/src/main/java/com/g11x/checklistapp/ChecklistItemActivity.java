@@ -18,11 +18,9 @@
 package com.g11x.checklistapp;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -30,22 +28,48 @@ import android.widget.ToggleButton;
 
 import com.g11x.checklistapp.data.ChecklistItem;
 import com.g11x.checklistapp.data.ChecklistManager;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class ChecklistItemActivity extends AppCompatActivity {
 
   private ChecklistItem checklistItem;
   private ToggleButton isDone;
+  private DatabaseReference databaseRef;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     setContentView(R.layout.activity_checklist_item);
 
-    int index = this.getIntent().getIntExtra("index", 0);
-    checklistItem = ChecklistManager.get(getApplicationContext()).getItems().get(index);
+    databaseRef = FirebaseDatabase.getInstance().getReferenceFromUrl(
+        this.getIntent().getStringExtra("databaseRefUrl"));
 
+    databaseRef.addValueEventListener(new ValueEventListener() {
+      @Override
+      public void onDataChange(DataSnapshot dataSnapshot) {
+        checklistItem = dataSnapshot.getValue(ChecklistItem.class);
+        createUI();
+      }
+
+      @Override
+      public void onCancelled(DatabaseError databaseError) {
+        Log.e("", "Unable to fetch database item.");
+      }
+    });
+
+  }
+
+  private void createUI() {
     TextView name = (TextView) findViewById(R.id.name);
     name.setText(checklistItem.getName());
+
+    TextView description = (TextView) findViewById(R.id.description);
+    description.setText(checklistItem.getDescription());
 
     Button getDirections = (Button) findViewById(R.id.directions);
     getDirections.setOnClickListener(new View.OnClickListener() {
@@ -56,21 +80,18 @@ public class ChecklistItemActivity extends AppCompatActivity {
     });
 
     isDone = (ToggleButton) findViewById(R.id.doneness);
+    isDone.setChecked(checklistItem.isDone());
     isDone.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
         ChecklistItemActivity.this.onClickIsDone();
       }
     });
-
-    TextView description = (TextView) findViewById(R.id.description);
-    description.setText(checklistItem.getDescription());
   }
 
   @Override
   protected void onStart() {
     super.onStart();
-    isDone.setChecked(checklistItem.isDone());
   }
 
   private void onClickIsDone() {

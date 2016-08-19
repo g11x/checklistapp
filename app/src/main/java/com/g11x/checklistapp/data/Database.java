@@ -32,11 +32,6 @@ public class Database {
   public static final String COM_G11X_CHECKLISTAPP_PROVIDER = "com.g11x.checklistapp.provider";
   public static final String ID_COLUMN = "_ID";
 
-  public static Cursor query(SQLiteDatabase db, Uri uri, String[] projection, String selection,
-                             String[] selectionArgs, String sortOrder) {
-    return Database.getTableHandler(db, uri).query(projection, selection, selectionArgs, sortOrder);
-  }
-
   /**
    * Insert a set of content values into the database and table supplied. Handles all the
    * mechanics of content routing for you.
@@ -45,8 +40,13 @@ public class Database {
     return Database.getTableHandler(db, uri).insert(contentValues);
   }
 
-  public static int update(SQLiteDatabase db, Uri uri, ContentValues values, String whereClause, String[] whereArgs) {
-    return Database.getTableHandler(db, uri).update(values, whereClause, whereArgs);
+  public static Cursor query(SQLiteDatabase db, Uri uri, String[] projection, String selection,
+                             String[] selectionArgs, String sortOrder) {
+    return Database.getTableHandler(db, uri).query(projection, selection, selectionArgs, sortOrder);
+  }
+
+  public static int update(SQLiteDatabase db, Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
+    return Database.getTableHandler(db, uri).update(contentValues, selection, selectionArgs);
   }
 
   /**
@@ -93,8 +93,8 @@ public class Database {
       }
 
       @Override
-      public int update(ContentValues values, String whereClause, String[] whereArgs) {
-        throw new UnsupportedOperationException();
+      public int update(ContentValues contentValues, String selection, String[] selectionArgs) {
+        return db.update(Database.ImportantInformation.TABLE_NAME, contentValues, selection, selectionArgs);
       }
     }
 
@@ -153,8 +153,8 @@ public class Database {
       }
 
       @Override
-      public int update(ContentValues values, String whereClause, String[] whereArgs) {
-        throw new UnsupportedOperationException();
+      public int update(ContentValues contentValues, String selection, String[] selectionArgs) {
+        return db.update(Database.ChecklistItem.TABLE_NAME, contentValues, selection, selectionArgs);
       }
     }
 
@@ -208,15 +208,16 @@ public class Database {
         long id = db.insert(TABLE_NAME, null, contentValues);
         return ContentUris.withAppendedId(contentUri, id);
       }
-      @Override
-      public int update(ContentValues values, String whereClause, String[] whereArgs) {
-        return db.update(TABLE_NAME, values, whereClause, whereArgs);
-      }
 
       @Override
       public Cursor query(String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         // group by, having, order by
         return db.query(TABLE_NAME, projection, selection, selectionArgs, null, null, null);
+      }
+
+      @Override
+      public int update(ContentValues contentValues, String selection, String[] selectionArgs) {
+        return db.update(Database.Notification.TABLE_NAME, contentValues, selection, selectionArgs);
       }
     }
 
@@ -251,7 +252,7 @@ public class Database {
 
     Cursor query(String[] projection, String selection, String[] selectionArgs, String sortOrder);
 
-    int update(ContentValues values, String whereClause, String[] whereArgs);
+    int update(ContentValues contentValues, String selection, String[] selectionArgs);
   }
 
   private static TableHandler getTableHandler(SQLiteDatabase db, Uri contentUri) {
