@@ -19,7 +19,6 @@ package com.g11x.checklistapp.services;
 
 
 import android.content.ContentValues;
-import android.net.Uri;
 import android.util.Log;
 
 import com.g11x.checklistapp.data.Database;
@@ -33,7 +32,7 @@ public class NotificationService extends FirebaseMessagingService {
 
   private static final String TAG = "NotificationService";
 
-  public void onMessageReceived (RemoteMessage message) {
+  public void onMessageReceived(RemoteMessage message) {
     super.onMessageReceived(message);
 
     RemoteMessage.Notification notification = message.getNotification();
@@ -47,17 +46,15 @@ public class NotificationService extends FirebaseMessagingService {
     newValues.put(Database.Notification.SENT_TIME, message.getSentTime());
     String title = notification.getTitle();
     if (title != null && !title.isEmpty()) {
-      newValues.put(Database.Notification.TITLE_COLUMN, notification.getBody());
+      newValues.put(Database.Notification.TITLE_COLUMN, title);
     }
     getContentResolver().insert(
         Database.Notification.CONTENT_URI,
         newValues
     );
 
-
-
-    // TODO: Update notification view to be bound to DB and auto-reflect updates in reverse
-    //     chronological order.
+    // TODO: Provide some affordance to display the message when the app is in the foreground.
+    // See https://firebase.google.com/docs/cloud-messaging/android/receive for more details.
   }
 
 }

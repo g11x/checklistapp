@@ -51,12 +51,12 @@ public class LocalRepository extends ContentProvider {
 
   @Override
   public int delete(@NonNull Uri uri, String s, String[] strings) {
-    return 0;
+    throw new UnsupportedOperationException();
   }
 
   @Override
-  public int update(@NonNull Uri uri, ContentValues contentValues, String s, String[] strings) {
-    return 0;
+  public int update(@NonNull Uri uri, ContentValues values, String whereClause, String[] whereArgs) {
+    return Database.update(openHelper.getWritableDatabase(), uri, values, whereClause, whereArgs);
   }
 
   // Helper class that actually creates and manages the provider's underlying data repository.

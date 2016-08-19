@@ -45,6 +45,10 @@ public class Database {
     return Database.getTableHandler(db, uri).insert(contentValues);
   }
 
+  public static int update(SQLiteDatabase db, Uri uri, ContentValues values, String whereClause, String[] whereArgs) {
+    return Database.getTableHandler(db, uri).update(values, whereClause, whereArgs);
+  }
+
   /**
    * Information representing the ImportantInformation content..
    */
@@ -86,6 +90,11 @@ public class Database {
                           String sortOrder) {
         return db.query(Database.ImportantInformation.TABLE_NAME, projection, selection,
             selectionArgs, null, null, sortOrder);
+      }
+
+      @Override
+      public int update(ContentValues values, String whereClause, String[] whereArgs) {
+        throw new UnsupportedOperationException();
       }
     }
 
@@ -142,6 +151,11 @@ public class Database {
       public Cursor query(String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         return null;
       }
+
+      @Override
+      public int update(ContentValues values, String whereClause, String[] whereArgs) {
+        throw new UnsupportedOperationException();
+      }
     }
 
     private static Uri createContentUri() {
@@ -162,8 +176,16 @@ public class Database {
 
     public static final String TITLE_COLUMN = "title";
     public static final String MESSAGE_COLUMN = "message";
-    public static final String READ_COLUMN = "item_hash";
+    public static final String READ_COLUMN = "read";
     public static final String SENT_TIME = "sent_time";
+
+    public static final String[] PROJECTION = {
+        Database.ID_COLUMN,
+        SENT_TIME,
+        READ_COLUMN,
+        TITLE_COLUMN,
+        MESSAGE_COLUMN
+    };
 
     /**
      * SQL statement for creating this table.
@@ -183,13 +205,18 @@ public class Database {
 
       @Override
       public Uri insert(ContentValues contentValues) {
-        long id = db.insert(Database.ChecklistItem.TABLE_NAME, null, contentValues);
+        long id = db.insert(TABLE_NAME, null, contentValues);
         return ContentUris.withAppendedId(contentUri, id);
+      }
+      @Override
+      public int update(ContentValues values, String whereClause, String[] whereArgs) {
+        return db.update(TABLE_NAME, values, whereClause, whereArgs);
       }
 
       @Override
       public Cursor query(String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        return null;
+        // group by, having, order by
+        return db.query(TABLE_NAME, projection, selection, selectionArgs, null, null, null);
       }
     }
 
@@ -223,6 +250,8 @@ public class Database {
     Uri insert(ContentValues contentValues);
 
     Cursor query(String[] projection, String selection, String[] selectionArgs, String sortOrder);
+
+    int update(ContentValues values, String whereClause, String[] whereArgs);
   }
 
   private static TableHandler getTableHandler(SQLiteDatabase db, Uri contentUri) {
