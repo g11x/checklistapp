@@ -211,7 +211,6 @@ public class Database {
 
       @Override
       public Cursor query(String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        // group by, having, order by
         return db.query(TABLE_NAME, projection, selection, selectionArgs, null, null, null);
       }
 
@@ -223,11 +222,14 @@ public class Database {
 
     private static Uri createContentUri() {
       // TODO: Figure out how to use getString(R.string.content_provider_authority) here.
-      return Uri.parse("content://" + COM_G11X_CHECKLISTAPP_PROVIDER + "/" + Database.NAME + "/" + TABLE_NAME);
+      return Uri.parse("content://" + COM_G11X_CHECKLISTAPP_PROVIDER + "/" + Database.NAME + "/" +
+          TABLE_NAME);
     }
 
     private static String createCreateTableSql() {
-      return "create table " + TABLE_NAME + " (_ID integer primary key, " + TITLE_COLUMN + " text, " + MESSAGE_COLUMN + " text, " + READ_COLUMN + " boolean, " + SENT_TIME + " integer);";
+      return "create table " + TABLE_NAME + " (" + ID_COLUMN + " integer primary key, " +
+          TITLE_COLUMN + " text, " + MESSAGE_COLUMN + " text, " + READ_COLUMN + " boolean, " +
+          SENT_TIME + " integer);";
     }
   }
 
