@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ import com.g11x.checklistapp.language.Language;
  * Displays a language selection screen to allow the user to override the system defaults.
  */
 public class LanguageActivity extends NavigationActivity {
+  private static final String LOG_TAG = "LanguageActivity";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,7 @@ public class LanguageActivity extends NavigationActivity {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+      holder.language = dataSet[position];
       holder.textView.setText(dataSet[position].getNativeDescription());
     }
 
@@ -70,6 +73,7 @@ public class LanguageActivity extends NavigationActivity {
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
       private TextView textView;
+      private Language language;
       ViewHolder(final CardView view) {
         super(view);
         textView = (TextView)view.findViewById(R.id.checkbox);
@@ -78,7 +82,8 @@ public class LanguageActivity extends NavigationActivity {
 
       @Override
       public void onClick(View view) {
-
+        Log.w(LOG_TAG, "Setting language to: " + language);
+        AppPreferences.setLanguageOverride(view.getContext(), language);
       }
     }
   }
