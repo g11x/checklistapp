@@ -35,7 +35,7 @@ import java.util.Locale;
 public class PreferredLanguageSupport {
   public static void applyPreferredLanguage(@NonNull Context context) {
     Language language = AppPreferences.getLanguageOverride(context);
-    if (language != null) {
+    if (language != null && language != Language.SystemDefault) {
       applyPreferredDefaultLanguage(context, language);
     } else {
       unsetPreferredDefaultLanguage(context);

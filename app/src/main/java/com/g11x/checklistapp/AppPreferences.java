@@ -56,7 +56,7 @@ public class AppPreferences {
                                          @Nullable Language language) {
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
     SharedPreferences.Editor editor = sp.edit();
-    if (language == null) {
+    if (language == null || language.equals(Language.SystemDefault)) {
       editor.remove(PREF_PREFERRED_LANGUAGE);
     } else {
       editor.putString(PREF_PREFERRED_LANGUAGE, language.name());
@@ -65,7 +65,7 @@ public class AppPreferences {
   }
 
   /**
-   * Returns the language override or null when not set.
+   * Returns the language override setting.
    *
    * @param context component context used to retrieve shared preferences
    */
@@ -74,7 +74,7 @@ public class AppPreferences {
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
     String value = sp.getString(PREF_PREFERRED_LANGUAGE, null);
     if (value == null) {
-      return null;
+      return Language.SystemDefault;
     }
     return Language.valueOf(value);
   }

@@ -1,17 +1,31 @@
 package com.g11x.checklistapp;
 
+import android.content.ContentValues;
+import android.database.ContentObserver;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.g11x.checklistapp.data.Database;
 import com.g11x.checklistapp.data.Notification;
 
-public class NotificationListActivity extends NavigationActivity {
+public class NotificationListActivity extends NavigationActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+
+  private NotificationAdapter adapter;
+  private RecyclerView mRecyclerView;
+  private ContentObserver notificationContentObserver;
 
   @Override
   protected int getNavDrawerItemIndex() {
@@ -22,7 +36,7 @@ public class NotificationListActivity extends NavigationActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_notification_list);
-    RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+    mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
     // use this setting to improve performance if you know that changes
     // in content do not change the layout size of the RecyclerView
@@ -40,58 +54,86 @@ public class NotificationListActivity extends NavigationActivity {
 
       @Override
       public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-        // TODO: Remove item from DB (when db exists).
+        long id = ((NotificationAdapter.ViewHolder) viewHolder).id;
+
+        ContentValues newValues = new ContentValues();
+        newValues.put(Database.Notification.READ_COLUMN, true);
+
+        getContentResolver().update(
+            Database.Notification.CONTENT_URI,
+            newValues,
+            Database.ID_COLUMN + " = " + id,
+            null
+        );
       }
     });
     helper.attachToRecyclerView(mRecyclerView);
+    adapter = new NotificationAdapter(null);
+    mRecyclerView.setAdapter(adapter);
 
-    // TODO: Replace dataset with db cursor.
-    Notification[] dataset = new Notification[]{
-        new Notification("message 1", null),
-        new Notification("message 2", "I'm a title!"),
-        new Notification("message C", "I can't count :("),
-        new Notification("I like fish, fishy fishy fish.", null)
-    };
-    RecyclerView.Adapter mAdapter = new NotificationAdapter(dataset);
-    mRecyclerView.setAdapter(mAdapter);
+    getSupportLoaderManager().initLoader(0, null, this);
   }
 
-  public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.ViewHolder> {
-    private final Notification[] mDataset;
+  @Override
+  protected void onStart() {
+    super.onStart();
+    if (adapter != null) {
+      adapter.notifyDataSetChanged();
+    }
+  }
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
-    public class ViewHolder extends RecyclerView.ViewHolder {
-      // each data item is just a string in this case
-      public final TextView mTitle;
-      public final TextView mBody;
-
-      public ViewHolder(View v) {
-        super(v);
-        mTitle = (TextView) v.findViewById(R.id.notification_title);
-        mBody = (TextView) v.findViewById(R.id.notification_body);
+  @Override
+  public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+    if (notificationContentObserver != null) {
+      getContentResolver().unregisterContentObserver(notificationContentObserver);
+    }
+    notificationContentObserver = new ContentObserver(new Handler()) {
+      @Override
+      public void onChange(boolean selfChange) {
+        getSupportLoaderManager().restartLoader(0, null, NotificationListActivity.this);
+        super.onChange(selfChange);
       }
+
+      @Override
+      public void onChange(boolean selfChange, Uri uri) {
+        getSupportLoaderManager().restartLoader(0, null, NotificationListActivity.this);
+        super.onChange(selfChange, uri);
+      }
+    };
+    Loader<Cursor> cursor = new CursorLoader(NotificationListActivity.this,
+        Database.Notification.CONTENT_URI,
+        Database.Notification.PROJECTION, "NOT " + Database.Notification.READ_COLUMN, null, Database.Notification.SENT_TIME);
+    getContentResolver().registerContentObserver(Database.Notification.CONTENT_URI, true, notificationContentObserver);
+    return cursor;
+  }
+
+  @Override
+  public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+    adapter.swapCursor(cursor);
+  }
+
+  @Override
+  public void onLoaderReset(Loader<Cursor> loader) {
+    adapter.swapCursor(null);
+  }
+
+  private static class NotificationAdapter extends RecyclerViewCursorAdapter<NotificationAdapter.ViewHolder> {
+
+    NotificationAdapter(Cursor cursor) {
+      super(cursor);
     }
 
-    // Provide a suitable constructor (depends on the kind of dataset)
-    public NotificationAdapter(Notification[] myDataset) {
-      mDataset = myDataset;
-    }
-
-    // Create new views (invoked by the layout manager)
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-      // create a new view
-      View v = LayoutInflater.from(parent.getContext())
+      View layout = LayoutInflater.from(parent.getContext())
           .inflate(R.layout.view_notification_item, parent, false);
-      return new ViewHolder(v);
+      return new ViewHolder(layout);
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-      Notification n = mDataset[position];
+    public void onBindViewHolder(ViewHolder holder, Cursor cursor) {
+      Notification n = Notification.fromCursor(cursor);
+      holder.id = n.getId();
       holder.mBody.setText(n.getMessage());
       String title = n.getTitle();
       if (title != null && !title.isEmpty()) {
@@ -102,10 +144,16 @@ public class NotificationListActivity extends NavigationActivity {
       }
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
-    @Override
-    public int getItemCount() {
-      return mDataset.length;
+    static class ViewHolder extends RecyclerView.ViewHolder {
+      public final TextView mTitle;
+      public final TextView mBody;
+      public long id;
+
+      public ViewHolder(View v) {
+        super(v);
+        mTitle = (TextView) v.findViewById(R.id.notification_title);
+        mBody = (TextView) v.findViewById(R.id.notification_body);
+      }
     }
   }
 }

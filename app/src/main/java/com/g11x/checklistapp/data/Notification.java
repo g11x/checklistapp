@@ -17,14 +17,21 @@
 
 package com.g11x.checklistapp.data;
 
-import android.support.annotation.Nullable;
+import android.database.Cursor;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 /**
  * Stored representation of a Firebase notification.
  */
-
 public class Notification {
+  @NonNull
+  private final Long id;
+
+  @NonNull
+  private final Long sentTime;
+
+  private final boolean read;
 
   @Nullable
   private final String title;
@@ -32,9 +39,46 @@ public class Notification {
   @NonNull
   private final String message;
 
-  public Notification(@NonNull String message, @Nullable String title) {
+  public Notification(
+      @NonNull Long id,
+      @NonNull Long sentTime,
+      boolean read,
+      @Nullable String title,
+      @NonNull String message) {
+    this.id = id;
+    this.sentTime = sentTime;
+    this.read = read;
     this.message = message;
     this.title = title;
+  }
+
+  /**
+   * Convenience method to convert a {@code Cursor} to {@code Notification}. Field order found in
+   * {@code com.g11x.checklistapp.data.Database.Notification.PROJECTION}.
+   */
+  public static
+  @NonNull
+  Notification fromCursor(Cursor cursor) {
+    return new Notification(
+        cursor.getLong(0),
+        cursor.getLong(1),
+        cursor.getShort(2) > 0,
+        cursor.getString(3),
+        cursor.getString(4));
+  }
+
+  @NonNull
+  public Long getId() {
+    return id;
+  }
+
+  @NonNull
+  public Long getSentTime() {
+    return sentTime;
+  }
+
+  public boolean isRead() {
+    return read;
   }
 
   @Nullable
