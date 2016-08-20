@@ -75,7 +75,6 @@ public class ChecklistActivity extends NavigationActivity {
             Intent intent = new Intent(ChecklistActivity.this, ChecklistItemActivity.class);
             intent.putExtra("databaseRefUrl", itemHolder.databaseRefUrl);
             startActivity(intent);
-            startActivity(intent);
           }
         });
       }
