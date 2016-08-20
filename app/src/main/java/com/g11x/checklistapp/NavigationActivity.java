@@ -76,7 +76,9 @@ public abstract class NavigationActivity extends AppCompatActivity {
     baseLanguageChangeListener = new AppPreferences.LanguageChangeListener(NavigationActivity.this) {
       @Override
       void onChanged(@NonNull Language newLangauge) {
-        thisActivity.recreate();
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
         onLanguageChange(newLangauge);
       }
     };
