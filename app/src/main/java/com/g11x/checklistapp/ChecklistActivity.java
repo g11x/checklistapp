@@ -75,7 +75,7 @@ public class ChecklistActivity extends NavigationActivity implements LoaderManag
       @Override
       protected void populateViewHolder(
           final ChecklistItemHolder itemHolder, ChecklistItem model, final int position) {
-        boolean isDone = isDoneMapping.get(model.getHash());
+        Boolean isDone = isDoneMapping.get(model.getHash());
         if (isDoneMapping.get(model.getHash()) == null) {
           isDone = false;
         }
