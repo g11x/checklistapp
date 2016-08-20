@@ -2,12 +2,14 @@
   "checklists": {
     "basic": [
       {
-        "description": "In the United States, a Social Security number is a number assigned to U.S. Citizens, permanent residents, and temporary (working) residents. The primary purpose is to track individuals for taxes and identification. A Social Security lists your name and Social Security number, and is often necessary for obtaining other items, such as a state identification card. People don't usually carry their Social Security cards with them everywhere, since they are not usually necessary on a day-to-day basis.",
-        "directionsUrl": "https://www.google.com/maps/place/US+Social+Security+Administration/@30.3243715,-97.7028468,17z/data=!3m1!4b1!4m5!3m4!1s0x8644ca20295a7e57:0x849908e001c1d623!8m2!3d30.3243715!4d-97.7006581",
-        "email": "",
-        "location": "US Social Security Administration, 1029 Camino La Costa, Austin, TX 78752",
-        "name": "Get Social Security card",
-        "phone": "1-800-772-1213",
+        "description": "Refugee Services of Texas (RST) is an organization welcomes refugees to the Central Texas region and supports them in integrating and thriving in their new communities. The RST's Cultural Orientation training explains the process of resettlement in the U.S. You will discuss differences that you'll encounter in the U.S. and get your questions answered.",
+        "directionsUrl": "https://www.google.com/maps/place/Refugee+Services+of+Texas-Austin+Service+Center/@30.3345882,-97.7085801,17z/data=!4m15!1m9!4m8!1m0!1m6!1m2!1s0x8644ca32d8c42dab:0xcd4f2e604bd12a5f!2sRefugee+Services+of+Texas-Austin+Service+Center,+500+E+St+Johns+Ave+%231.280,+Austin,+TX+78752!2m2!1d-97.7063914!2d30.3345882!3m4!1s0x8644ca32d8c42dab:0xcd4f2e604bd12a5f!8m2!3d30.3345882!4d-97.7063914",
+        "email": "austin@rstx.org",
+        "location": "500 East Saint Johns Avenue, Suite 1.280",
+        "name": "Cultural Orientation at RST",
+        "phone": "1-512-472-9472",
+        "when": "Wednesday and Thursday",
+        "frequency": "Only once",
         "alt": {
           "uk": {
             "description": "фвіло а відліфдлафі фідлвдао Дфдівлцшут Флфвдлар млвлщіот а вілід івшів ідд ашуцтцт м іщфщяжзсь вшщфщ утуіщщц утвлсмщщм уцутіщшвщіва вітівлвіщшівар автмщмщлм мфшшщ ц цутуц щш тів івщіщівщшугу утклс мшм т цщу м щю л щ фі шч а тущ  цтуцда ащшв шіщоіщ авіщі луц цущ омьжвфілдві щшвідлів щццутлал щш аівтвіадл ю",
@@ -16,12 +18,14 @@
         }
       },
       {
-        "description": "State identification cards, or state ID cards, are used to identify people for everyday tasks such as financial transactions and age verification. In order to obtain a state ID card in Texas, you will need a Social Security card. You should carry your state ID card with you every day.",
-        "directionsUrl": "https://www.google.com/maps/place/Texas+Department+of+Public+Safety/@30.3264658,-97.7255281,17z/data=!3m1!4b1!4m5!3m4!1s0x8644ca46dcf0be55:0x1a342c9d9863d05b!8m2!3d30.3264658!4d-97.7233394",
+        "description": "In the United States, a Social Security number is a number assigned to U.S. Citizens, permanent residents, and temporary (working) residents. The primary purpose is to track individuals for taxes and identification. A Social Security lists your name and Social Security Number (SSN), and is often necessary for obtaining other items, such as a state identification card. Memorize your SSN and the SSN of each member of yor family. Leave the card at home unless you are going to an appointment that requires it. Don't share this number unless it's appropriate. Appropriate uses include showing your employer when you get a job, opening a bank account, and getting a driver's license.",
+        "directionsUrl": "https://www.google.com/maps/place/US+Social+Security+Administration/@30.3243715,-97.7028468,17z/data=!3m1!4b1!4m5!3m4!1s0x8644ca20295a7e57:0x849908e001c1d623!8m2!3d30.3243715!4d-97.7006581",
         "email": "",
-        "location": "Texas Department of Public Safety 5805 N Lamar Blvd, Austin, TX 78752",
-        "name": "Get state identification card",
-        "phone": "1-512-424-2000",
+        "location": "US Social Security Administration, 1029 Camino La Costa, Austin, TX 78752",
+        "name": "Apply for Social Security Card",
+        "phone": "1-800-772-1213",
+        "when": "Monday through Friday, 9 A.M. to 4 P.M.",
+        "frequency": "Only once",
         "alt": {
           "uk": {
             "description": "фівлода цшщку оьдцу щшмів тоукцшщтвм  щшвіиащшцутошщ йатумрдщгуцжолукптом сщш івф щфцрок шгщзущгу тф івофвт ф івшщтло аф фщшук оуцфрош івгавіощ лтолур гуцагрцтщу г9уцагріоато лів шиіг шщ цуі цщшцу щшцудл тл оіва шщівт олац ошшгцутцут ацщш цшщгщ ц =цутрт",
@@ -30,12 +34,14 @@
         }
       },
       {
-        "description": "In the United States, if you are looking for employment, but do not currently have a job, you can often collect 'unemployment benefits' for a short period of time. These payments are provided by the state government, and they help you pay for basic needs until you have a job to support yourself.",
-        "directionsUrl": "https://www.google.com/maps/place/Texas+Workforce+Commission/@30.2819065,-97.7135026,17z/data=!3m1!4b1!4m5!3m4!1s0x8644b5e91d5120d7:0x2fe0ab2c19a88990!8m2!3d30.2819065!4d-97.7113139",
-        "email": "laborinfo@twc.state.tx.us",
-        "location": "Texas Workforce Commission 2810 E Martin Luther King Jr Blvd, Austin, TX 78702",
-        "name": "Submit information to unemployment office",
-        "phone": "1-512-480-8101",
+        "name": "Enroll in English classes",
+        "description": "English classes are provided for free, and they are an important step in getting a good job. You should take English classes whether or not you already speak English. Childcare is provided during the summer.",
+        "directionsUrl": "https://www.google.com/maps/place/Central+Presbyterian+Church/@30.2697008,-97.7426883,17z/data=!3m1!4b1!4m5!3m4!1s0x8644b5a737d121cb:0x93c0baef8e1b59d8!8m2!3d30.2697008!4d-97.7404996",
+        "email": "iact@interfaithtexas.org",
+        "phone": "1-512-386-9145",
+        "phoneExtension": "304",
+        "when": "Monday through Thursday, 9 A.M. to noon",
+        "frequency": "Every week until you have a job",
         "alt": {
           "uk": {
             "description": "фліваофлц укфцлджф щфівтолцу ктшщітвф имрн пцуйийуцоштп гз9гшцуийцу пщшоцшгз міфмвш згцтош фшцз ромфош злдіфдвла щцфулофлжаоіш фцуатоиукифвмщозфігшв оимврщшг іфв отфт цоудк ошфуцаотофвіофгшцуротфцу аиофц уоало іфвадл орфівао фцрофцутлфолфлтфівмло фівол олфіважлдфів алоцуоттцуитмв",
@@ -44,12 +50,12 @@
         }
       },
       {
-        "description": "The Capital Metro system provides public transportation via bus and sometimes light rail anywhere within Austin city limits. When you board a bus or train, you will be required to either pay for the ride, or show a bus pass, so you should carry a bus pass with you at all times.",
-        "directionsUrl": "https://www.google.com/maps/place/Capital+Metro+Transit+Store/@30.271223,-97.7462346,17z/data=!3m1!4b1!4m5!3m4!1s0x8644b508420e242d:0x8df332980f4b004b!8m2!3d30.271223!4d-97.7440459",
-        "email": "customer.service@capmetro.org",
-        "location": "Capital Metro 209 West 9th Street, Austin, TX 78701",
-        "name": "Buy a bus pass",
-        "phone": " 1-512-389-7454",
+        "name": "Get your health checked",
+        "description": "Refugees get a free health check and immunizations. The immunizations are required to enroll your children in public school. You will be tested for serious diseases to determine whether you need important medical treatment.",
+        "directionsUrl": "https://www.google.com/maps/place/Refugee+Health+Screening+Clinic/@30.2811033,-97.7658545,17z/data=!3m1!4b1!4m5!3m4!1s0x8644b542089c7641:0x61514e7fc51e6f88!8m2!3d30.2811033!4d-97.7636658",
+        "phone": "1-512-972-6210",
+        "when": "Monday through Friday, 9 A.M. to 4 P.M.",
+        "frequency": "Only once",
         "alt": {
           "uk": {
             "description": "фівж лолцдоу цуорфпшг щриіщ шзячшщо влі згщяіхщ0-щз 2ойлу аовіфшгрцоршй2и3ршггшрвіфмиофів гіфвощцоуфгшафщфіуо іфошврао віфт цуирк йзшгцуреииф зівирфівршпщгцфуркицуфгшзіу фуоифцушозафз шцгуа ифцуаоштцу гзцуфграшифуцкеизш фпфц иуирфуцуфоа фцщц нпуцфируцфдцуф гг9уцф пифптфіщшшяващя ивгяівгуци цуйий",
@@ -58,16 +64,34 @@
         }
       },
       {
-        "description": "In the United States, public school is provided for children from 5 to 18 years of age. In Austin, the school year runs from September until June. In order to attend public school, children must be registered at the Austin Independent School District office in downtown Austin.",
-        "directionsUrl": "https://www.google.com/maps/place/Austin+Independent+School+District/@30.271564,-97.7587266,17z/data=!3m1!4b1!4m5!3m4!1s0x8644b513a2be5731:0xb4f1cb61acd29991!8m2!3d30.271564!4d-97.7565379",
-        "email": "",
-        "location": "Austin Independent School District 1111 W 6th Street Austin, TX 78703",
+        "description": "In the United States, school is not only free for children from 5 to 18 years of age, it is a legal requirement. In Austin, the school year runs from September until June. In order to attend public school, children must be registered at the Austin Independent School District (AISD) office in downtown Austin. When you enroll, be sure to bring your I-94 or visa, your child's vaccination records from the Refugee Health Clinic, a copy of your apartment lease, your AISD online registration form, and your school lunch application. Your kids will go to the school based on where you live. If you have questions, you can contact Maria Arabbo of AISD.",
+        "directionsUrl": "https://www.google.com/maps/place/Austin+ISD+Baker+Professional+Development+Center/@30.3040718,-97.737662,17z/data=!3m1!4b1!4m5!3m4!1s0x8644ca7945a02161:0x93640edf531e06e5!8m2!3d30.3040718!4d-97.7354733",
+        "email": "maria.arabbo@austinisd.org",
+        "location": "Austin ISD Baker Professional Development Center, 3908 Avenue B, Austin, TX 78751",
         "name": "Enroll children in school",
-        "phone": "1-512-414-1700",
+        "phone": "1-512-414-0545",
+        "when": "Monday through Friday, 9 A.M. to 4 P.M.",
+        "frequency": "Only once",
         "alt": {
           "uk": {
             "description": "фол жлдуцфк олфуц олфвіолп ігшзщфутцл офру ощкуц щшофу і пфіо офіолажфіжл алофцургшпиукф ддлтфіпщшфуц офтулц жлфіу щофуі офутлодуіжлфо цуощшфцуолфцутифуцоажфцу отфцуорфоц удолифуо фуцорфу тфцуло жжуо ффтдлуіди оуфікпзгрфкпш ортіолмтяогяшруіо пдлфол пов аофіо фвілодаорф ушще уолфддоавл",
             "name": "олфі л ілді цлроу"
+          }
+        }
+      },
+      {
+        "description": "One of the most important keys to stability and success in the U.S. is having a good job and steady finances. RST's Employment and Financial assistance program provides you with the information you need to succeed in your work.",
+        "directionsUrl": "https://www.google.com/maps/place/Capital+Metro+Transit+Store/@30.271223,-97.7462346,17z/data=!3m1!4b1!4m5!3m4!1s0x8644b508420e242d:0x8df332980f4b004b!8m2!3d30.271223!4d-97.7440459",
+        "email": "austin@rstx.org",
+        "location": "500 East Saint Johns Avenue, Suite 1.280",
+        "name": "Enroll in Employment and Financial Assistance Program",
+        "phone": "1-512-472-9472",
+        "when": "Wednesdays 1 P.M. to 3 P.M.",
+        "frequency": "Only once",
+        "alt": {
+          "uk": {
+            "description": "фівж лолцдоу цуорфпшг щриіщ шзячшщо влі згщяіхщ0-щз 2ойлу аовіфшгрцоршй2и3ршггшрвіфмиофів гіфвощцоуфгшафщфіуо іфошврао віфт цуирк йзшгцуреииф зівирфівршпщгцфуркицуфгшзіу фуоифцушозафз шцгуа ифцуаоштцу гзцуфграшифуцкеизш фпфц иуирфуцуфоа фцщц нпуцфируцфдцуф гг9уцф пифптфіщшшяващя ивгяівгуци цуйий",
+            "name": "лофі лфцутлждкцуф жолд лів тоцфу одшуцо куц"
           }
         }
       }
