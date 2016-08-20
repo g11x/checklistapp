@@ -23,6 +23,7 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -35,6 +36,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.g11x.checklistapp.language.Language;
 import com.g11x.checklistapp.language.PreferredLanguageSupport;
 
 import java.util.ArrayList;
@@ -73,10 +75,17 @@ public abstract class NavigationActivity extends AppCompatActivity {
     final Activity thisActivity = NavigationActivity.this;
     baseLanguageChangeListener = new AppPreferences.LanguageChangeListener(NavigationActivity.this) {
       @Override
-      public void onChanged(String newValue) {
-        thisActivity.recreate();
+      void onChanged(@NonNull Language newLangauge) {
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
+        onLanguageChange(newLangauge);
       }
     };
+  }
+
+  public void onLanguageChange(Language newLanguage) {
+
   }
 
   @Override

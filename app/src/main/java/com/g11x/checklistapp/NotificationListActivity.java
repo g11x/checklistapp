@@ -94,6 +94,8 @@ public class NotificationListActivity extends NavigationActivity implements Load
         super.onChange(selfChange);
       }
 
+
+
       @Override
       public void onChange(boolean selfChange, Uri uri) {
         getSupportLoaderManager().restartLoader(0, null, NotificationListActivity.this);

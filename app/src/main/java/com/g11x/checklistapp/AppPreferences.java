@@ -25,7 +25,6 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.g11x.checklistapp.language.Language;
-import com.g11x.checklistapp.language.PreferredLanguageSupport;
 
 /**
  * Simplified class to access the app's {@link android.content.SharedPreferences}.
@@ -82,12 +81,17 @@ public class AppPreferences {
   /**
    * Custom shared preference listener for the preferred language property.
    */
-  public static abstract class LanguageChangeListener {
+  static abstract class LanguageChangeListener {
     private final SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
       @Override
       public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
         if (s.equals(PREF_PREFERRED_LANGUAGE)) {
-          onChanged(sharedPreferences.getString(s, null));
+          String value = sharedPreferences.getString(s, null);
+          if (value == null) {
+            onChanged(Language.SystemDefault);
+          } else {
+            onChanged(Language.valueOf(value));
+          }
         }
       }
     };
@@ -97,12 +101,12 @@ public class AppPreferences {
       sp.registerOnSharedPreferenceChangeListener(listener);
     }
 
-    public void unregister(@NonNull Context context) {
+    void unregister(@NonNull Context context) {
       SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
       sp.unregisterOnSharedPreferenceChangeListener(listener);
     }
 
-    public abstract void onChanged(String newValue);
+    abstract void onChanged(@NonNull Language newLangauge);
   }
 
 }
