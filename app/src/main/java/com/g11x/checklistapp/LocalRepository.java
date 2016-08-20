@@ -46,7 +46,10 @@ public class LocalRepository extends ContentProvider {
   @Nullable
   @Override
   public Uri insert(@NonNull Uri uri, ContentValues contentValues) {
-    return Database.insert(openHelper.getWritableDatabase(), uri, contentValues);
+    Uri insertUri = Database.insert(openHelper.getWritableDatabase(), uri, contentValues);
+    getContext().getContentResolver().notifyChange(uri, null);
+    getContext().getContentResolver().notifyChange(insertUri, null);
+    return insertUri;
   }
 
   @Override
@@ -56,7 +59,9 @@ public class LocalRepository extends ContentProvider {
 
   @Override
   public int update(@NonNull Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
-    return Database.update(openHelper.getWritableDatabase(), uri, contentValues, selection, selectionArgs);
+    int updateValue = Database.update(openHelper.getWritableDatabase(), uri, contentValues, selection, selectionArgs);
+    getContext().getContentResolver().notifyChange(uri, null);
+    return updateValue;
   }
 
   // Helper class that actually creates and manages the provider's underlying data repository.

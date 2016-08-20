@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -36,7 +37,6 @@ import com.google.firebase.database.FirebaseDatabase;
 public class ChecklistActivity extends NavigationActivity {
 
   private FirebaseRecyclerAdapter<ChecklistItem, ChecklistItemHolder> checklistAdapter;
-  private AppPreferences.LanguageChangeListener languageChangeListener;
   private Language language;
 
   @Override
@@ -50,13 +50,6 @@ public class ChecklistActivity extends NavigationActivity {
     setContentView(R.layout.activity_checklist);
 
     language = AppPreferences.getLanguageOverride(this);
-    languageChangeListener = new AppPreferences.LanguageChangeListener(this) {
-
-      @Override
-      public void onChanged(String newValue) {
-        ChecklistActivity.this.onLanguageChange(newValue);
-      }
-    };
 
     DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference()
         .child("checklists")
@@ -91,6 +84,10 @@ public class ChecklistActivity extends NavigationActivity {
   }
 
   @Override
+  public void onLanguageChange(Language newLanguage) {
+    language = newLanguage;
+  }
+
   protected void onStart() {
     super.onStart();
     // Need to populate done status at onStart as well.
@@ -105,15 +102,10 @@ public class ChecklistActivity extends NavigationActivity {
     }
   }
 
-  private void onLanguageChange(String newValue) {
-    language = Language.valueOf(newValue);
-  }
-
   @Override
   protected void onDestroy() {
     super.onDestroy();
     checklistAdapter.cleanup();
-    languageChangeListener.unregister(this);
   }
 
   public static class ChecklistItemHolder extends RecyclerView.ViewHolder {
