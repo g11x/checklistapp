@@ -17,6 +17,7 @@
 
 package com.g11x.checklistapp;
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -37,6 +38,8 @@ import com.google.firebase.database.ValueEventListener;
 public class ChecklistItemActivity extends AppCompatActivity {
 
   private ChecklistItem checklistItem;
+  private ToggleButton isDone;
+  private DatabaseReference databaseRef;
   private Language language;
 
   @Override
@@ -85,8 +88,8 @@ public class ChecklistItemActivity extends AppCompatActivity {
       }
     });
 
-    ToggleButton isDone = (ToggleButton) findViewById(R.id.doneness);
-    isDone.setChecked(checklistItem.isDone());
+    isDone = (ToggleButton) findViewById(R.id.doneness);
+    isDone.setChecked(checklistItem.isDone(getContentResolver()));
     isDone.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -96,7 +99,8 @@ public class ChecklistItemActivity extends AppCompatActivity {
   }
 
   private void onClickIsDone() {
-    checklistItem.setDone(!checklistItem.isDone());
+    ContentResolver contentResolver = getContentResolver();
+    checklistItem.setDone(contentResolver, !checklistItem.isDone(contentResolver));
   }
 
   private void onClickGetDirections() {

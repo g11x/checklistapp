@@ -17,6 +17,9 @@
 
 package com.g11x.checklistapp.data;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 
@@ -35,6 +38,15 @@ public class ChecklistItem {
   private String email;
   private String phone;
   private Uri directions;
+  private String hash;
+
+  public static final String[] PROJECTION = {
+      Database.ID_COLUMN,
+      Database.ChecklistItem.ITEM_HASH_COLUMN,
+      Database.ChecklistItem.DONE_COLUMN,
+  };
+  public static final int ITEM_HASH_COLUMN_INDEX = 1;
+  public static final int DONE_COLUMN_INDEX = 2;
   private Map<String, Map<String, String>> alt;
   private boolean isDone;
 
@@ -42,9 +54,29 @@ public class ChecklistItem {
     // Default constructor required for calls to DataSnapshot.getValue(ChecklistItem.class)
   }
 
+  private ChecklistItem(
+      String name, String description, String location, String directionsUrl, String email,
+      String phone) {
+    this.name = name;
+    this.description = description;
+    this.location = location;
+    this.directionsUrl = directionsUrl;
+    this.email = email;
+    this.phone = phone;
+  }
+
   @SuppressWarnings("WeakerAccess")
   public String getName() {
     return name;
+  }
+
+  private Cursor getCursorForItem(ContentResolver contentResolver) {
+    return contentResolver.query(
+        Database.ChecklistItem.CONTENT_URI,
+        ChecklistItem.PROJECTION,
+        Database.ChecklistItem.ITEM_HASH_COLUMN + " = ?",
+        new String[]{getHash()},
+        null);
   }
 
   public String getName(@Nullable Language language) {
@@ -75,8 +107,30 @@ public class ChecklistItem {
     return isDone;
   }
 
-  public void setDone(boolean done) {
-    isDone = done;
+  public boolean isDone(ContentResolver contentResolver) {
+    Cursor cursor = getCursorForItem(contentResolver);
+    int done = 0;
+    if (cursor.moveToFirst()) {
+      done = cursor.getInt(ChecklistItem.DONE_COLUMN_INDEX);
+    }
+    return done != 0;
+  }
+
+  public void setDone(ContentResolver contentResolver, boolean done) {
+    ContentValues newValues = new ContentValues();
+    newValues.put(Database.ChecklistItem.ITEM_HASH_COLUMN, getHash());
+    newValues.put(Database.ChecklistItem.DONE_COLUMN, done);
+
+    Cursor cursor = getCursorForItem(contentResolver);
+
+    if (cursor.moveToFirst()) {
+      contentResolver.update(Database.ChecklistItem.CONTENT_URI, newValues,
+          Database.ChecklistItem.ITEM_HASH_COLUMN + " = ?",
+          new String[] { getHash() }
+      );
+    } else {
+      contentResolver.insert(Database.ChecklistItem.CONTENT_URI, newValues);
+    }
   }
 
   @SuppressWarnings("unused")
@@ -133,6 +187,13 @@ public class ChecklistItem {
       directions = Uri.parse(directionsUrl);
     }
     return directions;
+  }
+
+  public String getHash() {
+    if (hash == null) {
+      hash = String.valueOf(name.hashCode());
+    }
+    return hash;
   }
 
   @SuppressWarnings("unused")

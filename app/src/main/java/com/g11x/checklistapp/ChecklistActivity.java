@@ -18,6 +18,8 @@
 package com.g11x.checklistapp;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,6 +29,7 @@ import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.g11x.checklistapp.data.ChecklistItem;
+import com.g11x.checklistapp.data.Database;
 import com.g11x.checklistapp.language.Language;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -40,7 +43,6 @@ public class ChecklistActivity extends NavigationActivity {
   protected int getNavDrawerItemIndex() {
     return NavigationActivity.NAVDRAWER_ITEM_CHECKLIST;
   }
-
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +64,14 @@ public class ChecklistActivity extends NavigationActivity {
         databaseRef) {
 
       @Override
+      public void onBindViewHolder(ChecklistItemHolder viewHolder, int position) {
+        super.onBindViewHolder(viewHolder, position);
+      }
+
+      @Override
       protected void populateViewHolder(
           final ChecklistItemHolder itemHolder, ChecklistItem model, final int position) {
+        itemHolder.markDone(model.isDone(getContentResolver()));
         itemHolder.setText(model.getName(language));
         itemHolder.setOnClickListener(new View.OnClickListener() {
           @Override
@@ -79,8 +87,22 @@ public class ChecklistActivity extends NavigationActivity {
   }
 
   @Override
-  public void onLanguageChange(Language newLanguage)  {
+  public void onLanguageChange(Language newLanguage) {
     language = newLanguage;
+  }
+
+  protected void onStart() {
+    super.onStart();
+    // Need to populate done status at onStart as well.
+    Cursor donenessCursor = getContentResolver().query(Database.ChecklistItem.CONTENT_URI,
+        ChecklistItem.PROJECTION, null, null, null);
+    if (donenessCursor.moveToFirst()) {
+      for (int i = 0; i < donenessCursor.getCount(); i++) {
+        String itemHash = donenessCursor.getString(ChecklistItem.ITEM_HASH_COLUMN_INDEX);
+        int done = donenessCursor.getInt(ChecklistItem.DONE_COLUMN_INDEX);
+        donenessCursor.moveToNext();
+      }
+    }
   }
 
   @Override
@@ -95,6 +117,13 @@ public class ChecklistActivity extends NavigationActivity {
     public ChecklistItemHolder(View itemView) {
       super(itemView);
       view = itemView;
+    }
+
+    public void markDone(boolean done) {
+      if (done) {
+        TextView textView = (TextView) view.findViewById(R.id.info_text);
+        textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+      }
     }
 
     public void setText(String title) {
