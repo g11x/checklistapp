@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright © 2016 Google Inc.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.g11x.checklistapp.MainActivity">
+
+  <ImageView
+      android:id="@+id/imageView"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:scaleType="centerCrop"
+      android:src="@drawable/splash"
+      app:layout_constraintBottom_toBottomOf="@+id/activity_main"
+      app:layout_constraintLeft_toLeftOf="@+id/activity_main"
+      app:layout_constraintRight_toRightOf="@+id/activity_main"
+      app:layout_constraintTop_toTopOf="@+id/activity_main"
+      tools:ignore="ContentDescription"/>
+
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:layout_constraintBottom_toBottomOf="@+id/activity_main"
+      app:layout_constraintLeft_toLeftOf="@+id/activity_main"
+      app:layout_constraintRight_toRightOf="@+id/activity_main"
+      app:layout_constraintTop_toTopOf="@+id/activity_main">
+
+    <TextView
+        android:id="@+id/welcome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Welcome to Austin!"
+        android:textAppearance="@android:style/TextAppearance.Material.Headline"
+        android:textColor="@color/primary"
+        tools:targetApi="lollipop"/>
+
+    <TextView
+        style="@style/AppDescriptionTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/welcome"
+        android:padding="20dp"
+        android:text="We're happy you're here! We'd like to help you get settled in your new home, so we've put together a list of tasks to complete, and we'll send you occaisional updates from Refugee Services of Texas."
+        android:textColor="@color/primary_dark"
+        />
+  </RelativeLayout>
+
+  <Button
+      android:id="@+id/letsgo"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="10dp"
+      android:padding="20dp"
+      android:text="Let's go!"
+      app:layout_constraintBottom_toBottomOf="@+id/activity_main"
+      app:layout_constraintLeft_toLeftOf="@+id/activity_main"
+      app:layout_constraintRight_toRightOf="@+id/activity_main"/>
+</android.support.constraint.ConstraintLayout>
