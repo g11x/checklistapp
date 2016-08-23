@@ -21,4 +21,21 @@
   <string name="navdrawer_item_notifications">Повідомлення</string>
   <string name="navdrawer_item_language">Змінити мову</string>
   <string name="navdrawer_item_about">Про програму</string>
+  <string name="about">Про програму</string>
+  <string name="title_activity_notification_list">Повідомлення</string>
+  <string name="togglebutton">Перемикач</string>
+  <string name="get_directions">Як дістатись</string>
+  <string name="mark_as_not_done">Позначити як не виконане</string>
+  <string name="about_text">Код цієї програми належить \u00A9 Google</string>
+  <string name="important_information_empty">Ви можете сюди додати будь-яку важливу інформацію</string>
+  <string name="action_settings">Настройки</string>
+  <string name="app_name">RST Checklist</string>
+  <string name="get_social_security_card">Отримайте картку соціального страхування</string>
+  <string name="created_important_information_item">Додано %s</string>
+  <string name="description_text">Текст опису.</string>
+  <string name="create">Додати</string>
+  <string name="mark_as_done">Позначити як виконане</string>
+  <string name="content_not_yet_loaded">Контент ще не завантажений</string>
+  <string name="title">Назва</string>
+  <string name="apache_license_link"><a href="https://raw.githubusercontent.com/g11x/checklistapp/master/LICENSE">Ліцензія: Apache 2.0</a></string>
 </resources>
