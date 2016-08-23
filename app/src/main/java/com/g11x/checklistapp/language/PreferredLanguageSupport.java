@@ -33,6 +33,8 @@ import java.util.Locale;
  * {@link Context}.
  */
 public class PreferredLanguageSupport {
+  private static final Locale DEFAULT_LOCALE = Locale.getDefault();
+
   public static void applyPreferredLanguage(@NonNull Context context) {
     Language language = AppPreferences.getLanguageOverride(context);
     if (language != null && language != Language.SystemDefault) {
@@ -61,9 +63,9 @@ public class PreferredLanguageSupport {
     Configuration conf = resources.getConfiguration();
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) {
       //noinspection deprecation Can't remove until minSdk > 17
-      conf.locale = Locale.getDefault();
+      conf.locale = DEFAULT_LOCALE;
     } else {
-      conf.setLocale(Locale.getDefault());
+      conf.setLocale(DEFAULT_LOCALE);
     }
     resources.updateConfiguration(conf, dm);
   }
