@@ -23,9 +23,7 @@
   <string name="navdrawer_item_about">О программе</string>
   <string name="about">О программе</string>
   <string name="title_activity_notification_list">Уведомления</string>
-  <string name="togglebutton">Переключатель</string>
   <string name="get_directions">Как добраться</string>
-  <string name="mark_as_not_done">Отметить как не сделанное</string>
   <string name="about_text">Исходный код этого приложения принадлежит \u00A9 Google</string>
   <string name="important_information_empty">Вы можете сюда добавить любую важную информацию</string>
   <string name="action_settings">Настройки</string>
@@ -38,4 +36,8 @@
   <string name="content_not_yet_loaded">Содержимое пока не загружено</string>
   <string name="title">Название</string>
   <string name="apache_license_link"><a href="https://raw.githubusercontent.com/g11x/checklistapp/master/LICENSE">Лицензия: Apache 2.0</a></string>
+  <string name="send_email">электронная почта</string>
+  <string name="call">голосового вызова</string>
+  <string name="sent_from_rst_checklist_app">Направлено из приложения RST Checklist.</string>
+  <string name="complete">законченный</string>
 </resources>

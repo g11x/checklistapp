@@ -19,15 +19,26 @@ package com.g11x.checklistapp;
 
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.ContentObserver;
+import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.g11x.checklistapp.data.ChecklistItem;
+import com.g11x.checklistapp.data.Database;
 import com.g11x.checklistapp.language.Language;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,12 +46,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class ChecklistItemActivity extends AppCompatActivity {
+public class ChecklistItemActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
+  private static final int LOADER_ID = 9002;
   private ChecklistItem checklistItem;
-  private ToggleButton isDone;
-  private DatabaseReference databaseRef;
   private Language language;
+  private ContentObserver checklistContentObserver = null;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -66,11 +77,10 @@ public class ChecklistItemActivity extends AppCompatActivity {
       }
     });
 
-  }
+    getSupportLoaderManager().initLoader(LOADER_ID, null, this);
 
-  @Override
-  protected void onDestroy() {
-    super.onDestroy();
+    ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView);
+    scrollView.setFadingEdgeLength(150);
   }
 
   private void createUI() {
@@ -88,22 +98,116 @@ public class ChecklistItemActivity extends AppCompatActivity {
       }
     });
 
-    isDone = (ToggleButton) findViewById(R.id.doneness);
-    isDone.setChecked(checklistItem.isDone(getContentResolver()));
-    isDone.setOnClickListener(new View.OnClickListener() {
+    Button doneness = (Button) findViewById(R.id.doneness);
+    if (checklistItem.isDone()) {
+      doneness.setTextColor(ContextCompat.getColor(ChecklistItemActivity.this, R.color.primary));
+      doneness.setPaintFlags(doneness.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+      doneness.setText(getResources().getString(R.string.complete));
+      doneness.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_check_box_accent_24dp, 0, 0, 0);
+    } else {
+      doneness.setTextColor(Color.BLACK);
+      doneness.setPaintFlags(doneness.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+      doneness.setText(getResources().getString(R.string.mark_as_done));
+      doneness.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_check_box_outline_blank_black_24dp, 0, 0, 0);
+    }
+    doneness.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
         ChecklistItemActivity.this.onClickIsDone();
       }
     });
+
+    Button sendEmail = (Button) findViewById(R.id.send_email);
+    if (checklistItem.getEmail() != null && !checklistItem.getEmail().equals("")) {
+      sendEmail.setVisibility(View.VISIBLE);
+      sendEmail.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+          Intent intent = new Intent(Intent.ACTION_SENDTO);
+          intent.setData(Uri.parse("mailto:"));
+          intent.putExtra(Intent.EXTRA_EMAIL, checklistItem.getEmail());
+          intent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.sent_from_rst_checklist_app));
+          if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(Intent.createChooser(intent, "Send e-mail"));
+          }
+        }
+      });
+    } else {
+      sendEmail.setVisibility(View.GONE);
+    }
+
+    Button call = (Button) findViewById(R.id.call);
+    if (checklistItem.getPhone() != null && !checklistItem.getPhone().equals("")) {
+      call.setVisibility(View.VISIBLE);
+      call.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+          Intent intent = new Intent(Intent.ACTION_DIAL);
+          intent.setData(Uri.parse("tel:" + checklistItem.getPhone()));
+          if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+          }
+        }
+      });
+    } else {
+      call.setVisibility(View.GONE);
+    }
   }
 
   private void onClickIsDone() {
     ContentResolver contentResolver = getContentResolver();
-    checklistItem.setDone(contentResolver, !checklistItem.isDone(contentResolver));
+    checklistItem.setDone(contentResolver, !checklistItem.isDone());
   }
 
   private void onClickGetDirections() {
     startActivity(new Intent(Intent.ACTION_VIEW, checklistItem.getDirections()));
   }
+
+  @Override
+  public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+    if (checklistContentObserver != null) {
+      getContentResolver().unregisterContentObserver(checklistContentObserver);
+    }
+    checklistContentObserver = new ContentObserver(new Handler()) {
+      @Override
+      public void onChange(boolean selfChange) {
+        getSupportLoaderManager().restartLoader(LOADER_ID, null, ChecklistItemActivity.this);
+        super.onChange(selfChange);
+      }
+
+      @Override
+      public void onChange(boolean selfChange, Uri uri) {
+        getSupportLoaderManager().restartLoader(LOADER_ID, null, ChecklistItemActivity.this);
+        super.onChange(selfChange, uri);
+      }
+    };
+    getContentResolver().registerContentObserver(Database.ChecklistItem.CONTENT_URI, true,
+        checklistContentObserver);
+
+    return new CursorLoader(ChecklistItemActivity.this,
+        Database.ChecklistItem.CONTENT_URI,
+        ChecklistItem.PROJECTION,
+        null,
+        null,
+        null);
+  }
+
+  @Override
+  public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+    checklistItem.setDoneWithoutUpdatingContent(false);
+    while (cursor.moveToNext()) {
+      if (checklistItem.getHash().equals(cursor.getString(ChecklistItem.ITEM_HASH_COLUMN_INDEX))) {
+        boolean isDone = cursor.getInt(ChecklistItem.DONE_COLUMN_INDEX) != 0;
+        checklistItem.setDoneWithoutUpdatingContent(isDone);
+      }
+    }
+    createUI();
+  }
+
+  @Override
+  public void onLoaderReset(Loader<Cursor> loader) {
+    // don't bother telling the adapter that data has changed, just leave it be with the stale
+    // data.
+  }
+
 }

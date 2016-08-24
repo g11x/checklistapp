@@ -91,10 +91,11 @@ public class ChecklistActivity extends NavigationActivity implements LoaderManag
             startActivity(intent);
           }
         });
+        final Boolean finalIsDone = isDone;
         itemHolder.setCheckBoxOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View view) {
-            model.setDone(getContentResolver(), !model.isDone(getContentResolver()));
+            model.setDone(getContentResolver(), !finalIsDone);
           }
         });
       }
