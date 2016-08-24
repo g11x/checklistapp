@@ -23,8 +23,6 @@
   <string name="get_social_security_card">Get social security card</string>
   <string name="description_text">Description text.</string>
   <string name="get_directions">Get directions</string>
-  <string name="togglebutton">ToggleButton</string>
-  <string name="mark_as_not_done">Mark as not done</string>
   <string name="mark_as_done">Mark as done</string>
   <string name="title">Title</string>
   <string name="create">Create</string>
@@ -40,4 +38,8 @@
   <string name="important_information_empty">Put important info here…</string>
   <string name="welcome_to_austin">Welcome to Austin!</string>
   <string name="welcome_paragraph">We\'re happy you\'re here! We\'d like to help you get settled in your new home, so we\'ve put together a list of tasks to complete, and we\'ll send you occasional updates from Refugee Services of Texas.</string>
+  <string name="send_email">Send e-mail</string>
+  <string name="call">Call</string>
+  <string name="sent_from_rst_checklist_app">Sent from RST Checklist app. </string>
+  <string name="complete">Completed</string>
 </resources>

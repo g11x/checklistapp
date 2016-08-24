@@ -43,7 +43,7 @@
   <style name="AppCardViewTitleTextStyle" parent="TextAppearance.AppCompat">
     <item name="android:padding">@dimen/title_padding</item>
     <item name="android:textSize">@dimen/text_size_title</item>
-    <item name="android:textColor">@color/primary</item>
+    <item name="android:textColor">@color/primary_dark</item>
   </style>
 
   <style name="AppNotificationTitleTextStyle" parent="TextAppearance.AppCompat">
@@ -65,6 +65,10 @@
     <item name="android:textSize">@dimen/text_size_description</item>
     <item name="android:layout_weight">1</item>
     <item name="android:lineSpacingMultiplier">1.4</item>
+    <item name="android:textColor">@color/primary_dark</item>
   </style>
 
+  <style name="AppActionButtonStyle">
+    <item name="android:padding">20dp</item>
+  </style>
 </resources>
