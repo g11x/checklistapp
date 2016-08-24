@@ -50,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Welcome to Austin!"
+        android:text="@string/welcome_to_austin"
         android:textAppearance="@android:style/TextAppearance.Material.Headline"
         android:textColor="@color/primary"
         tools:targetApi="lollipop"/>
@@ -61,7 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/welcome"
         android:padding="20dp"
-        android:text="We're happy you're here! We'd like to help you get settled in your new home, so we've put together a list of tasks to complete, and we'll send you occaisional updates from Refugee Services of Texas."
+        android:text="@string/welcome_paragraph"
         android:textColor="@color/primary_dark"
         />
   </RelativeLayout>

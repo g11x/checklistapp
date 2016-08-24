@@ -43,6 +43,7 @@
   <style name="AppCardViewTitleTextStyle" parent="TextAppearance.AppCompat">
     <item name="android:padding">@dimen/title_padding</item>
     <item name="android:textSize">@dimen/text_size_title</item>
+    <item name="android:textColor">@color/primary</item>
   </style>
 
   <style name="AppNotificationTitleTextStyle" parent="TextAppearance.AppCompat">

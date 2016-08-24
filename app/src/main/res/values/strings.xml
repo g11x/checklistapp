@@ -37,5 +37,7 @@
   <string name="title_activity_notification_list">Notifications</string>
   <string name="action_settings">Settings</string>
   <string name="content_not_yet_loaded">Content not yet loaded</string>
-  <string name="important_information_empty">Put important info here...</string>
+  <string name="important_information_empty">Put important info here…</string>
+  <string name="welcome_to_austin">Welcome to Austin!</string>
+  <string name="welcome_paragraph">We\'re happy you\'re here! We\'d like to help you get settled in your new home, so we\'ve put together a list of tasks to complete, and we\'ll send you occasional updates from Refugee Services of Texas.</string>
 </resources>
