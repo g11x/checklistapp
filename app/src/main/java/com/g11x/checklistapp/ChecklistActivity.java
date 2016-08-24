@@ -31,6 +31,7 @@ import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -74,7 +75,7 @@ public class ChecklistActivity extends NavigationActivity implements LoaderManag
 
       @Override
       protected void populateViewHolder(
-          final ChecklistItemHolder itemHolder, ChecklistItem model, final int position) {
+          final ChecklistItemHolder itemHolder, final ChecklistItem model, final int position) {
         Boolean isDone = isDoneMapping.get(model.getHash());
         if (isDoneMapping.get(model.getHash()) == null) {
           isDone = false;
@@ -88,6 +89,13 @@ public class ChecklistActivity extends NavigationActivity implements LoaderManag
             Intent intent = new Intent(ChecklistActivity.this, ChecklistItemActivity.class);
             intent.putExtra("databaseRefUrl", itemHolder.databaseRefUrl);
             startActivity(intent);
+          }
+        });
+        final Boolean finalIsDone = isDone;
+        itemHolder.setCheckBoxOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+            model.setDone(getContentResolver(), !finalIsDone);
           }
         });
       }
@@ -124,6 +132,8 @@ public class ChecklistActivity extends NavigationActivity implements LoaderManag
       } else {
         textView.setPaintFlags(textView.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
       }
+      CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkbox);
+      checkBox.setChecked(done);
     }
 
     public void setText(String title) {
@@ -138,6 +148,11 @@ public class ChecklistActivity extends NavigationActivity implements LoaderManag
     public void setOnClickListener(View.OnClickListener listener) {
       TextView textView = (TextView) view.findViewById(R.id.info_text);
       textView.setOnClickListener(listener);
+    }
+
+    void setCheckBoxOnClickListener(View.OnClickListener listener) {
+      CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkbox);
+      checkBox.setOnClickListener(listener);
     }
   }
 

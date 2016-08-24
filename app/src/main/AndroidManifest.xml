@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright © 2016 Google Inc.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,12 +26,16 @@
       android:supportsRtl="true"
       android:theme="@style/AppTheme"
       tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-    <activity android:name=".ChecklistActivity">
+    <activity
+        android:name=".MainActivity"
+        android:noHistory="true"
+        android:theme="@style/Theme.AppCompat.NoActionBar">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
+    <activity android:name=".ChecklistActivity"/>
     <activity
         android:name=".ChecklistItemActivity"
         android:parentActivityName=".ChecklistActivity"/>
@@ -52,10 +57,12 @@
     <activity
         android:name=".ImportantInformationItemActivity"
         android:parentActivityName=".ImportantInformationActivity"/>
+
     <provider
-        android:authorities="@string/content_provider_authority"
         android:name=".LocalRepository"
-        android:exported="false" />
+        android:authorities="@string/content_provider_authority"
+        android:exported="false"/>
+
     <service
         android:name=".services.NotificationService"
         android:exported="false">
@@ -65,4 +72,3 @@
     </service>
   </application>
 </manifest>
-

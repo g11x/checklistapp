@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "842466790122",
+    "firebase_url": "https://rst-checklist.firebaseio.com",
+    "project_id": "rst-checklist",
+    "storage_bucket": "rst-checklist.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:842466790122:android:262ecc79e734b009",
+        "android_client_info": {
+          "package_name": "com.g11x.checklistapp.rst"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "842466790122-2vgb19k35qnjqgnpl7rv4b06ctc3su7s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvo1PP43J_OFbQob_xPKTtYTNVppYm2tI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

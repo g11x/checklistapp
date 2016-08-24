@@ -107,19 +107,14 @@ public class ChecklistItem {
     return isDone;
   }
 
-  public boolean isDone(ContentResolver contentResolver) {
-    Cursor cursor = getCursorForItem(contentResolver);
-    int done = 0;
-    if (cursor.moveToFirst()) {
-      done = cursor.getInt(ChecklistItem.DONE_COLUMN_INDEX);
-    }
-    return done != 0;
+  public void setDoneWithoutUpdatingContent(boolean isDone) {
+    this.isDone = isDone;
   }
 
-  public void setDone(ContentResolver contentResolver, boolean done) {
+  public void setDone(ContentResolver contentResolver, boolean isDone) {
     ContentValues newValues = new ContentValues();
     newValues.put(Database.ChecklistItem.ITEM_HASH_COLUMN, getHash());
-    newValues.put(Database.ChecklistItem.DONE_COLUMN, done);
+    newValues.put(Database.ChecklistItem.DONE_COLUMN, isDone);
 
     Cursor cursor = getCursorForItem(contentResolver);
 
@@ -131,6 +126,7 @@ public class ChecklistItem {
     } else {
       contentResolver.insert(Database.ChecklistItem.CONTENT_URI, newValues);
     }
+    setDoneWithoutUpdatingContent(isDone);
   }
 
   @SuppressWarnings("unused")

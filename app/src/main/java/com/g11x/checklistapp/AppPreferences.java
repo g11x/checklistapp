@@ -22,7 +22,6 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 
 import com.g11x.checklistapp.language.Language;
 
@@ -33,17 +32,7 @@ import com.g11x.checklistapp.language.Language;
 public class AppPreferences {
 
   private static final String PREF_PREFERRED_LANGUAGE = "PREF_PREFERRED_LANGUAGE";
-
-  /**
-   * Returns whether the user has chosen to override the system's default language.
-   *
-   * @param context component context used to retrieve shared preferences
-   */
-  public static boolean isLanguageOverriden(@NonNull Context context) {
-    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-    String value = sp.getString(PREF_PREFERRED_LANGUAGE, null);
-    return TextUtils.isEmpty(value);
-  }
+  private static final String HAS_SEEN_WELCOME_SCREEN = "HAS_SEEN_WELCOME_SCREEN";
 
   /**
    * Saves the user's language preference which overrides the system default.
@@ -51,8 +40,8 @@ public class AppPreferences {
    * @param context  component context used to retrieve shared preferences
    * @param language the language identifier or null to unset
    */
-  public static void setLanguageOverride(@NonNull Context context,
-                                         @Nullable Language language) {
+  static void setLanguageOverride(@NonNull Context context,
+                                  @Nullable Language language) {
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
     SharedPreferences.Editor editor = sp.edit();
     if (language == null || language.equals(Language.SystemDefault)) {
@@ -106,7 +95,19 @@ public class AppPreferences {
       sp.unregisterOnSharedPreferenceChangeListener(listener);
     }
 
-    abstract void onChanged(@NonNull Language newLangauge);
+    abstract void onChanged(@NonNull Language newLanguage);
   }
 
+  static boolean hasSeenWelcomeScreen(Context context) {
+    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+    String value = sp.getString(HAS_SEEN_WELCOME_SCREEN, "false");
+    return value.equals("true");
+  }
+
+  static void setHasSeenWelcomeScreen(Context context) {
+    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+    SharedPreferences.Editor editor = sp.edit();
+    editor.putString(HAS_SEEN_WELCOME_SCREEN, "true");
+    editor.apply();
+  }
 }
