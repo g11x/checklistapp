@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "536100510282-77v4c3u4h9u8hiokn5blt8hav5n801d2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.g11x.checklistapp.rst",
+            "certificate_hash": "3716EBD27B90A9E4A8AF301FF21BD6ECF06072E1"
+          }
+        },
+        {
           "client_id": "536100510282-lh8irebo40v34qrr43abes9relrvj4h1.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
