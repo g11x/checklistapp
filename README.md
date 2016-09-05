@@ -43,8 +43,9 @@ When it comes to refugees, they're literally showing up on the doorstep of your 
 
 Thanks!
 
-- Show some hospitality! Visit some refugees in their home. Invite them to yours. [Volunteer to take them to appointments around town][RST volunteer]. [Teach them some of your job skills][MRC volunteer].
-- Help translate the app
+- **Show some hospitality!** Visit some refugees in their home. Invite them to yours. [Volunteer to take them to appointments around town][RST volunteer]. [Teach them some of your job skills][MRC volunteer].
+- **Help translate the app.** Read [the process above](#translations-process), find some red boxes in [the spreadsheet](https://docs.google.com/spreadsheets/d/1w2vv6Tt5uvjKLLHX4M6kv8yFDN-sSvwuMUz2MbeFNjY/edit#gid=0), and translate away!
+- **Make the app better.** We've got [a bunch of issues labeled "help wanted"](https://github.com/g11x/checklistapp/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22), so that's a good place to start, though we'll take any help we can get 😉
 
 <h3><small>You're still here! Have some legalese:</small></h3>
 
