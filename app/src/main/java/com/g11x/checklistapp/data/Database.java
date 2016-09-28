@@ -213,7 +213,7 @@ public class Database {
 
       @Override
       public Cursor query(String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        return db.query(TABLE_NAME, projection, selection, selectionArgs, null, null, null);
+        return db.query(TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
       }
 
       @Override

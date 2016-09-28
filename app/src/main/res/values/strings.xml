@@ -42,4 +42,5 @@
   <string name="call">Call</string>
   <string name="sent_from_rst_checklist_app">Sent from RST Checklist app. </string>
   <string name="complete">Completed</string>
+  <string name="sent_on">Sent on %s</string>
 </resources>

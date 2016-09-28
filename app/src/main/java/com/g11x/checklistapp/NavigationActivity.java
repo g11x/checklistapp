@@ -85,7 +85,6 @@ public abstract class NavigationActivity extends AppCompatActivity {
   }
 
   public void onLanguageChange(Language newLanguage) {
-
   }
 
   @Override

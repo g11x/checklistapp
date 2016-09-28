@@ -35,6 +35,12 @@
         android:textStyle="bold"/>
 
     <TextView
+        android:id="@+id/notification_sent_time"
+        style="@style/AppNotificationSentTimeTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
         android:id="@+id/notification_body"
         style="@style/AppNotificationBodyTextStyle"
         android:layout_width="match_parent"

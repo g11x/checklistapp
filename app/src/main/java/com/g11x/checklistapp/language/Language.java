@@ -19,11 +19,13 @@ package com.g11x.checklistapp.language;
 
 import android.support.annotation.NonNull;
 
+import java.util.Locale;
+
 /**
  * Custom content languages supported by the app.
  */
 public enum Language {
-  SystemDefault(null, "System Default"),
+  SystemDefault(Locale.getDefault().getLanguage(), "System Default"),
   Russian("ru", "Русский"),
   English("en", "English"),
   Ukrainian("uk", "Українська");

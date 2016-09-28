@@ -52,6 +52,15 @@
     <item name="android:textSize">@dimen/text_size_title</item>
   </style>
 
+  <style name="AppNotificationSentTimeTextStyle" parent="TextAppearance.AppCompat">
+    <item name="android:paddingLeft">@dimen/title_padding</item>
+    <item name="android:paddingTop">10dp</item>
+    <item name="android:textSize">@dimen/text_size_sent_time</item>
+    <item name="android:textStyle">italic</item>
+    <item name="android:textColor">@color/primary</item>
+
+  </style>
+
   <style name="AppNotificationBodyTextStyle" parent="TextAppearance.AppCompat">
     <item name="android:paddingLeft">@dimen/title_padding</item>
     <item name="android:paddingTop">5dp</item>

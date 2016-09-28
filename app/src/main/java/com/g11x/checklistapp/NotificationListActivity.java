@@ -21,10 +21,11 @@ import android.widget.TextView;
 import com.g11x.checklistapp.data.Database;
 import com.g11x.checklistapp.data.Notification;
 
+import java.text.SimpleDateFormat;
+
 public class NotificationListActivity extends NavigationActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
   private NotificationAdapter adapter;
-  private RecyclerView mRecyclerView;
   private ContentObserver notificationContentObserver;
 
   @Override
@@ -36,7 +37,7 @@ public class NotificationListActivity extends NavigationActivity implements Load
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_notification_list);
-    mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+    RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
     // use this setting to improve performance if you know that changes
     // in content do not change the layout size of the RecyclerView
@@ -46,7 +47,7 @@ public class NotificationListActivity extends NavigationActivity implements Load
     RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
     mRecyclerView.setLayoutManager(mLayoutManager);
 
-    ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+    ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
       @Override
       public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
         return false;
@@ -63,8 +64,7 @@ public class NotificationListActivity extends NavigationActivity implements Load
             Database.Notification.CONTENT_URI,
             newValues,
             Database.ID_COLUMN + " = " + id,
-            null
-        );
+            null);
       }
     });
     helper.attachToRecyclerView(mRecyclerView);
@@ -104,7 +104,10 @@ public class NotificationListActivity extends NavigationActivity implements Load
     };
     Loader<Cursor> cursor = new CursorLoader(NotificationListActivity.this,
         Database.Notification.CONTENT_URI,
-        Database.Notification.PROJECTION, "NOT " + Database.Notification.READ_COLUMN, null, Database.Notification.SENT_TIME);
+        Database.Notification.PROJECTION,
+        "NOT " + Database.Notification.READ_COLUMN,
+        null,
+        Database.Notification.SENT_TIME + " DESC LIMIT 50");
     getContentResolver().registerContentObserver(Database.Notification.CONTENT_URI, true, notificationContentObserver);
     return cursor;
   }
@@ -121,12 +124,15 @@ public class NotificationListActivity extends NavigationActivity implements Load
 
   private static class NotificationAdapter extends RecyclerViewCursorAdapter<NotificationAdapter.ViewHolder> {
 
+    private ViewGroup mParent;
+
     NotificationAdapter(Cursor cursor) {
       super(cursor);
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+      mParent = parent;
       View layout = LayoutInflater.from(parent.getContext())
           .inflate(R.layout.view_notification_item, parent, false);
       return new ViewHolder(layout);
@@ -136,6 +142,7 @@ public class NotificationListActivity extends NavigationActivity implements Load
     public void onBindViewHolder(ViewHolder holder, Cursor cursor) {
       Notification n = Notification.fromCursor(cursor);
       holder.id = n.getId();
+      holder.mSentTime.setText(String.format(mParent.getContext().getString(R.string.sent_on), SimpleDateFormat.getDateInstance().format(n.getSentTime())));
       holder.mBody.setText(n.getMessage());
       String title = n.getTitle();
       if (title != null && !title.isEmpty()) {
@@ -149,11 +156,13 @@ public class NotificationListActivity extends NavigationActivity implements Load
     static class ViewHolder extends RecyclerView.ViewHolder {
       public final TextView mTitle;
       public final TextView mBody;
+      private final TextView mSentTime;
       public long id;
 
       public ViewHolder(View v) {
         super(v);
         mTitle = (TextView) v.findViewById(R.id.notification_title);
+        mSentTime = (TextView) v.findViewById(R.id.notification_sent_time);
         mBody = (TextView) v.findViewById(R.id.notification_body);
       }
     }

@@ -57,7 +57,7 @@ public class AppPreferences {
    *
    * @param context component context used to retrieve shared preferences
    */
-  @Nullable
+  @NonNull
   public static Language getLanguageOverride(@NonNull Context context) {
     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
     String value = sp.getString(PREF_PREFERRED_LANGUAGE, null);
