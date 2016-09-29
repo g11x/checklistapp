@@ -73,5 +73,5 @@ Thanks!
 [buildgradle]: https://github.com/g11x/checklistapp/blob/master/build.gradle
 [as]: http://tools.android.com/download/studio/canary
 [logo]: http://i.imgur.com/RDpLZmI.png
-[screenshots]: http://i.imgur.com/Ajg5ZFM.jpg
+[screenshots]: https://g11x.github.io/checklistapp/img/screenshots/screenshots.jpg
 [adminapp]: https://github.com/g11x/rstappadmin
