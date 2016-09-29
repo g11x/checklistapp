@@ -33,6 +33,18 @@ And that can be exported to CSV again, run through our tool, and easily imported
 
 See some red on that sheet under a language you speak? Let us know!t
 
+## Releasing
+
+1. Bump the `versionCode` and `versionName` in the `app/build.gradle` file.
+2. Annotate any un-translated strings with `tools:ignore="MissingTranslation"` (this change won't be committed)
+3. Run the "Generate signed APK&hellip;" action in Android Studio
+  * You'll need the signing keystore and the passwords for both the store itself, and the key
+4. Test the signed APK by running `adb install app/build/outputs/apk/app-release.apk`
+5. Copy in the prod configuration with `cp app/google-services-prod.json app/google-services.json` (this change won't be committed)
+6. Upload that APK to https://play.google.com/apps/publish (there's an "APK" tab on the left)
+7. Undo the changes that shouldn't be committed with something like `git checkout -- app/google-services.json app/src/main/res/values/strings.xml`
+8. Commit the version number increase with a message like "Version X.Y"
+
 ## Why?
 
 Maybe you've seen some recent news that says we're facing the largest refugee crisis since World War II. Maybe you've thought that you'd really like to help the victims of this crisis, but you've got no idea where to start.
