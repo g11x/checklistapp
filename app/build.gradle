@@ -26,8 +26,8 @@ android {
     applicationId "com.g11x.checklistapp.rst"
     minSdkVersion 15
     targetSdkVersion 24
-    versionCode 5
-    versionName "2.3"
+    versionCode 6
+    versionName "2.4"
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     resValue("string", "content_provider_authority", "com.g11x.checklistapp.provider")
   }
